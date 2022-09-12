@@ -1,0 +1,31 @@
+.compiler {
+    height: 100vh;
+    width: 100%;
+    overflow: hidden;
+}
+
+.container {
+    height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+}
+.editor {
+    height: 634px;
+    width: 100%;
+    overflow: hidden;
+}
+.resizing-compiler {
+    position: relative;
+    height: 5px;
+    background-color: transparent;
+
+    cursor: n-resize;
+    user-select: none;
+    &:hover {
+        background-color: var(--background-hover);
+    }
+}
+
+.console {
+    width: 100%;
+}

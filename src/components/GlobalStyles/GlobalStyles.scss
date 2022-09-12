@@ -1,0 +1,48 @@
+@import 'normalize.css';
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap');
+
+:root {
+    --primary: #166efb;
+    --word-black: black;
+    --word-black-hover: rgb(103, 102, 102);
+    --word-light: rgb(255, 255, 255);
+    --word-light-gray: rgb(161, 165, 182);
+
+    --background-light: #ffffff;
+    --background-light-depp: rgb(245, 247, 249);
+    --background-light-drank: rgb(236 241 247);
+    --background-header-drank: rgb(52, 57, 71);
+    --background-hover: rgb(228, 231, 250);
+    --background-scroll: rgba(159, 159, 159, 0.49);
+    --background-active: rgb(255, 255, 255);
+    --background-active-drank: rgb(226 237 247);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.6rem;
+    line-height: 1.5;
+    text-rendering: optimizespeed;
+}
+a {
+    text-decoration: none;
+}
+
+button {
+    border: none;
+    outline: none;
+    background-color: unset;
+}
+ul {
+    list-style: none;
+}

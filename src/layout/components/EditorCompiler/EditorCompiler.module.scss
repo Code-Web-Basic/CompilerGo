@@ -1,0 +1,99 @@
+.wrapper {
+    height: 100%;
+    width: 100%;
+}
+.control-fife {
+    background-color: var(--background-light-drank);
+
+    height: 30px;
+
+    display: flex;
+}
+.fife-container {
+    height: 100%;
+    width: 100%;
+    overflow-y: hidden;
+    overflow-x: auto;
+
+    display: flex;
+    align-items: center;
+}
+
+.fife-container::-webkit-scrollbar {
+    height: 4px;
+}
+
+.fife-container::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.fife-container::-webkit-scrollbar-thumb {
+    background-color: var(--background-scroll);
+    border-radius: 10px;
+    border: 3px none #ffffff;
+    height: 4px;
+}
+.control {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    margin-right: 10px;
+    .btn-control {
+        margin-right: 10px;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        padding: 5px;
+    }
+}
+.item-fife {
+    height: 100%;
+    width: 150px;
+    overflow: hidden;
+    padding: 5px 10px;
+    color: var(--word-light-gray);
+
+    display: flex;
+    align-items: center;
+
+    margin-right: 2px;
+    background-color: var(--background-active-drank);
+
+    .item-content {
+        font-size: 1.3rem;
+        font-weight: 400;
+        width: calc(100% - 20px);
+
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    .item-icon {
+        font-size: 2rem;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        border-radius: 2px;
+    }
+    .item-icon:hover {
+        background-color: var(--background-hover);
+    }
+}
+.item-fife:hover {
+    color: var(--word-black-hover);
+}
+.item-fife.active {
+    background-color: var(--background-active);
+    color: var(--word-black);
+}
+.address-fife {
+    height: 20px;
+    margin-bottom: 10px;
+    box-shadow: rgb(99 99 99 / 20%) 0px 8px 12px -7px;
+}
+.editor-content {
+    height: calc(100% - 50px);
+}

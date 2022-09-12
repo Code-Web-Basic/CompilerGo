@@ -1,0 +1,35 @@
+.wrapper {
+    height: 100%;
+    position: relative;
+}
+.container {
+    height: calc(100% - 28px);
+    overflow: hidden;
+}
+.sub {
+    background-color: var(--background-light-depp);
+    height: 100%;
+    width: 100%;
+}
+.control-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    background-color: var(--background-header-drank);
+
+    padding: 4px 10px;
+    height: 28px;
+}
+
+.problem-console {
+    display: flex;
+    align-items: center;
+    .problem-console_item {
+        font-size: 1rem;
+        margin-left: 10px;
+    }
+    svg {
+        font-size: 1.1rem;
+    }
+}
