@@ -3,7 +3,7 @@ import styles from './EditorCompiler.module.scss';
 //components
 import MonacoEditor from '@monaco-editor/react';
 import Button from '~/components/Button/Button';
-import { BsX, BsPlayFill } from 'react-icons/bs';
+import { BsX, BsPlayFill, BsBugFill } from 'react-icons/bs';
 
 const cx = classNames.bind(styles);
 
@@ -32,6 +32,9 @@ function EditorCompiler() {
                     </div>
                 </div>
                 <div className={cx('control')}>
+                    <Button className={cx('btn-control')} iconBackgroundHover>
+                        <BsBugFill />
+                    </Button>
                     <Button className={cx('btn-control')} iconBackgroundHover>
                         <BsPlayFill />
                     </Button>

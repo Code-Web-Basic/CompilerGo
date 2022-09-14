@@ -30,7 +30,6 @@
 .fife-container::-webkit-scrollbar-thumb {
     background-color: var(--background-scroll);
     border-radius: 10px;
-    border: 3px none #ffffff;
     height: 4px;
 }
 .control {
@@ -45,7 +44,11 @@
         align-items: center;
         justify-content: center;
 
-        padding: 5px;
+        padding: 3px;
+        .title {
+            display: flex;
+            align-items: center;
+        }
     }
 }
 .item-fife {

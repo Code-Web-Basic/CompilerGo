@@ -7,7 +7,6 @@ import { useState, useRef, useEffect } from 'react';
 import ConsoleCompiler from '~/layout/components/ConsoleCompiler';
 import ControlCompiler from '~/layout/components/ControlCompiler';
 import EditorCompiler from '~/layout/components/EditorCompiler';
-import images from '~/asset/images';
 
 const cx = classNames.bind(styles);
 
@@ -37,10 +36,6 @@ function Compiler() {
             setHeightEditor(0);
             setHeightConsole(EditorContainer.current.offsetHeight);
         }
-        // if (EditorContainer.current.offsetHeight + EditorContainer.current.offsetTop - e.clientY) {
-        //     setHeightEditor(EditorContainer.current.offsetHeight - 28 - 5);
-        //     setHeightConsole(28);
-        // }
     };
     const RemoveHandleResizing = () => {
         window.removeEventListener('mousemove', HandleResizing, false);

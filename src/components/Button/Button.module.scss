@@ -2,6 +2,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    cursor: pointer;
 }
 .text {
     min-width: 100px;
@@ -62,11 +64,17 @@
     color: var(--word-light-gray);
     border-radius: 5px;
 
+    .title {
+        display: flex;
+        align-items: center;
+    }
+
     &:hover {
         color: var(--word-black-hover);
         background-color: var(--background-hover);
     }
 }
+
 .icon {
     display: flex;
     align-items: center;

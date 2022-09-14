@@ -1,18 +1,13 @@
 import classNames from 'classnames/bind';
-import { useRef } from 'react';
+// import { useRef } from 'react';
 import styles from './ConsoleCompiler.module.scss';
 //icon
-import {
-    BsXCircleFill,
-    BsExclamationOctagonFill,
-    BsExclamationTriangleFill,
-    BsExclamationCircleFill,
-} from 'react-icons/bs';
+import { BsXCircleFill, BsExclamationOctagonFill } from 'react-icons/bs';
 //component
 import Button from '~/components/Button/Button';
 const cx = classNames.bind(styles);
 function ConsoleCompiler() {
-    const ContainerDiv = useRef(null);
+    // const ContainerDiv = useRef(null);
 
     return (
         <div className={cx('wrapper')}>
