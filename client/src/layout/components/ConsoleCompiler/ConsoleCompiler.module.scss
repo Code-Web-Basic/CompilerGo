@@ -5,9 +5,10 @@
 .container {
     height: calc(100% - 28px);
     overflow: hidden;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 3px 6px, rgba(0, 0, 0, 0.23) 0px 3px 6px;
 }
 .sub {
-    background-color: var(--background-light-depp);
+    background-color: var(--background-console);
     height: 100%;
     width: 100%;
 }

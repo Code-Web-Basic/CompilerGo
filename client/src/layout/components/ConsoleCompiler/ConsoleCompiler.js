@@ -5,6 +5,7 @@ import styles from './ConsoleCompiler.module.scss';
 import { BsXCircleFill, BsExclamationOctagonFill } from 'react-icons/bs';
 //component
 import Button from '~/components/Button/Button';
+import ConsoleContainer from './ConsoleContainer';
 const cx = classNames.bind(styles);
 function ConsoleCompiler() {
     // const ContainerDiv = useRef(null);
@@ -12,7 +13,9 @@ function ConsoleCompiler() {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
-                <div className={cx('sub')}></div>
+                <div className={cx('sub')}>
+                    <ConsoleContainer />
+                </div>
             </div>
             <div className={cx('control-bottom')}>
                 <div className={cx('problem-console')}>
