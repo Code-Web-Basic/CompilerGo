@@ -34,7 +34,7 @@ function Home() {
                             </li>
                             <li>
                                 <BsCheck2Circle className={cx('icon_bx')} />
-                                Compiler online use very easy and convenient
+                                Compiler online use very easy and convenienttt
                             </li>
                         </ul>
                         <Button className={cx('start')}>Started with compiler</Button>
