@@ -37,7 +37,7 @@ function Home() {
                                 Compiler online use very easy and convenienttt
                             </li>
                         </ul>
-                        <Button className={cx('start')}>Started with compiler</Button>
+                        <Button className={cx('start')} to=''>Started with compiler</Button>
                     </div>
                 </div>
                 <div className={cx('content-right')}>
