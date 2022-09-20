@@ -39,7 +39,9 @@ function Home() {
                                 Compiler online use very easy and convenient
                             </li>
                         </ul>
-                        <Button className={cx('start')} to={ConfigRouter.login}>Started with compiler</Button>
+                        <Button className={cx('start')} to={ConfigRouter.compiler}>
+                            Started with compiler
+                        </Button>
                     </div>
                 </div>
                 <div className={cx('content-right')}>

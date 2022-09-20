@@ -38,6 +38,7 @@ body {
 }
 a {
     text-decoration: none;
+    color: none;
 }
 
 button {
@@ -47,4 +48,8 @@ button {
 }
 ul {
     list-style: none;
+}
+input {
+    border: none;
+    outline: none;
 }
