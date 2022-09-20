@@ -1,0 +1,136 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+.wrapper {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background-color: #fafafa;
+}
+.img-login {
+    flex: 1;
+}
+.img-login img {
+    width: 75%;
+    position: relative;
+    left: 30%;
+    top: 10%
+}
+.wrap-form-login {
+    flex: 1;
+    position: relative;
+    border: none;
+    border-radius: 10px;
+    background-image: radial-gradient(closest-side at 50% 135%, #ffffff 50%, #eceff1 100%);
+}
+.form-login {
+    border: none;
+    align-items: center;
+    text-align: center;
+    justify-content: center;
+    position: absolute;
+    left: 10%;
+    top: 15%;
+    padding: 20px 60px;
+    box-shadow: 0 4px 20px rgb(0 0 0 / 7%);
+}
+.form-login h1 {
+    font-size: 75px;
+    margin-bottom: 20px;
+}
+.form {
+    margin-bottom: 20px;
+    font-size: 20px;
+}
+.form input {
+    padding: 9px 0 7px 8px;
+    margin-left: 5px;
+    width: 260px;
+    margin-bottom: 10px;
+    border: none;
+}
+.form-item {
+    margin-bottom: 15px;
+    font-size: 18px;
+    display: flex;
+    gap: 50px;
+}
+.form-item a {
+    text-decoration: none;
+}
+.btn-login {
+    margin: 15px 0;
+    font-size: 20px;
+    text-decoration: none;
+    list-style: none;
+    color: black;
+    border-radius: 10px;
+    font-weight: 600;
+    background-color: pink;
+    padding: 10px;
+    opacity: 0.6;
+}
+.btn-login:hover {
+    opacity: 1;
+}
+.label-text {
+    margin-top: 10px;
+    font-size: 18px;
+    position: relative;
+}
+
+.label-or {
+    display: flex;
+    justify-content: space-around;
+}
+.line-left {
+    text-decoration: line-through;
+    background-color: rgba(219, 219, 219, 1);
+    height: 1px;
+    width: 25%;
+    position: relative;
+    top: 20px;
+}
+.line-right {
+    text-decoration: line-through;
+    background-color: rgba(219, 219, 219, 1);
+    height: 1px;
+    width: 25%;
+    position: relative;
+    right: 0;
+    top: 20px;
+}
+.icon-login {
+    display: flex;
+    margin: 20px;
+}
+.icon-login {
+    margin-top: 20px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+}
+.face {
+    margin-right: 20px;
+    font-size: 25px;
+    border: none;
+}
+.goog {
+    margin-right: 10px;
+    font-size: 25px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    border: none;
+}
+.face:hover {
+    color: red;
+}
+.goog:hover {
+    color: red;
+}
+.signup:hover {
+    color: red;
+}
