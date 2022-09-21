@@ -5,9 +5,25 @@ import Button from '~/components/Button';
 import { FaUser, FaLock, FaFacebook, FaGoogle } from 'react-icons/fa';
 //component
 import images from '~/asset/images';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { loginUser } from '~/redux/apiRequest';
 const cx = classNames.bind(styles);
 function Login() {
+    const [userName, setUserName] = useState(null);
+    const [password, setPassword] = useState(null);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    const handleLogin = (e) => {
+        e.preventDefault();
+        const newUser = {
+            username: userName,
+            password: password,
+        };
+        loginUser(newUser, dispatch, navigate);
+    };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('img-login')}>
@@ -19,11 +35,23 @@ function Login() {
                     <form className={cx('form')}>
                         <div>
                             <FaUser />
-                            <input placeholder="Tài khoản hoặc email" name="user" />
+                            <input
+                                placeholder="Tài khoản hoặc email"
+                                name="user"
+                                onChange={(e) => {
+                                    setUserName(e.target.value);
+                                }}
+                            />
                         </div>
                         <div>
                             <FaLock />
-                            <input placeholder="Mật khẩu" name="pass" />
+                            <input
+                                placeholder="Mật khẩu"
+                                name="pass"
+                                onChange={(e) => {
+                                    setPassword(e.target.value);
+                                }}
+                            />
                         </div>
                     </form>
                     <div className={cx('form-item')}>
@@ -35,7 +63,7 @@ function Login() {
                             Quên mật khẩu?
                         </Link>
                     </div>
-                    <Button className={cx('btn-login')} to={ConfigRouter.Login}>
+                    <Button className={cx('btn-login')} to={ConfigRouter.Login} onClick={handleLogin}>
                         Đăng nhập
                     </Button>
                     <div className={cx('social-login-label')}>
