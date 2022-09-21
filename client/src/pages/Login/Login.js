@@ -59,7 +59,7 @@ function Login() {
                             <input type="checkbox" name="rem-login" />
                             <span> Nhớ mật khẩu</span>
                         </div>
-                        <Link to={ConfigRouter.Home} className={cx('forgetpass')}>
+                        <Link to={ConfigRouter.resetpass} className={cx('forgetpass')}>
                             Quên mật khẩu?
                         </Link>
                     </div>
