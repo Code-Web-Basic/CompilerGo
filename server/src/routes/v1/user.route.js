@@ -13,4 +13,10 @@ router
 
 router.route('/secret').get(passport.authenticate('jwt', { section: false }), UserController.secret);
 
+router
+    .route('/auth/google')
+    .post(passport.authenticate('google-plus-token', { section: false }), UserController.authGoogle);
+router
+    .route('/auth/facebook')
+    .post(passport.authenticate('facebook-token', { section: false }), UserController.authFacebook);
 export const UsersRoutes = router;
