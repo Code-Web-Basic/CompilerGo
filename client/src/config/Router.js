@@ -3,6 +3,7 @@ const router = {
     compiler: '/compiler',
     practice: '/practice',
     login: '/login',
-    signup: '/signup'
+    signup: '/signup',
+    resetpass: '/resetpass'
 };
 export default router;
