@@ -8,10 +8,13 @@ const userCollectionName = 'Users';
 const userCollectionSchema = Joi.object({
     firstName: Joi.string().max(50),
     lastName: Joi.string().max(50),
-    password: Joi.string().required().min(5).max(30).trim(),
+    password: Joi.string().min(5).max(30).trim().default(null),
     createdAt: Joi.date().timestamp().default(Date.now()),
     updatedAt: Joi.date().timestamp().default(null),
     email: Joi.string().required().email(),
+    authGoogleId: Joi.string().default(null),
+    authFacebookId: Joi.string().default(null),
+    authType: Joi.string().valid('local', 'google', 'facebook').default('local'),
 });
 const validateSchema = async (data) => {
     return await userCollectionSchema.validateAsync(data, { abortEarly: false });
@@ -34,15 +37,17 @@ const lookupEmail = async (email) => {
 };
 const signUp = async (data) => {
     try {
-        //check email exist
-        const schema = Joi.string().external(lookupEmail);
-        await schema.validateAsync(data.email);
-
         // validate data
+        //check email exist
         const validatedValue = await validateSchema(data);
         let insertValue = cloneDeep(validatedValue);
-        //encode password
-        insertValue = await encodePassword(insertValue);
+        if (validatedValue.authType === 'local') {
+            const schema = Joi.string().external(lookupEmail);
+            await schema.validateAsync(data.email);
+            //encode password
+            insertValue = await encodePassword(validatedValue);
+        }
+
         //add data to database
         const result = await getDB().collection(userCollectionName).insertOne(insertValue);
         //find and return added data
@@ -64,4 +69,4 @@ const encodePassword = async (data) => {
         throw new Error(error);
     }
 };
-export const UserModel = { signUp, findOneById };
+export const UserModel = { signUp, findOneById, validateSchema };
