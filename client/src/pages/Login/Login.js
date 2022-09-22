@@ -5,7 +5,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { GoogleAuthProvider, signInWithPopup, FacebookAuthProvider } from 'firebase/auth';
+import { GoogleAuthProvider, signInWithPopup, FacebookAuthProvider, signOut } from 'firebase/auth';
 //icon
 import { FaUser, FaLock, FaFacebook, FaGoogle } from 'react-icons/fa';
 //component
@@ -33,9 +33,10 @@ function Login() {
 
     const handleLoginWithGoogle = () => {
         const provider = new GoogleAuthProvider();
-        //provider.addScope('profile');
-        //provider.addScope('tu30380@gmail.com');
 
+        provider.addScope(
+            'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid',
+        );
         signInWithPopup(auth, provider)
             .then((result) => {
                 // This gives you a Google Access Token. You can use it to access the Google API.
@@ -66,13 +67,7 @@ function Login() {
         signInWithPopup(auth, provider)
             .then((result) => {
                 // This gives you a Google Access Token. You can use it to access the Google API.
-                const credential = FacebookAuthProvider.credentialFromResult(result);
-                console.log(credential.idToken);
-                const token = credential.accessToken;
-                console.log(token);
-                // The signed-in user info.
-                const user = result.user;
-                console.log(user);
+                console.log(result);
 
                 // ...
             })
@@ -85,6 +80,16 @@ function Login() {
                 // The AuthCredential type that was used.
                 const credential = FacebookAuthProvider.credentialFromError(error);
                 // ...
+            });
+    };
+    const logOut = () => {
+        signOut(auth)
+            .then(() => {
+                console.log('logout');
+            })
+            .catch((error) => {
+                // An error happened.
+                console.log(error);
             });
     };
     return (
@@ -146,7 +151,7 @@ function Login() {
                     </div>
                     <div className={cx('con-signup')}>
                         <span>Nếu chưa có tài khoản?</span>
-                        <Link to={ConfigRouter.signup} className={cx('signup')}>
+                        <Link to={ConfigRouter.signup} className={cx('signup')} onClick={logOut}>
                             Đăng ký
                         </Link>
                     </div>

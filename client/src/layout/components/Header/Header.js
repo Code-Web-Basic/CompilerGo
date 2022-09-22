@@ -8,10 +8,13 @@ import { VscAccount } from 'react-icons/vsc';
 import { ConfigRouter } from '~/config';
 import images from '~/asset/images';
 import Button from '~/components/Button/Button';
+import { useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
 function Header() {
+    const users = useSelector((state) => state.auth.login.currentUser);
+    console.log(users);
     return (
         <div className={cx('wrapper')}>
             <div className={cx('logo')}>
