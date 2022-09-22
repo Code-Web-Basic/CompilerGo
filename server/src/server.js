@@ -4,6 +4,8 @@ import passport from 'passport';
 import { ApiV1 } from './routes/v1';
 import { connectDB } from './config/mongodb';
 import { env } from './config/environment';
+import corsOptions from './config/cors';
+import cors from 'cors';
 connectDB()
     .then(() => console.log('Connected Successfully'))
     .then(() => bootServer())
@@ -14,7 +16,7 @@ connectDB()
 
 const bootServer = () => {
     const app = express();
-    // app.use(cors(corsOptions));
+    app.use(cors(corsOptions));
     //req.body data
     app.use(express.json());
     app.use(require('serve-static')(__dirname + '/../../public'));
