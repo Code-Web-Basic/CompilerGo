@@ -5,6 +5,8 @@ import { BsCheck2Circle } from 'react-icons/bs';
 //component
 import Button from '~/components/Button/Button';
 import images from '~/asset/images';
+//routes
+import { ConfigRouter } from '~/config';
 const cx = classNames.bind(styles);
 function Home() {
     return (
@@ -37,7 +39,9 @@ function Home() {
                                 Compiler online use very easy and convenient
                             </li>
                         </ul>
-                        <Button className={cx('start')}>Started with compiler</Button>
+                        <Button className={cx('start')} to={ConfigRouter.compiler}>
+                            Started with compiler
+                        </Button>
                     </div>
                 </div>
                 <div className={cx('content-right')}>

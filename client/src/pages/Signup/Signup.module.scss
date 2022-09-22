@@ -1,0 +1,126 @@
+.wrapper {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-image: radial-gradient(closest-side at 50% 135%, #ffffff 50%, #eceff1 100%);
+}
+
+.form {
+    width: 400px;
+    height: 85vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    background-color: #fafafa;
+    padding: 10px 20px;
+    border: 1px solid black;
+    box-shadow: 0 4px 20px rgb(0 0 0 / 7%);
+    border: none;
+}
+.wrapper h1 {
+    font-size: 40px;
+    margin-bottom: 10px;
+}
+.form-signup {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+.form-signup input {
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+.form-signup p {
+    margin-top: 20px;
+
+    color: rgba(var(--f52, 142, 142, 142), 1);
+
+    font-size: 15px;
+    line-height: 16px;
+    margin: 15px 0 5px 0;
+    text-align: center;
+}
+.btn-signup {
+    margin: 20px 0px;
+    text-decoration: none;
+    list-style: none;
+    color: black;
+    border-radius: 10px;
+    font-weight: 600;
+    background-color: pink;
+    opacity: 0.6;
+    padding: 10px;
+    width: 90%;
+    border: none;
+}
+.btn-signup:hover {
+    opacity: 1;
+}
+.label-or {
+    display: flex;
+    justify-content: space-around;
+    .label-text {
+        text-align: center;
+        font-size: 18px;
+    }
+}
+.line-left {
+    text-decoration: line-through;
+    background-color: rgba(219, 219, 219, 1);
+    height: 1px;
+    width: 15%;
+    position: relative;
+    top: 20px;
+}
+.line-right {
+    text-decoration: line-through;
+    background-color: rgba(219, 219, 219, 1);
+    height: 1px;
+    width: 15%;
+    position: relative;
+    right: 0;
+    top: 20px;
+}
+.icon-login {
+    display: flex;
+    margin: 20px;
+}
+.icon-login {
+    margin-top: 20px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+.face {
+    font-size: 25px;
+    border: none;
+}
+.goog {
+    font-size: 25px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    border: none;
+}
+.face:hover {
+    color: var(--primary);
+}
+.goog:hover {
+    color: var(--primary);
+}
+.signin:hover {
+    color: var(--primary);
+}
+.con-signin {
+    display: flex;
+    gap: 5px;
+}
