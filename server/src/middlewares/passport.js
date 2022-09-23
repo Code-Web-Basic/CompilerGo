@@ -9,17 +9,14 @@ const JwtStrategy = require('passport-jwt').Strategy;
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
 const FacebookTokenStrategy = require('passport-facebook-token');
 passport.serializeUser(function (user, done) {
-    // done(null, user._id);
-    // // if you use Model.id as your idAttribute maybe you'd want
-    // // done(null, user.id);
     done(null, user);
 });
 
-passport.deserializeUser(function (id, done) {
-    // const user = getDB().collection('Users').findOne({ _id: id });
-    // if (user) {
-    //     done(null, user);
-    // }
+passport.deserializeUser(async function (user, done) {
+    const newUser = await getDB().collection('Users').findOne({ _id: user._id });
+    if (newUser) {
+        done(null, newUser);
+    }
     done(null, user);
 });
 //passport Jwt
@@ -27,8 +24,7 @@ passport.use(
     new JwtStrategy(
         {
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken('Authorization'),
-            // secretOrKey: env.JWT_SECRET,
-            secretOrKey: 'https://securetoken.google.com/compiler-go',
+            secretOrKey: env.JWT_SECRET,
         },
         async (payload, done) => {
             try {
@@ -41,14 +37,16 @@ passport.use(
         },
     ),
 );
-//passport google plus
+
 passport.use(
     new GoogleStrategy(
         {
             clientID: env.GOOGLE_CLIENT_ID,
             clientSecret: env.GOOGLE_CLIENT_SECRET,
+            callbackURL: 'http://localhost:3240/v1/users/auth/google/callback',
+            passReqToCallback: true,
         },
-        async (accessToken, refreshToken, profile, done) => {
+        async (req, accessToken, refreshToken, profile, done) => {
             try {
                 const existUser = await getDB()
                     .collection('Users')
@@ -57,7 +55,6 @@ passport.use(
                 if (existUser) {
                     return done(null, existUser);
                 }
-
                 //if new account
                 const newUser = await UserModel.signUp({
                     firstName: profile.name.givenName,
@@ -66,7 +63,7 @@ passport.use(
                     email: profile.emails[0].value,
                     authGoogleId: profile.id,
                 });
-                done(null, newUser);
+                return done(null, newUser);
             } catch (error) {
                 done(error, false);
             }
@@ -79,32 +76,26 @@ passport.use(
         {
             clientID: env.FACEBOOK_CLIENT_ID,
             clientSecret: env.FACEBOOK_CLIENT_SECRET,
-            callbackURL: 'http://localhost:3240/v1/users/auth/google/callback',
-            passReqToCallback: true,
         },
         async function (accessToken, refreshToken, profile, done) {
             try {
-                console.log('accessToken', accessToken);
-                console.log('refreshToken', refreshToken);
-                console.log('profile', profile);
                 done(null, profile);
-                // const existUser = await getDB()
-                //     .collection('Users')
-                //     .findOne({ authFacebookId: profile.id, authType: 'facebook' });
-                // // exits in DB
-                // if (existUser) {
-                //     return done(null, existUser);
-                // }
-                // //if new account
-                // const newUser = await UserModel.signUp({
-                //     firstName: profile.name.givenName,
-                //     lastName: profile.name.familyName,
-                //     authType: 'facebook',
-                //     email: profile.emails[0].value,
-                //     authFacebookId: profile.id,
-                // });
-                // done(null, newUser);
-                done(null, profile);
+                const existUser = await getDB()
+                    .collection('Users')
+                    .findOne({ authFacebookId: profile.id, authType: 'facebook' });
+                // exits in DB
+                if (existUser) {
+                    return done(null, existUser);
+                }
+                //if new account
+                const newUser = await UserModel.signUp({
+                    firstName: profile.name.givenName,
+                    lastName: profile.name.familyName,
+                    authType: 'facebook',
+                    email: profile.emails[0].value,
+                    authFacebookId: profile.id,
+                });
+                done(null, newUser);
             } catch (error) {
                 done(error, false);
             }

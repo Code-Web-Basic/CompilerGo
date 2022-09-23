@@ -12,11 +12,9 @@ router
     .route('/signIn')
     .post(UserValidation.signIn, passport.authenticate('local', { section: false }), UserController.signIn);
 router.route('/signIn/failed').get(UserController.signUpFailed);
-router.route('/signIn/success').get(UserController.signUpSuccess);
+router.route('/signIn/success').get(UserController.signInSuccess);
 router.route('/signOut').get(UserController.signOut);
-router
-    .route('/auth/google')
-    .get(passport.authenticate('google', { scope: ['email', 'profile'] }), UserController.authGoogle);
+router.route('/auth/google').get(passport.authenticate('google', { scope: ['email', 'profile'] }));
 
 router.route('/auth/google/callback').get(
     passport.authenticate('google', {
