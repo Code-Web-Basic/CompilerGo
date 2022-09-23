@@ -57,6 +57,12 @@ const signUp = async (data) => {
         throw new Error(error);
     }
 };
+const update = async (id, data) => {
+    try {
+        const updateData = { ...data };
+        await getDB().collection('Users').findOneAndUpdate();
+    } catch (error) {}
+};
 const encodePassword = async (data) => {
     try {
         //generate a salt
