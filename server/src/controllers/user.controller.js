@@ -37,10 +37,28 @@ const authGoogle = async (req, res, next) => {
     res.status(HttpStatusCode.OK).json({ user: req.user });
 };
 const authFacebook = async (req, res, next) => {
-    const token = UserService.encodedToken(req.user._id);
-    res.setHeader('Authorization', token);
-    res.status(HttpStatusCode.OK).json({ user: req.user });
-    // console.log('req user', req.user);
+    // const token = UserService.encodedToken(req.user._id);
+    // res.setHeader('Authorization', token);
+    // res.status(HttpStatusCode.OK).json({ user: req.user });
+    console.log('req user', req.profile);
 };
-
-export const UserController = { secret, signIn, signUp, authGoogle, authFacebook };
+const signUpFailed = (req, res, next) => {
+    res.status(401).json({ error: 404 });
+};
+const signUpSuccess = (req, res, next) => {
+    if (req.user) res.status(200).json({ success: true, message: 'successfully', user: req.user });
+};
+const signOut = (req, res, next) => {
+    req.logout();
+    res.redirect('http://localhost:3000');
+};
+export const UserController = {
+    secret,
+    signIn,
+    signUp,
+    authGoogle,
+    authFacebook,
+    signUpFailed,
+    signUpSuccess,
+    signOut,
+};
