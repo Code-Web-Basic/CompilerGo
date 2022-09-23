@@ -16,7 +16,6 @@ connectDB()
 
 const bootServer = () => {
     const app = express();
-    //req.body data
     app.use(express.json());
     app.use(require('serve-static')(__dirname + '/../../public'));
     app.use(require('cookie-parser')());

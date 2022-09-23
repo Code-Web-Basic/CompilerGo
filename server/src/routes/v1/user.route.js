@@ -23,7 +23,12 @@ router.route('/auth/google/callback').get(
     }),
 );
 
-router
-    .route('/auth/facebook')
-    .post(passport.authenticate('facebook-token', { section: false }), UserController.authFacebook);
+router.route('/auth/github').get(passport.authenticate('github', { scope: ['user:email', 'profile'] }));
+
+router.route('/auth/github/callback').get(
+    passport.authenticate('github', {
+        successRedirect: 'http://localhost:3000',
+        failureRedirect: '/signIn/failed',
+    }),
+);
 export const UsersRoutes = router;

@@ -7,7 +7,7 @@ import { env } from '../config/environment';
 const localStrategy = require('passport-local').Strategy;
 const JwtStrategy = require('passport-jwt').Strategy;
 const GoogleStrategy = require('passport-google-oauth2').Strategy;
-const FacebookTokenStrategy = require('passport-facebook-token');
+const GithubStrategy = require('passport-github2').Strategy;
 passport.serializeUser(function (user, done) {
     done(null, user);
 });
@@ -37,7 +37,7 @@ passport.use(
         },
     ),
 );
-
+//passport  google
 passport.use(
     new GoogleStrategy(
         {
@@ -70,32 +70,33 @@ passport.use(
         },
     ),
 );
-//passport facebook
 passport.use(
-    new FacebookTokenStrategy(
+    new GithubStrategy(
         {
-            clientID: env.FACEBOOK_CLIENT_ID,
-            clientSecret: env.FACEBOOK_CLIENT_SECRET,
+            clientID: env.GITHUB_CLIENT_ID,
+            clientSecret: env.GITHUB_CLIENT_SECRET,
+            callbackURL: 'http://localhost:3240/v1/users/auth/github/callback',
+            passReqToCallback: true,
+            proxy: true,
+            scope: ['user:email'], //This is all it takes to get emails
         },
-        async function (accessToken, refreshToken, profile, done) {
+        async (req, accessToken, refreshToken, profile, done) => {
             try {
-                done(null, profile);
                 const existUser = await getDB()
                     .collection('Users')
-                    .findOne({ authFacebookId: profile.id, authType: 'facebook' });
+                    .findOne({ authGithubId: profile.id, authType: 'github' });
                 // exits in DB
                 if (existUser) {
                     return done(null, existUser);
                 }
                 //if new account
                 const newUser = await UserModel.signUp({
-                    firstName: profile.name.givenName,
-                    lastName: profile.name.familyName,
-                    authType: 'facebook',
+                    firstName: profile.username,
+                    authType: 'github',
                     email: profile.emails[0].value,
-                    authFacebookId: profile.id,
+                    authGithubId: profile.id,
                 });
-                done(null, newUser);
+                return done(null, newUser);
             } catch (error) {
                 done(error, false);
             }

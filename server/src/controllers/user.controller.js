@@ -31,12 +31,6 @@ const signUp = async (req, res, next) => {
     }
 };
 
-const authFacebook = async (req, res, next) => {
-    const token = UserService.encodedToken(req.user._id);
-    res.setHeader('Authorization', token);
-    res.status(HttpStatusCode.OK).json({ user: req.user });
-    console.log('req user', req.profile);
-};
 const signUpFailed = (req, res, next) => {
     res.status(401).json({ error: 404 });
 };
@@ -57,7 +51,6 @@ export const UserController = {
     secret,
     signIn,
     signUp,
-    authFacebook,
     signUpFailed,
     signInSuccess,
     signOut,
