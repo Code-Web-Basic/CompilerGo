@@ -6,19 +6,18 @@ import { UserService } from '../services/user.service';
 import { env } from '../config/environment';
 const localStrategy = require('passport-local').Strategy;
 const JwtStrategy = require('passport-jwt').Strategy;
-const GooglePlusTokenStrategy = require('passport-google-plus-token');
-const FacebookTokenStrategy = require('passport-facebook-token');
+const GoogleStrategy = require('passport-google-oauth2').Strategy;
+const GithubStrategy = require('passport-github2').Strategy;
 passport.serializeUser(function (user, done) {
-    done(null, user._id);
-    // if you use Model.id as your idAttribute maybe you'd want
-    // done(null, user.id);
+    done(null, user);
 });
 
-passport.deserializeUser(function (id, done) {
-    const user = getDB().collection('Users').findOne({ _id: id });
-    if (user) {
-        done(null, user);
+passport.deserializeUser(async function (user, done) {
+    const newUser = await getDB().collection('Users').findOne({ _id: user._id });
+    if (newUser) {
+        done(null, newUser);
     }
+    done(null, user);
 });
 //passport Jwt
 passport.use(
@@ -38,14 +37,16 @@ passport.use(
         },
     ),
 );
-//passport google plus
+//passport  google
 passport.use(
-    new GooglePlusTokenStrategy(
+    new GoogleStrategy(
         {
             clientID: env.GOOGLE_CLIENT_ID,
             clientSecret: env.GOOGLE_CLIENT_SECRET,
+            callbackURL: 'http://localhost:3240/v1/users/auth/google/callback',
+            passReqToCallback: true,
         },
-        async (accessToken, refreshToken, profile, done) => {
+        async (req, accessToken, refreshToken, profile, done) => {
             try {
                 const existUser = await getDB()
                     .collection('Users')
@@ -62,38 +63,40 @@ passport.use(
                     email: profile.emails[0].value,
                     authGoogleId: profile.id,
                 });
-                done(null, newUser);
+                return done(null, newUser);
             } catch (error) {
                 done(error, false);
             }
         },
     ),
 );
-//passport facebook
 passport.use(
-    new FacebookTokenStrategy(
+    new GithubStrategy(
         {
-            clientID: env.FACEBOOK_CLIENT_ID,
-            clientSecret: env.FACEBOOK_CLIENT_SECRET,
+            clientID: env.GITHUB_CLIENT_ID,
+            clientSecret: env.GITHUB_CLIENT_SECRET,
+            callbackURL: 'http://localhost:3240/v1/users/auth/github/callback',
+            passReqToCallback: true,
+            proxy: true,
+            scope: ['user:email'], //This is all it takes to get emails
         },
-        async (accessToken, refreshToken, profile, done) => {
+        async (req, accessToken, refreshToken, profile, done) => {
             try {
                 const existUser = await getDB()
                     .collection('Users')
-                    .findOne({ authFacebookId: profile.id, authType: 'facebook' });
+                    .findOne({ authGithubId: profile.id, authType: 'github' });
                 // exits in DB
                 if (existUser) {
                     return done(null, existUser);
                 }
                 //if new account
                 const newUser = await UserModel.signUp({
-                    firstName: profile.name.givenName,
-                    lastName: profile.name.familyName,
-                    authType: 'facebook',
+                    firstName: profile.username,
+                    authType: 'github',
                     email: profile.emails[0].value,
-                    authFacebookId: profile.id,
+                    authGithubId: profile.id,
                 });
-                done(null, newUser);
+                return done(null, newUser);
             } catch (error) {
                 done(error, false);
             }
