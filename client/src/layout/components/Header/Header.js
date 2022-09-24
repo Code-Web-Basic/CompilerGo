@@ -12,6 +12,10 @@ import Button from '~/components/Button/Button';
 const cx = classNames.bind(styles);
 
 function Header() {
+    const google = () => {
+        window.open('http://localhost:3240/v1/users/auth/google/', '_self');
+    };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('logo')}>
@@ -29,7 +33,13 @@ function Header() {
                 <Button className={cx('control_item')} text to={ConfigRouter.practice}>
                     Practice
                 </Button>
-                <Button className={cx('control_account')} primary to={ConfigRouter.Home} leftIcon={<VscAccount />}>
+                <Button
+                    onClick={google}
+                    className={cx('control_account')}
+                    primary
+                    to={ConfigRouter.Home}
+                    leftIcon={<VscAccount />}
+                >
                     Login
                 </Button>
             </div>
