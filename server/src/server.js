@@ -16,11 +16,6 @@ connectDB()
 
 const bootServer = () => {
     const app = express();
-<<<<<<< HEAD
-=======
-    app.use(cors(corsOptions));
-    //req.body data
->>>>>>> main
     app.use(express.json());
     app.use(require('serve-static')(__dirname + '/../../public'));
     app.use(require('cookie-parser')());
