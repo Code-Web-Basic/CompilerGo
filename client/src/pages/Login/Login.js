@@ -63,7 +63,7 @@ function Login() {
                             Quên mật khẩu?
                         </Link>
                     </div>
-                    <Button className={cx('btn-login')} to={ConfigRouter.Login} onClick={handleLogin}>
+                    <Button className={cx('btn-login')} to={ConfigRouter.Home} onClick={handleLogin}>
                         Đăng nhập
                     </Button>
                     <div className={cx('social-login-label')}>
