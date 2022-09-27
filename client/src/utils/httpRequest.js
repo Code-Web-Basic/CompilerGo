@@ -3,7 +3,7 @@ import queryString from 'query-string';
 
 import PropTypes from 'prop-types';
 const httpRequest = axios.default.create({
-    baseURL: '',
+    baseURL: 'http://localhost:5000/v1/',
 
     headers: {
         'Content-Type': 'application/json;charset=utf-8',

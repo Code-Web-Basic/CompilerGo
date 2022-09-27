@@ -30,7 +30,7 @@ function Header() {
                     Practice
                 </Button>
 
-                <Button className={cx('control_account')} primary to={ConfigRouter.Home} leftIcon={<VscAccount />}>
+                <Button className={cx('control_account')} primary to={ConfigRouter.login} leftIcon={<VscAccount />}>
                     Login
                 </Button>
             </div>
