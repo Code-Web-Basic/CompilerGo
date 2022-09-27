@@ -6,15 +6,15 @@ import bcryptjs from 'bcryptjs';
 const userCollectionName = 'Users';
 
 const userCollectionSchema = Joi.object({
-    firstName: Joi.string().max(50),
-    lastName: Joi.string().max(50),
+    firstName: Joi.string().max(50).default(null),
+    lastName: Joi.string().max(50).default(null),
     password: Joi.string().min(5).max(30).trim().default(null),
     createdAt: Joi.date().timestamp().default(Date.now()),
     updatedAt: Joi.date().timestamp().default(null),
     email: Joi.string().required().email(),
     authGoogleId: Joi.string().default(null),
-    authFacebookId: Joi.string().default(null),
-    authType: Joi.string().valid('local', 'google', 'facebook').default('local'),
+    authGithubId: Joi.string().default(null),
+    authType: Joi.string().valid('local', 'google', 'github').default('local'),
 });
 const validateSchema = async (data) => {
     return await userCollectionSchema.validateAsync(data, { abortEarly: false });
@@ -56,6 +56,12 @@ const signUp = async (data) => {
     } catch (error) {
         throw new Error(error);
     }
+};
+const update = async (id, data) => {
+    try {
+        const updateData = { ...data };
+        await getDB().collection('Users').findOneAndUpdate();
+    } catch (error) {}
 };
 const encodePassword = async (data) => {
     try {

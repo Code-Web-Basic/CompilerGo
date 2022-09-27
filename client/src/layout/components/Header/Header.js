@@ -8,13 +8,10 @@ import { VscAccount } from 'react-icons/vsc';
 import { ConfigRouter } from '~/config';
 import images from '~/asset/images';
 import Button from '~/components/Button/Button';
-import { useSelector } from 'react-redux';
 
 const cx = classNames.bind(styles);
 
 function Header() {
-    const users = useSelector((state) => state.auth.login.currentUser);
-    console.log(users);
     return (
         <div className={cx('wrapper')}>
             <div className={cx('logo')}>
@@ -32,7 +29,8 @@ function Header() {
                 <Button className={cx('control_item')} text to={ConfigRouter.practice}>
                     Practice
                 </Button>
-                <Button className={cx('control_account')} primary to={ConfigRouter.login} leftIcon={<VscAccount />}>
+
+                <Button className={cx('control_account')} primary to={ConfigRouter.Home} leftIcon={<VscAccount />}>
                     Login
                 </Button>
             </div>
