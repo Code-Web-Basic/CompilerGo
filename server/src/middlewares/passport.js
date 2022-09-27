@@ -25,6 +25,7 @@ passport.use(
         {
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken('Authorization'),
             secretOrKey: env.JWT_SECRET,
+            passReqToCallback: true,
         },
         async (payload, done) => {
             try {
@@ -44,7 +45,6 @@ passport.use(
             clientID: env.GOOGLE_CLIENT_ID,
             clientSecret: env.GOOGLE_CLIENT_SECRET,
             callbackURL: 'http://localhost:3240/v1/users/auth/google/callback',
-            passReqToCallback: true,
         },
         async (req, accessToken, refreshToken, profile, done) => {
             try {
