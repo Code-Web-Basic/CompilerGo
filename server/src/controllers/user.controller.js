@@ -37,7 +37,7 @@ const signUpFailed = (req, res, next) => {
 const signInSuccess = async (req, res, next) => {
     if (req.user) {
         const token = UserService.encodedToken(req.user._id);
-        res.status(200).json({ success: true, message: 'successfully', user: req.user, token: token });
+        res.status(HttpStatusCode.OK).json({ success: true, message: 'successfully', user: req.user, token: token });
     } else {
         res.json({ error: 'error' });
     }
