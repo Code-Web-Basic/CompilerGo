@@ -52,6 +52,15 @@ const googleCallBack = [
         res.redirect('http://localhost:3000');
     },
 ];
+const githubCallBack = [
+    passport.authenticate('github', {
+        failureRedirect: '/signIn/failed',
+    }),
+    (req, res) => {
+        userInfo = req.user;
+        res.redirect('http://localhost:3000');
+    },
+];
 const signOut = (req, res, next) => {
     req.logout();
     res.redirect('http://localhost:3000');
@@ -64,4 +73,5 @@ export const UserController = {
     signInSuccess,
     signOut,
     googleCallBack,
+    githubCallBack,
 };
