@@ -1,7 +1,7 @@
 var exec = require('child_process').exec;
 var fs = require('fs');
 var cuid = require('cuid');
-var colors = require('colors');
+
 exports.stats = true;
 const compileCPP = function (envData, code, fn) {
     var filename = cuid.slug();
