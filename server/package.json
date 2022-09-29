@@ -30,7 +30,6 @@
         "@babel/runtime": "^7.19.0",
         "@google-cloud/local-auth": "^2.1.0",
         "bcryptjs": "^2.4.3",
-        "compilex": "^0.7.4",
         "cookie-parser": "^1.4.6",
         "cookie-session": "^2.0.0",
         "cors": "^2.8.5",
