@@ -4,6 +4,7 @@ const router = {
     practice: '/practice',
     login: '/login',
     signup: '/signup',
-    resetpass: '/resetpass'
+    resetpass: '/resetpass',
+    solution: '/practice/solution'
 };
 export default router;
