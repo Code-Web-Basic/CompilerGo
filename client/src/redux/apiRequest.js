@@ -21,3 +21,17 @@ export const registerUser = async (user, dispatch, navigate) => {
         dispatch(registerFailed());
     }
 };
+export const loginGoogleUser = async (dispatch) => {
+    dispatch(loginStart);
+    try {
+        const fetchDataUser = async () => {
+            const request = await httpRequest.get('http://localhost:3240/v1/users/signIn/success');
+            return request;
+        };
+        fetchDataUser().then((data) => {
+            dispatch(loginSuccess(data.user));
+        });
+    } catch {
+        dispatch(registerFailed());
+    }
+};

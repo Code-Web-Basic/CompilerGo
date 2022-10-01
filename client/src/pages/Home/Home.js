@@ -8,17 +8,8 @@ import Button from '~/components/Button/Button';
 import images from '~/asset/images';
 //routes
 import { ConfigRouter } from '~/config';
-import * as httpRequest from '~/utils/httpRequest';
 const cx = classNames.bind(styles);
 function Home() {
-    useEffect(() => {
-        const getUser = async () => {
-            const res = await httpRequest.get('users/signIn/success');
-
-            console.log(res);
-        };
-        getUser();
-    }, []);
     return (
         <div className={cx('wrapper')}>
             <img src={images.backgroundHome} className={cx('backgroundImage')} alt="Background" />

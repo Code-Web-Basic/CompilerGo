@@ -2,7 +2,7 @@
 import classNames from 'classnames/bind';
 import styles from './Login.module.scss';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
 //icon
@@ -11,7 +11,9 @@ import { FaUser, FaLock, FaFacebook, FaGoogle } from 'react-icons/fa';
 import images from '~/asset/images';
 import { ConfigRouter } from '~/config';
 import Button from '~/components/Button';
-import { loginUser } from '~/redux/apiRequest';
+import { loginUser, loginGoogleUser } from '~/redux/apiRequest';
+// import * as httpRequest from '~/utils/httpRequest';
+
 const cx = classNames.bind(styles);
 function Login() {
     const [userName, setUserName] = useState(null);
@@ -28,8 +30,10 @@ function Login() {
         loginUser(newUser, dispatch, navigate);
     };
 
-    const handleLoginWithGoogle = () => {
-        window.open('http://localhost:5000/v1/users/auth/google/', '_self');
+    const handleLoginWithGoogle = (e) => {
+        e.preventDefault();
+        window.open('http://localhost:3240/v1/users/auth/google/', '_self');
+        loginGoogleUser(dispatch);
     };
     const handleLoginWithFacebook = () => {};
 
