@@ -34,5 +34,13 @@
     transition: all 0.5s ease;
 }
 .control_account {
-    margin-left: 50px;
+    margin-left: 20px;
+}
+.name-user {
+    width: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    margin-left: 40px;
 }
