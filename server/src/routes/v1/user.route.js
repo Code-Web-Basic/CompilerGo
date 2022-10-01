@@ -16,19 +16,9 @@ router.route('/signIn/success').get(UserController.signInSuccess);
 router.route('/signOut').get(UserController.signOut);
 router.route('/auth/google').get(passport.authenticate('google', { scope: ['email', 'profile'] }));
 
-router.route('/auth/google/callback').get(
-    passport.authenticate('google', {
-        successRedirect: 'http://localhost:3000',
-        failureRedirect: '/signIn/failed',
-    }),
-);
+router.route('/auth/google/callback').get(UserController.googleCallBack);
 
 router.route('/auth/github').get(passport.authenticate('github', { scope: ['user:email', 'profile'] }));
 
-router.route('/auth/github/callback').get(
-    passport.authenticate('github', {
-        successRedirect: 'http://localhost:3000',
-        failureRedirect: '/signIn/failed',
-    }),
-);
+router.route('/auth/github/callback').get(UserController.githubCallBack);
 export const UsersRoutes = router;
