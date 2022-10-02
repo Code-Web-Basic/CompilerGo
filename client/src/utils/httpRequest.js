@@ -3,11 +3,11 @@ import queryString from 'query-string';
 
 import PropTypes from 'prop-types';
 const httpRequest = axios.default.create({
-    baseURL: '',
+    baseURL: 'http://localhost:3240/v1/',
 
-    headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-    },
+    // headers: {
+    //     'Content-Type': 'application/json;charset=utf-8',
+    // },
     paramsSerializer: (params) => queryString.stringify({ ...params }),
 });
 httpRequest.interceptors.request.use(async (config) => config);

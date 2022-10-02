@@ -5,18 +5,20 @@ import { UserValidation } from '../../validations/user.validation';
 const passportConfig = require('../../middlewares/passport');
 const router = express.Router();
 
+router.route('/secret').get(passport.authenticate('jwt', { section: false }), UserController.secret);
 router.route('/signUp').post(UserValidation.signUp, UserController.signUp);
 
 router
     .route('/signIn')
     .post(UserValidation.signIn, passport.authenticate('local', { section: false }), UserController.signIn);
+router.route('/signIn/failed').get(UserController.signUpFailed);
+router.route('/signIn/success').get(UserController.signInSuccess);
+router.route('/signOut').get(UserController.signOut);
+router.route('/auth/google').get(passport.authenticate('google', { scope: ['email', 'profile'] }));
 
-router.route('/secret').get(passport.authenticate('jwt', { section: false }), UserController.secret);
+router.route('/auth/google/callback').get(UserController.googleCallBack);
 
-router
-    .route('/auth/google')
-    .post(passport.authenticate('google-plus-token', { section: false }), UserController.authGoogle);
-router
-    .route('/auth/facebook')
-    .post(passport.authenticate('facebook-token', { section: false }), UserController.authFacebook);
+router.route('/auth/github').get(passport.authenticate('github', { scope: ['user:email', 'profile'] }));
+
+router.route('/auth/github/callback').get(UserController.githubCallBack);
 export const UsersRoutes = router;

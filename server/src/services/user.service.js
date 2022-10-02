@@ -1,5 +1,4 @@
 import { UserModel } from '../models/User.model';
-import { date } from 'joi';
 import bcryptjs from 'bcryptjs';
 import JWT from 'jsonwebtoken';
 
