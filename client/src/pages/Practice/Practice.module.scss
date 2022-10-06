@@ -1,0 +1,44 @@
+.practice{
+    width: 70%;
+    margin: 0 15%;
+}
+.tag-prac{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    height: 100px;
+    align-items: center;
+}
+.tag{
+    margin: 0 15px;
+    font-size: 20px;
+}
+.tag:hover{
+    color: #1890ff;
+}
+.btn-all{
+    margin-left: 50px;
+    padding: 15px;
+    background-color: #000;
+    color: white;
+    cursor: pointer;
+    font-size: 20px;
+    border-radius: 10px;
+}
+.list-ex{
+    border: none;
+    width: 100%;
+    text-align: left;
+    margin-left: 3%;
+    margin-top: 20px;
+    font-size: 14px;
+}
+.title{
+    width: 450px;
+}
+.btn-ex:hover{
+    color: #1890ff;
+}
+tr{
+    height: 30px;
+}
