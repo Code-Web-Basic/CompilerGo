@@ -1,0 +1,119 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body {
+    background-image: radial-gradient(closest-side at 50% 135%, #ffffff 50%, #eceff1 100%);
+}
+.wrapper {
+    width: 400px;
+    height: 85vh;
+    background-color: #fafafa;
+    border: 1px solid black;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    position: relative;
+    left: 40%;
+    top: 20px;
+    box-shadow: 0 4px 20px rgb(0 0 0 / 7%);
+    border: none;
+}
+.wrapper-header h1{
+    margin: 20px;
+}
+.icon-lock{
+    font-size: 80px;
+    padding: 5px;
+    border: 2px solid #000;
+    border-radius: 50%;
+    margin: 10px;
+    color: #ccc;
+    font-weight: 800;
+}
+.wrapper-header h2{
+    margin: 10px;
+}
+.wrapper-header p{
+    margin: 10px;
+}
+.input-user{
+    padding: 5px;
+    font-size: 15px;
+    width: 90%;
+    margin: 10px;
+}
+.btn-send{
+    margin: 20px 0;
+    font-size: 20px;
+    text-decoration: none;
+    list-style: none;
+    color: black;
+    border-radius: 10px;
+    font-weight: 600;
+    background-color: pink;
+    opacity: 0.6;
+    padding: 10px;
+    width: 90%;
+    border: none;
+    position: relative;
+    left: 5%;
+}
+.btn-send:hover {
+    opacity: 1;
+}
+.label-text {
+    margin-top: 10px;
+    font-size: 18px;
+}
+.label-or {
+    display: flex;
+    justify-content: space-around;
+}
+.line-left {
+    text-decoration: line-through;
+    background-color: rgba(219, 219, 219, 1);
+    height: 1px;
+    width: 35%;
+    position: relative;
+    top: 20px;
+}
+.line-right {
+    text-decoration: line-through;
+    background-color: rgba(219, 219, 219, 1);
+    height: 1px;
+    width: 35%;
+    position: relative;
+    right: 0;
+    top: 20px;
+}
+.btn-signup{
+    margin: 10px 0;
+    font-size: 20px;
+    text-decoration: none;
+    list-style: none;
+    color: black;
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 10px;
+    width: 90%;
+    border: none;
+    position: relative;
+    left: 5%;
+}
+.btn-signin{
+    margin: 10px 0;
+    font-size: 20px;
+    text-decoration: none;
+    list-style: none;
+    color: black;
+    border-radius: 10px;
+    font-weight: 600;
+    padding: 10px;
+    width: 90%;
+    border: none;
+    position: relative;
+    left: 5%;
+    border: 1px solid #ccc;
+}

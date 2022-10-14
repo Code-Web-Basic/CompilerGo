@@ -72,11 +72,11 @@ function Login() {
                             <input type="checkbox" name="rem-login" />
                             <span> Nhớ mật khẩu</span>
                         </div>
-                        <Link to={ConfigRouter.Home} className={cx('forgetpass')}>
+                        <Link to={ConfigRouter.resetpass} className={cx('forgetpass')}>
                             Quên mật khẩu?
                         </Link>
                     </div>
-                    <Button className={cx('btn-login')} to={ConfigRouter.Login} onClick={handleLogin}>
+                    <Button className={cx('btn-login')} to={ConfigRouter.Home} onClick={handleLogin}>
                         Đăng nhập
                     </Button>
                     <div className={cx('social-login-label')}>
