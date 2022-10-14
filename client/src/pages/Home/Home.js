@@ -1,5 +1,6 @@
 import classNames from 'classnames/bind';
 import styles from './Home.module.scss';
+import { useSelector } from 'react-redux';
 //icon
 import { BsCheck2Circle } from 'react-icons/bs';
 //component

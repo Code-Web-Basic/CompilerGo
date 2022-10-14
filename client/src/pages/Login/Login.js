@@ -2,18 +2,17 @@
 import classNames from 'classnames/bind';
 import styles from './Login.module.scss';
 import { Link, useNavigate } from 'react-router-dom';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 
-import { GoogleAuthProvider, signInWithPopup, FacebookAuthProvider, signOut } from 'firebase/auth';
 //icon
 import { FaUser, FaLock, FaFacebook, FaGoogle } from 'react-icons/fa';
 //component
 import images from '~/asset/images';
 import { ConfigRouter } from '~/config';
 import Button from '~/components/Button';
-import { loginUser } from '~/redux/apiRequest';
-import auth from '~/Auth/AuthFirebase';
+import { loginUser, loginGoogleUser } from '~/redux/apiRequest';
+// import * as httpRequest from '~/utils/httpRequest';
 
 const cx = classNames.bind(styles);
 function Login() {
@@ -31,67 +30,13 @@ function Login() {
         loginUser(newUser, dispatch, navigate);
     };
 
-    const handleLoginWithGoogle = () => {
-        const provider = new GoogleAuthProvider();
-
-        provider.addScope(
-            'https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid',
-        );
-        signInWithPopup(auth, provider)
-            .then((result) => {
-                // This gives you a Google Access Token. You can use it to access the Google API.
-                const credential = GoogleAuthProvider.credentialFromResult(result);
-                console.log(credential.idToken);
-                const token = credential.accessToken;
-                console.log(token);
-                // The signed-in user info.
-                const user = result.user;
-                console.log(user);
-
-                // ...
-            })
-            .catch((error) => {
-                // Handle Errors here.
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                // The email of the user's account used.
-                const email = error.customData.email;
-                // The AuthCredential type that was used.
-                const credential = GoogleAuthProvider.credentialFromError(error);
-                // ...
-            });
+    const handleLoginWithGoogle = (e) => {
+        e.preventDefault();
+        window.open('http://localhost:3240/v1/users/auth/google/', '_self');
+        loginGoogleUser(dispatch);
     };
-    const handleLoginWithFacebook = () => {
-        const provider = new FacebookAuthProvider();
+    const handleLoginWithFacebook = () => {};
 
-        signInWithPopup(auth, provider)
-            .then((result) => {
-                // This gives you a Google Access Token. You can use it to access the Google API.
-                console.log(result);
-
-                // ...
-            })
-            .catch((error) => {
-                // Handle Errors here.
-                const errorCode = error.code;
-                const errorMessage = error.message;
-                // The email of the user's account used.
-                const email = error.customData.email;
-                // The AuthCredential type that was used.
-                const credential = FacebookAuthProvider.credentialFromError(error);
-                // ...
-            });
-    };
-    const logOut = () => {
-        signOut(auth)
-            .then(() => {
-                console.log('logout');
-            })
-            .catch((error) => {
-                // An error happened.
-                console.log(error);
-            });
-    };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('img-login')}>
@@ -127,11 +72,11 @@ function Login() {
                             <input type="checkbox" name="rem-login" />
                             <span> Nhớ mật khẩu</span>
                         </div>
-                        <Link to={ConfigRouter.Home} className={cx('forgetpass')}>
+                        <Link to={ConfigRouter.resetpass} className={cx('forgetpass')}>
                             Quên mật khẩu?
                         </Link>
                     </div>
-                    <Button className={cx('btn-login')} to={ConfigRouter.Login} onClick={handleLogin}>
+                    <Button className={cx('btn-login')} to={ConfigRouter.Home} onClick={handleLogin}>
                         Đăng nhập
                     </Button>
                     <div className={cx('social-login-label')}>
@@ -151,7 +96,7 @@ function Login() {
                     </div>
                     <div className={cx('con-signup')}>
                         <span>Nếu chưa có tài khoản?</span>
-                        <Link to={ConfigRouter.signup} className={cx('signup')} onClick={logOut}>
+                        <Link to={ConfigRouter.signup} className={cx('signup')}>
                             Đăng ký
                         </Link>
                     </div>
