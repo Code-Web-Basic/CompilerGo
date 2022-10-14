@@ -14,7 +14,7 @@ import {
 export const loginUser = async (user, dispatch, navigate) => {
     dispatch(loginStart());
     try {
-        const res = await httpRequest.post('users//Login', user);
+        const res = await httpRequest.post('users/signUp', user);
         dispatch(loginSuccess(res.data));
         navigate(ConfigRouter.Home);
     } catch (error) {}
@@ -23,7 +23,7 @@ export const loginUser = async (user, dispatch, navigate) => {
 export const registerUser = async (user, dispatch, navigate) => {
     dispatch(registerStart());
     try {
-        await httpRequest.post('users/register', user);
+        await httpRequest.post('users/signIn', user);
         dispatch(registerSuccess());
         navigate(ConfigRouter.login);
     } catch {
