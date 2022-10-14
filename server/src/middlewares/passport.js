@@ -111,6 +111,8 @@ passport.use(
         },
         async (email, password, done) => {
             try {
+                console.log(email);
+
                 const user = await getDB().collection('Users').findOne({ email: email });
                 if (!user) return done(null, false);
                 const isCorrectPassword = await UserService.isValidPassword(password, user.password);

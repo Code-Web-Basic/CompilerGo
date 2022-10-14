@@ -35,6 +35,14 @@ const lookupEmail = async (email) => {
         throw new Error('email is already exist');
     }
 };
+const login = async (email) => {
+    try {
+        const result = await getDB().collection(userCollectionName).findOne({ email: email, authType: 'local' });
+        return result;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
 const signUp = async (data) => {
     try {
         // validate data
@@ -69,4 +77,4 @@ const encodePassword = async (data) => {
         throw new Error(error);
     }
 };
-export const UserModel = { signUp, findOneById, validateSchema };
+export const UserModel = { signUp, findOneById, validateSchema, login };

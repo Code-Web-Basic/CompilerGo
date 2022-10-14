@@ -6,11 +6,12 @@ const secret = async (req, res, next) => {
     res.status(HttpStatusCode.OK).json({ User: req.user });
 };
 
-const signIn = async (req, res, next) => {
+const login = async (req, res, next) => {
     try {
+        const result = await UserService.login(req.params.email, req.params.password);
         const token = UserService.encodedToken(req.user._id);
         res.setHeader('Authorization', token);
-        res.status(HttpStatusCode.OK).json({ user: req.user });
+        res.status(HttpStatusCode.OK).json({ user: result });
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
             error: new Error(error).message,
@@ -18,9 +19,9 @@ const signIn = async (req, res, next) => {
     }
 };
 
-const signUp = async (req, res, next) => {
+const register = async (req, res, next) => {
     try {
-        const result = await UserService.signUp(req.body);
+        const result = await UserService.register(req.params);
         //encoded
         const token = UserService.encodedToken(result._id);
         res.setHeader('Authorization', token);
@@ -67,8 +68,8 @@ const signOut = (req, res, next) => {
 };
 export const UserController = {
     secret,
-    signIn,
-    signUp,
+    login,
+    register,
     signUpFailed,
     signInSuccess,
     signOut,

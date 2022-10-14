@@ -1,6 +1,7 @@
 import { UserModel } from '../models/User.model';
 import bcryptjs from 'bcryptjs';
 import JWT from 'jsonwebtoken';
+import { any } from 'joi';
 
 const encodedToken = (userId) => {
     return JWT.sign(
@@ -13,7 +14,7 @@ const encodedToken = (userId) => {
         process.env.JWT_SECRET,
     );
 };
-const signUp = async (data) => {
+const register = async (data) => {
     try {
         const newUser = await UserModel.signUp(data);
         return newUser;
@@ -22,6 +23,15 @@ const signUp = async (data) => {
     }
 };
 
+const login = async (email, password) => {
+    try {
+        const result = await UserModel.login(email);
+
+        const isCorrectPassword = await isValidPassword(password, result.password);
+        if (!isCorrectPassword) return { message: 'incorrect password' };
+        return result;
+    } catch (error) {}
+};
 const isValidPassword = async (signInPassword, password) => {
     try {
         return await bcryptjs.compare(signInPassword, password);
@@ -30,4 +40,4 @@ const isValidPassword = async (signInPassword, password) => {
     }
 };
 
-export const UserService = { signUp, isValidPassword, encodedToken };
+export const UserService = { register, isValidPassword, encodedToken, login };
