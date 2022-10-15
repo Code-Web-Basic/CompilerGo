@@ -41,7 +41,7 @@ const signInSuccess = async (req, res) => {
         const token = await UserService.encodedToken(userInfo);
         res.status(HttpStatusCode.OK).json({ success: true, message: 'successfully', user: userInfo, token: token });
     } else {
-        res.json({ error: 'error' });
+        res.json(null);
     }
 };
 const googleCallBack = [
@@ -63,6 +63,7 @@ const githubCallBack = [
     },
 ];
 const signOut = (req, res, next) => {
+    userInfo = null;
     req.logout();
     res.redirect('http://localhost:3000');
 };
