@@ -77,4 +77,9 @@ const encodePassword = async (data) => {
         throw new Error(error);
     }
 };
-export const UserModel = { signUp, findOneById, validateSchema, login };
+
+const getAllUser = async () => {
+    const result = await getDB().collection(userCollectionName).find({}).toArray();
+    return result;
+};
+export const UserModel = { signUp, findOneById, validateSchema, login, getAllUser };

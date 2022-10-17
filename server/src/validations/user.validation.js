@@ -7,7 +7,7 @@ const login = async (req, res, next) => {
         password: Joi.string().required().min(5).max(30).trim(),
     });
     try {
-        await condition.validateAsync(req.params, { abortEarly: false });
+        await condition.validateAsync(req.body, { abortEarly: false });
         next();
     } catch (error) {
         res.status(HttpStatusCode.BAD_REQUEST).json({
@@ -24,7 +24,7 @@ const register = async (req, res, next) => {
         password: Joi.string().min(5).max(30).trim(),
     });
     try {
-        await condition.validateAsync(req.params, { abortEarly: false });
+        await condition.validateAsync(req.body, { abortEarly: false });
         next();
     } catch (error) {
         res.status(HttpStatusCode.BAD_REQUEST).json({
