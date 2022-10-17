@@ -12,7 +12,7 @@ import { useDispatch } from 'react-redux';
 const cx = classNames.bind(styles);
 function Signup() {
     const [nameUser, setNameUser] = useState('');
-    const [phoneUser, setPhoneUser] = useState('');
+    const [EmailUser, setEmailUser] = useState('');
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -20,8 +20,8 @@ function Signup() {
     const handleRegister = (e) => {
         e.preventDefault();
         const newUser = {
-            nameUser: nameUser,
-            phoneUser: phoneUser,
+            firstName: nameUser,
+            email: EmailUser,
             password: password,
         };
         registerUser(newUser, dispatch, navigate);
@@ -32,7 +32,7 @@ function Signup() {
                 <h1>Sign up</h1>
                 <form className={cx('form-signup')}>
                     <input
-                        placeholder="Tên người dùng"
+                        placeholder="Tên Người Dùng"
                         name="username"
                         onChange={(e) => {
                             setNameUser(e.target.value);
@@ -40,10 +40,10 @@ function Signup() {
                     />{' '}
                     <br></br>
                     <input
-                        placeholder="Số điện thoại"
-                        name="phone"
+                        placeholder="Email"
+                        name="name"
                         onChange={(e) => {
-                            setPhoneUser(e.target.value);
+                            setEmailUser(e.target.value);
                         }}
                     />{' '}
                     <br></br>
