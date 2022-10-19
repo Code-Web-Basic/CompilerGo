@@ -6,6 +6,7 @@ Thành Viên:
 +Nguyễn Đình Hiếu 20142498
 +Vũ Thanh Sang 20110555
 +Nguyễn Văn Tú 20110591
+----------------------------
 API 
 User
 Sign Up: Post http://localhost:3240/v1/users/signUp (truyền vào email, password (firstName,lastName không bắt buộc ))
