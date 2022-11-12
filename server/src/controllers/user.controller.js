@@ -1,30 +1,55 @@
 import { UserService } from '../services/user.service';
 import { HttpStatusCode } from '../utilities/constants';
+import Jwt from 'jsonwebtoken';
 import passport from 'passport';
 let userInfo = null;
+let refreshTokenList = [];
+
 const secret = async (req, res, next) => {
     res.status(HttpStatusCode.OK).json({ User: req.user });
 };
 
-const signIn = async (req, res, next) => {
+const login = async (req, res, next) => {
     try {
-        const token = UserService.encodedToken(req.user._id);
-        res.setHeader('Authorization', token);
-        res.status(HttpStatusCode.OK).json({ user: req.user });
+        const result = await UserService.login(req.body.email, req.body.password);
+        const accessToken = UserService.encodedAccessToken(result._id);
+        const refreshToken = UserService.encodedRefreshToken(result._id);
+        const { password, ...other } = result;
+        res.cookie('refreshToken', refreshToken, {
+            httpOnly: true,
+            secure: false,
+            path: '/',
+            sameSite: 'strict',
+        });
+        console.log('accessToken :', accessToken);
+        console.log('refreshToken :', refreshToken);
+        refreshTokenList.push(refreshToken);
+        res.setHeader('token', 'Bearer ' + accessToken);
+        res.status(HttpStatusCode.OK).json({ user: other, accessToken: accessToken });
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
             error: new Error(error).message,
+            ok: 'ok',
         });
     }
 };
 
-const signUp = async (req, res, next) => {
+const register = async (req, res, next) => {
     try {
-        const result = await UserService.signUp(req.body);
+        const result = await UserService.register(req.body);
         //encoded
-        const token = UserService.encodedToken(result._id);
-        res.setHeader('Authorization', token);
-        res.status(HttpStatusCode.OK).json({ result: result });
+        const accessToken = UserService.encodedAccessToken(result._id);
+        const refreshToken = UserService.encodedRefreshToken(result._id);
+        const { password, ...other } = result;
+        res.cookie('refreshToken', refreshToken, {
+            httpOnly: true,
+            secure: false,
+            path: '/',
+            sameSite: 'strict',
+        });
+        refreshTokenList.push(refreshToken);
+        res.setHeader('token', 'Bearer ' + accessToken);
+        res.status(HttpStatusCode.OK).json({ user: other, accessToken: accessToken });
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
             error: new Error(error).message,
@@ -37,10 +62,24 @@ const signUpFailed = (req, res, next) => {
 };
 const signInSuccess = async (req, res) => {
     if (userInfo !== null) {
-        const token = await UserService.encodedToken(userInfo);
-        res.status(HttpStatusCode.OK).json({ success: true, message: 'successfully', user: userInfo, token: token });
+        const accessToken = await UserService.encodedAccessToken(userInfo._id);
+        const refreshToken = UserService.encodedRefreshToken(userInfo._id);
+        res.cookie('refreshToken', refreshToken, {
+            httpOnly: true,
+            secure: false,
+            path: '/',
+            sameSite: 'strict',
+        });
+        refreshTokenList.push(refreshToken);
+        console.log('vo day r');
+        res.status(HttpStatusCode.OK).json({
+            success: true,
+            message: 'successfully',
+            user: userInfo,
+            accessToken: accessToken,
+        });
     } else {
-        res.json({ error: 'error' });
+        res.json(null);
     }
 };
 const googleCallBack = [
@@ -61,17 +100,58 @@ const githubCallBack = [
         res.redirect('http://localhost:3000');
     },
 ];
-const signOut = (req, res, next) => {
-    req.logout();
-    res.redirect('http://localhost:3000');
+const logout = (req, res, next) => {
+    res.clearCookie('refreshToken');
+    userInfo = null;
+    refreshTokenList = refreshTokenList.filter((token) => token !== req.cookies.refreshToken);
+    res.status(200).json('Logged out successfully');
+};
+
+const getAllUser = async (req, res, next) => {
+    try {
+        const result = await UserService.getAllUser();
+        res.status(HttpStatusCode.OK).json({ result: result });
+    } catch (error) {
+        // res.json(null);
+        res.status(HttpStatusCode.INTERNAL_SERVER).json({
+            error: new Error(error).message,
+        });
+    }
+};
+const refresh = async (req, res) => {
+    const refreshToken = req.cookies.refreshToken;
+    console.log('refreshToken from cookie: ', refreshToken);
+    console.log(refreshTokenList);
+    if (!refreshToken) return res.status(401).json("You're not authenticated");
+    if (!refreshTokenList.includes(refreshToken)) {
+        return res.status(403).json('RefreshToken is not valid');
+    }
+    Jwt.verify(refreshToken, process.env.JWT_REFRESH, (err, user) => {
+        if (err) {
+            console.log(err);
+        }
+        refreshTokenList = refreshTokenList.filter((token) => token !== refreshToken);
+        const newAccessToken = UserService.encodedAccessToken(user._id);
+        const newRefreshToken = UserService.encodedRefreshToken(user._id);
+        refreshTokenList.push(newRefreshToken);
+        res.cookie('refreshToken', newRefreshToken, {
+            httpOnly: true,
+            secure: false,
+            path: '/',
+            sameSite: 'strict',
+        });
+        res.status(200).json({ accessToken: newAccessToken });
+    });
 };
 export const UserController = {
     secret,
-    signIn,
-    signUp,
+    login,
+    register,
     signUpFailed,
     signInSuccess,
-    signOut,
+    logout,
     googleCallBack,
     githubCallBack,
+    getAllUser,
+    refresh,
 };

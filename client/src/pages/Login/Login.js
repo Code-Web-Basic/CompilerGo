@@ -24,13 +24,13 @@ function Login() {
     const handleLogin = (e) => {
         e.preventDefault();
         const newUser = {
-            username: userName,
+            email: userName,
             password: password,
         };
         loginUser(newUser, dispatch, navigate);
     };
 
-    const handleLoginWithGoogle = (e) => {
+    const handleLoginWithGoogle = async (e) => {
         e.preventDefault();
         window.open('http://localhost:3240/v1/users/auth/google/', '_self');
         loginGoogleUser(dispatch);

@@ -1,4 +1,5 @@
 import { ConfigRouter } from '~/config';
+import axios from 'axios';
 import * as httpRequest from '~/utils/httpRequest';
 import {
     loginStart,
@@ -14,16 +15,19 @@ import {
 export const loginUser = async (user, dispatch, navigate) => {
     dispatch(loginStart());
     try {
-        const res = await httpRequest.post('users/signUp', user);
-        dispatch(loginSuccess(res.data));
+        const res = await httpRequest.post('users/login', user);
+        console.log(res.accessToken);
+        dispatch(loginSuccess(res));
         navigate(ConfigRouter.Home);
-    } catch (error) {}
+    } catch (error) {
+        dispatch(logOutFailed());
+    }
 };
 
 export const registerUser = async (user, dispatch, navigate) => {
     dispatch(registerStart());
     try {
-        await httpRequest.post('users/signIn', user);
+        await httpRequest.post('users/register', user);
         dispatch(registerSuccess());
         navigate(ConfigRouter.login);
     } catch {
@@ -33,6 +37,7 @@ export const registerUser = async (user, dispatch, navigate) => {
 export const loginGoogleUser = async (dispatch) => {
     dispatch(loginStart());
     try {
+        console.log('a');
         const fetchDataUser = async () => {
             const request = await httpRequest.get('users/signIn/success');
             return request;
@@ -44,10 +49,11 @@ export const loginGoogleUser = async (dispatch) => {
         dispatch(registerFailed());
     }
 };
-export const logOutUser = async (id, dispatch, navigate, accessToken) => {
+export const logOutUser = async (id, dispatch, navigate, accessToken, axiosJWT) => {
     dispatch(logOutStart());
     try {
-        await httpRequest.get('users/signOut', id, {
+        console.log(accessToken);
+        await axiosJWT.post('http://localhost:3240/v1/users/logout', id, {
             headers: {
                 token: `Bearer ${accessToken}`,
             },

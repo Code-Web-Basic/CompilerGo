@@ -11,19 +11,24 @@ import { ConfigRouter } from '~/config';
 import images from '~/asset/images';
 import Button from '~/components/Button/Button';
 import { logOutUser } from '~/redux/apiRequest';
-
+import axios from 'axios';
+import jwt_decode from 'jwt-decode';
+import { loginSuccess } from '~/redux/authSlice';
+import { createAxios } from '~/createInstance';
 const cx = classNames.bind(styles);
 
 function Header() {
-    const user = useSelector((state) => state.auth.login.currentUser);
-    console.log(user);
+    const user = useSelector((state) => state.auth.login?.currentUser);
+    // const user = null;
+    // console.log(user);
     const id = user?.user._id;
-    const accessToken = user?.token;
-    console.log(id, accessToken);
+    const accessToken = user?.accessToken;
+    // console.log(id, accessToken);
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    let axiosJWT = createAxios(user, dispatch, loginSuccess);
     const handleLogOutUser = (e) => {
-        logOutUser(id, dispatch, navigate, accessToken);
+        logOutUser(id, dispatch, navigate, accessToken, axiosJWT);
     };
     return (
         <div className={cx('wrapper')}>

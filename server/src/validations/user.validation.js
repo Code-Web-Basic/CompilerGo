@@ -1,7 +1,7 @@
 import Joi from 'joi';
 import { HttpStatusCode } from '../utilities/constants';
 
-const signIn = async (req, res, next) => {
+const login = async (req, res, next) => {
     const condition = Joi.object({
         email: Joi.string().required().email(),
         password: Joi.string().required().min(5).max(30).trim(),
@@ -16,7 +16,7 @@ const signIn = async (req, res, next) => {
     }
 };
 
-const signUp = async (req, res, next) => {
+const register = async (req, res, next) => {
     const condition = Joi.object({
         firstName: Joi.string().max(50),
         lastName: Joi.string().max(50),
@@ -33,4 +33,4 @@ const signUp = async (req, res, next) => {
     }
 };
 
-export const UserValidation = { signIn, signUp };
+export const UserValidation = { login, register };
