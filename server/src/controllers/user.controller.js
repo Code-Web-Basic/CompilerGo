@@ -79,7 +79,8 @@ const signInSuccess = async (req, res) => {
             accessToken: accessToken,
         });
     } else {
-        res.json(null);
+        res.json({ success: false, message: 'Error' });
+        userInfo = null;
     }
 };
 const googleCallBack = [
