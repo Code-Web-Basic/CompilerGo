@@ -1,7 +1,7 @@
 import passport from 'passport';
 import { ExtractJwt } from 'passport-jwt';
 import { getDB } from '../config/mongodb';
-import { UserModel } from '../models/User.model';
+import { UserModel } from '../models/user.model';
 import { UserService } from '../services/user.service';
 import { env } from '../config/environment';
 const localStrategy = require('passport-local').Strategy;

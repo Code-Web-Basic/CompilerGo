@@ -1,0 +1,38 @@
+version: '3.8'
+services:
+    web:
+        build: ./client
+        depends_on:
+            - api
+        ports:
+            - '3000:3000'
+        networks:
+            - network-backend
+    api:
+        build: ./server
+        depends_on:
+            - mongo
+        ports:
+            - '3240:3240'
+        networks:
+            - network-backend
+
+    mongo:
+        image: mongo
+        restart: always
+        volumes:
+            - mongodb_data:/data/db
+        environment:
+            MONGODB_INITDB_ROOT_USERNAME: zimb240
+            MONGODB_INITDB_ROOT_PASSWORD: 0908218507zimb240
+        # uncomment following lines to access db locally
+        # ports:
+        #   - 27017:27017
+        networks:
+            - network-backend
+
+networks:
+    network-backend:
+
+volumes:
+    mongodb_data:

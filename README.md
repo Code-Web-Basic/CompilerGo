@@ -1,7 +1,12 @@
-Project ReactJS + NodeJS + MongoDB + Redux
+Tên đề tài: "Xây dựng trang web viết code online cho Java, C#, Python, C++"
+----------------------------
+Project use ReactJS + NodeJS + MongoDB + Redux
 Project Name : CompilerGo
-Author : VuThanhSang, Nguyen Dinh Hieu, Nguyen Van Tu
-
+Thành Viên: 
++Nguyễn Đình Hiếu 20142498
++Vũ Thanh Sang 20110555
++Nguyễn Văn Tú 20110591
+----------------------------
 API 
 User
 Sign Up: Post http://localhost:3240/v1/users/signUp (truyền vào email, password (firstName,lastName không bắt buộc ))

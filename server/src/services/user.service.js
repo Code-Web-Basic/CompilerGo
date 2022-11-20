@@ -1,4 +1,4 @@
-import { UserModel } from '../models/User.model';
+import { UserModel } from '../models/user.model';
 import bcryptjs from 'bcryptjs';
 import JWT from 'jsonwebtoken';
 import { any } from 'joi';
