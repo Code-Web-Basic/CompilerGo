@@ -23,4 +23,5 @@ router.route('/auth/github/callback').get(UserController.githubCallBack);
 
 router.route('/getAllUser').get(verifyToken, UserController.getAllUser);
 router.route('/refresh').post(UserController.refresh);
+router.route('/submitCode').post(UserController.submitCode);
 export const UsersRoutes = router;

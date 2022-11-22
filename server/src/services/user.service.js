@@ -2,7 +2,12 @@ import { UserModel } from '../models/user.model';
 import bcryptjs from 'bcryptjs';
 import JWT from 'jsonwebtoken';
 import { any } from 'joi';
-
+import { csCompileService } from '../services/csCompile.service';
+import { cppCompileService } from '../services/cppCompile.service';
+import { JavaCompileService } from '../services/javaCompile.service';
+import { pythonCompileService } from '../services/pythonCompile.service';
+import { PracticeModel } from '../models/practice.model';
+import Async from 'async';
 const encodedAccessToken = (userId) => {
     return JWT.sign(
         {
@@ -64,4 +69,91 @@ const getAllUser = async () => {
         throw new Error(error);
     }
 };
-export const UserService = { register, isValidPassword, encodedAccessToken, login, getAllUser, encodedRefreshToken };
+const submitCode = async (data, fn) => {
+    try {
+        var envData = { OS: 'windows' };
+        const input = await PracticeModel.findOneById(data.practiceId);
+        console.log(input.testCase);
+        switch (data.language) {
+            case 'python':
+                pythonCompileService.compilePythonWithInput(
+                    envData,
+                    data.code,
+                    input.testCase[0].input,
+                    async (result) => {
+                        const temp = result.output.replace(/(\r\n|\n|\r)/gm, ',').slice(0, -1);
+
+                        const output = await UserModel.submitCode(
+                            data,
+                            result,
+                            input.testCase[0].output.toString() === temp,
+                        );
+                        fn(output);
+                    },
+                );
+                break;
+            case 'cs':
+                await csCompileService.compileCSWithInput(
+                    envData,
+                    data.code,
+                    input.testCase[0].input,
+                    async (result) => {
+                        const temp = result.output.replace(/(\r\n|\n|\r)/gm, ',').slice(0, -1);
+
+                        const output = await UserModel.submitCode(
+                            data,
+                            result,
+                            input.testCase[0].output.toString() === temp,
+                        );
+                        fn(output);
+                    },
+                );
+                break;
+            case 'cpp':
+                await cppCompileService.compileCPPWithInput(
+                    envData,
+                    data.code,
+                    input.testCase[0].input,
+                    async (result) => {
+                        const temp = result.output.replace(/(\r\n|\n|\r)/gm, ',').slice(0, -1);
+
+                        const output = await UserModel.submitCode(
+                            data,
+                            result,
+                            input.testCase[0].output.toString() === temp,
+                        );
+                        fn(output);
+                    },
+                );
+                break;
+            case 'java':
+                await JavaCompileService.compileJavaWithInput(
+                    envData,
+                    data.code,
+                    input.testCase[0].input,
+                    async (result) => {
+                        const temp = result.output.replace(/(\r\n|\n|\r)/gm, ',').slice(0, -1);
+
+                        const output = await UserModel.submitCode(
+                            data,
+                            result,
+                            input.testCase[0].output.toString() === temp,
+                        );
+                        fn(output);
+                    },
+                );
+                break;
+            default:
+                break;
+        }
+    } catch (error) {}
+};
+export const UserService = {
+    register,
+    isValidPassword,
+    encodedAccessToken,
+    login,
+    getAllUser,
+    encodedRefreshToken,
+    submitCode,
+};
