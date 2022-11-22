@@ -18,4 +18,21 @@ const update = async (data) => {
     }
 };
 
-export const PracticeService = { create, update };
+const getListPractice = async (data) => {
+    try {
+        const list = await PracticeModel.getListPractice(data);
+        return list;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+
+const findOneById = async (id) => {
+    try {
+        const data = await PracticeModel.findOneById(id);
+        return data;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+export const PracticeService = { create, update, getListPractice, findOneById };
