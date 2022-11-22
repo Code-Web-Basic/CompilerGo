@@ -7,14 +7,12 @@ import { BsXCircleFill, BsExclamationOctagonFill } from 'react-icons/bs';
 import Button from '~/components/Button/Button';
 import ConsoleContainer from './ConsoleContainer';
 const cx = classNames.bind(styles);
-function ConsoleCompiler() {
-    // const ContainerDiv = useRef(null);
-
+function ConsoleCompiler({ result, err }) {
     return (
         <div className={cx('wrapper')}>
             <div className={cx('container')}>
                 <div className={cx('sub')}>
-                    <ConsoleContainer />
+                    <ConsoleContainer result={result} err={err} />
                 </div>
             </div>
             <div className={cx('control-bottom')}>

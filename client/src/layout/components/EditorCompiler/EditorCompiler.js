@@ -3,46 +3,109 @@ import styles from './EditorCompiler.module.scss';
 //components
 import MonacoEditor from '@monaco-editor/react';
 import Button from '~/components/Button/Button';
-import { BsX, BsPlayFill, BsBugFill } from 'react-icons/bs';
-
+import { BsX, BsPlayFill } from 'react-icons/bs';
+import { useState } from 'react';
+import axios from 'axios';
 const cx = classNames.bind(styles);
 
-function EditorCompiler() {
+function EditorCompiler({ result, setResult, err, setErr }) {
+    const [chooselanguage, setChooselanguage] = useState('cpp');
+    const [code, setCode] = useState('');
+    const [inputComp, setInputComp] = useState('');
+    function handleEditorChange(value) {
+        setCode(value);
+    }
+    const handlechanelanguage = (e) => {
+        if (e.target.value === 'C++') {
+            setChooselanguage('cpp');
+        }
+        if (e.target.value === 'C#') {
+            setChooselanguage('cs');
+        }
+        if (e.target.value === 'Java') {
+            setChooselanguage('java');
+        }
+        if (e.target.value === 'Python') {
+            setChooselanguage('python');
+        }
+    };
+    const handleRunCode = () => {
+        if (inputComp === '') {
+            axios
+                .post('http://localhost:3240/v1/compile', {
+                    chooseLanguage: chooselanguage,
+                    code: code,
+                })
+                .then(function (response) {
+                    //console.log(response.data.data.output);
+                    setResult(response.data.data.output);
+                    setErr(response.data.data.error);
+                })
+                .catch(function (error) {
+                    setErr(error);
+                });
+        } else {
+            axios
+                .post('http://localhost:3240/v1/compile/input', {
+                    chooseLanguage: chooselanguage,
+                    code: code,
+                    input: inputComp,
+                })
+                .then(function (response) {
+                    //console.log(response.data.data.output);
+                    setResult(response.data.data.output);
+                    setErr(response.data.data.error);
+                })
+                .catch(function (error) {
+                    //console.log('error');
+                    setErr(error);
+                });
+        }
+    };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('control-fife')}>
                 <div className={cx('fife-container')}>
                     <div className={cx('item-fife', 'active')}>
-                        <div className={cx('item-content')}>textAlign.module.scss</div>
-                        <div className={cx('item-icon')}>
-                            <BsX />
-                        </div>
-                    </div>
-                    <div className={cx('item-fife')}>
-                        <div className={cx('item-content')}>textAlign.module.scss</div>
-                        <div className={cx('item-icon')}>
-                            <BsX />
-                        </div>
-                    </div>
-                    <div className={cx('item-fife')}>
-                        <div className={cx('item-content')}>textAlign.module.scss</div>
+                        <div className={cx('item-content')}>Code.txt</div>
                         <div className={cx('item-icon')}>
                             <BsX />
                         </div>
                     </div>
                 </div>
                 <div className={cx('control')}>
-                    <Button className={cx('btn-control')} iconBackgroundHover>
-                        <BsBugFill />
-                    </Button>
-                    <Button className={cx('btn-control')} iconBackgroundHover>
-                        <BsPlayFill />
+                    <div className={cx('option-lang')}>
+                        <label>Lựa chọn ngôn ngữ:</label>
+                        <select name="languages" id="languages" onChange={handlechanelanguage}>
+                            <option>C++</option>
+                            <option>C#</option>
+                            <option>Java</option>
+                            <option>Python</option>
+                        </select>
+                    </div>
+                    <Button className={cx('btn-control')} iconBackgroundHover onClick={handleRunCode}>
+                        Run <BsPlayFill />
                     </Button>
                 </div>
             </div>
             <div className={cx('address-fife')}></div>
             <div className={cx('editor-content')}>
-                <MonacoEditor height="100%" width="100%" theme="vs-light" language="javascript" />
+                <MonacoEditor
+                    height="100%"
+                    width="100%"
+                    theme="vs-light"
+                    language={chooselanguage} //cpp, java, python,cs
+                    onChange={handleEditorChange}
+                />
+                <div className={cx('input-compiler')}>
+                    <h1>Enter input</h1>
+                    <textarea
+                        type="text"
+                        style={{ height: '80px', width: '350px', margin: '10px' }}
+                        placeholder="Enter input"
+                        onChange={(e) => setInputComp(e.target.value)}
+                    />
+                </div>
             </div>
         </div>
     );
