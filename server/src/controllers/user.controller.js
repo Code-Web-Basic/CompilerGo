@@ -144,6 +144,17 @@ const refresh = async (req, res) => {
         res.status(200).json({ accessToken: newAccessToken });
     });
 };
+const submitCode = async (req, res) => {
+    try {
+        await UserService.submitCode(req.body, (result) => {
+            res.status(HttpStatusCode.OK).json({ data: result });
+        });
+    } catch (error) {
+        res.status(HttpStatusCode.INTERNAL_SERVER).json({
+            error: new Error(error).message,
+        });
+    }
+};
 export const UserController = {
     secret,
     login,
@@ -155,4 +166,5 @@ export const UserController = {
     githubCallBack,
     getAllUser,
     refresh,
+    submitCode,
 };
