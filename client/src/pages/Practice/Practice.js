@@ -68,12 +68,12 @@ function Practice() {
                                                     className={cx('btn-ex')}
                                                     to={`/practice/solution/${ti.practiceId}`}
                                                 >
-                                                    {ti.task}
+                                                    {ti.title}
                                                 </Link>
                                             </td>
                                             <td>{ti.isCompleted ? 'yes' : 'no'}</td>
                                             <td>50%</td>
-                                            <td>Medium</td>
+                                            <td>{ti.difficult}</td>
                                         </tr>
                                     );
                                 })}

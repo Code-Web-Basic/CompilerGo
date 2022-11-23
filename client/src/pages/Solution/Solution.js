@@ -8,13 +8,21 @@ import ConsoleCompiler from '~/layout/components/ConsoleCompiler';
 import ControlCompiler from '~/layout/components/ControlCompiler';
 import EditorCompiler from '~/layout/components/EditorCompiler';
 import { useParams } from 'react-router-dom';
+import MonacoEditor from '@monaco-editor/react';
+import Button from '~/components/Button/Button';
+import { BsX, BsPlayFill } from 'react-icons/bs';
+import { useSelector } from 'react-redux';
 const cx = classNames.bind(styles);
 
 function Solution() {
     const [heightEditor, setHeightEditor] = useState('');
     const [heightConsole, setHeightConsole] = useState('');
     const [practices, setPractice] = useState([]);
+    const [chooselanguage, setChooselanguage] = useState('cpp');
+    const [code, setCode] = useState('');
+    const [inputComp, setInputComp] = useState('');
     const EditorContainer = useRef(null);
+    let user = useSelector((state) => state.auth.login?.currentUser);
     useEffect(() => {
         setHeightEditor(EditorContainer.current.offsetHeight - 28 - 5);
         setHeightConsole(28);
@@ -53,22 +61,132 @@ function Solution() {
             .catch(function (error) {
                 console.log(error);
             });
-    });
+    }, []);
+    const handlechanelanguage = (e) => {
+        if (e.target.value === 'C++') {
+            setChooselanguage('cpp');
+        }
+        if (e.target.value === 'C#') {
+            setChooselanguage('cs');
+        }
+        if (e.target.value === 'Java') {
+            setChooselanguage('java');
+        }
+        if (e.target.value === 'Python') {
+            setChooselanguage('python');
+        }
+    };
+    function handleEditorChange(value) {
+        setCode(value);
+    }
+    const handleSubmit = () => {
+        axios
+            .post('localhost:3240/v1/users/submitCode', {
+                language: chooselanguage,
+                code: code,
+                userId: user.user._id,
+                practiceId: id,
+            })
+            .then(function (response) {
+                console.log(response.data);
+                //setResult(response.data.data.output);
+                //setErr(response.data.data.error);
+            })
+            .catch(function (error) {
+                console.log(error);
+                //setErr(error);
+            });
+    };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('topic')}>
                 {
                     <div>
-                        <p>{practices.task}</p>
-                        <p>{practices.inputFormat}</p>
+                        <h1 style={{ margin: '10px' }}>{practices.title}</h1>
+                        <p style={{ margin: '10px' }}>Đề bài: {practices.task}</p>
+                        <h3 style={{ margin: '10px' }}>Example:</h3>
+                        <p style={{ margin: '10px' }}>{practices.example?.content}</p>
+                        <div style={{ margin: '10px' }}>
+                            Output:{' '}
+                            {practices.example?.sample.map((out) => {
+                                {
+                                    return <p>{out}</p>;
+                                }
+                            })}
+                        </div>
+                        <h3 style={{ margin: '10px' }}>Input format:</h3>
+                        <p style={{ margin: '10px' }}>{practices.inputFormat}</p>
+                        <h5 style={{ margin: '10px' }}>Constraints</h5>
+                        <p style={{ margin: '10px' }}>{practices.constraints}</p>
+                        <h3 style={{ margin: '10px' }}>Output format:</h3>
+                        <p style={{ margin: '10px' }}>{practices.outputFormat}</p>
+                        <h3 style={{ margin: '10px' }}>Sample Input: </h3>
+                        <div style={{ margin: '10px' }}>
+                            Input:{' '}
+                            {practices.sampleInput?.map((out) => {
+                                {
+                                    return <p>{out}</p>;
+                                }
+                            })}
+                        </div>
+                        <h3 style={{ margin: '10px' }}>Sample Output: </h3>
+                        <div style={{ margin: '10px' }}>
+                            Output:{' '}
+                            {practices.sampleOutput?.map((out) => {
+                                {
+                                    return <p>{out}</p>;
+                                }
+                            })}
+                        </div>
                     </div>
                 }
             </div>
             <div className={cx('solution')}>
-                <ControlCompiler />
                 <div className={cx('container')} ref={EditorContainer}>
                     <div className={cx('editor')} id="editor-js" style={{ height: `${heightEditor}px` }}>
-                        <EditorCompiler />
+                        <div className={cx('control-fife')}>
+                            <div className={cx('fife-container')}>
+                                <div className={cx('item-fife', 'active')}>
+                                    <div className={cx('item-content')}>Code.txt</div>
+                                    <div className={cx('item-icon')}>
+                                        <BsX />
+                                    </div>
+                                </div>
+                            </div>
+                            <div className={cx('control')}>
+                                <div className={cx('option-lang')}>
+                                    <label>Lựa chọn ngôn ngữ:</label>
+                                    <select name="languages" id="languages" onChange={handlechanelanguage}>
+                                        <option>C++</option>
+                                        <option>C#</option>
+                                        <option>Java</option>
+                                        <option>Python</option>
+                                    </select>
+                                </div>
+                                <Button className={cx('btn-control')} iconBackgroundHover onClick={handleSubmit}>
+                                    Run <BsPlayFill />
+                                </Button>
+                            </div>
+                        </div>
+                        <div className={cx('address-fife')}></div>
+                        <div className={cx('editor-content')}>
+                            <MonacoEditor
+                                height="100%"
+                                width="100%"
+                                theme="vs-light"
+                                language={chooselanguage} //cpp, java, python,cs
+                                onChange={handleEditorChange}
+                            />
+                            <div className={cx('input-compiler')}>
+                                <h1>Enter input</h1>
+                                <textarea
+                                    type="text"
+                                    style={{ height: '80px', width: '350px', margin: '10px' }}
+                                    placeholder="Enter input"
+                                    onChange={(e) => setInputComp(e.target.value)}
+                                />
+                            </div>
+                        </div>
                     </div>
                     <div className={cx('resizing-compiler')} id="resizing-compiler-js" onMouseDown={InitResize}></div>
                     <div className={cx('console')} id="console-js" style={{ height: `${heightConsole}px` }}>
