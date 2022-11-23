@@ -7,7 +7,7 @@ import { cppCompileService } from '../services/cppCompile.service';
 import { JavaCompileService } from '../services/javaCompile.service';
 import { pythonCompileService } from '../services/pythonCompile.service';
 import { PracticeModel } from '../models/practice.model';
-import Async from 'async';
+import axios from 'axios';
 const encodedAccessToken = (userId) => {
     return JWT.sign(
         {
@@ -71,92 +71,33 @@ const getAllUser = async () => {
 };
 const submitCode = async (data, fn) => {
     try {
-        var envData = { OS: 'windows' };
         const input = await PracticeModel.findOneById(data.practiceId);
-        switch (data.language) {
-            case 'python':
-                pythonCompileService.compilePythonWithInput(
-                    envData,
-                    data.code,
-                    input.testCase[0].input,
-                    async (result) => {
-                        if (result.error) {
-                            fn(result.error);
-                        } else {
-                            const temp = result.output.replace(/(\r\n|\n|\r)/gm, ',').slice(0, -1);
-                            const output = await UserModel.submitCode(
-                                data,
-                                result,
-                                input.testCase[0].output.toString() === temp,
-                            );
-                            fn(output);
-                        }
-                    },
-                );
-                break;
-            case 'cs':
-                await csCompileService.compileCSWithInput(
-                    envData,
-                    data.code,
-                    input.testCase[0].input,
-                    async (result) => {
-                        if (result.error) {
-                            fn(result.error);
-                        } else {
-                            const temp = result.output.replace(/(\r\n|\n|\r)/gm, ',').slice(0, -1);
-                            const output = await UserModel.submitCode(
-                                data,
-                                result,
-                                input.testCase[0].output.toString() === temp,
-                            );
-                            fn(output);
-                        }
-                    },
-                );
-                break;
-            case 'cpp':
-                await cppCompileService.compileCPPWithInput(
-                    envData,
-                    data.code,
-                    input.testCase[0].input,
-                    async (result) => {
-                        if (result.error) {
-                            fn(result.error);
-                        } else {
-                            const temp = result.output.replace(/(\r\n|\n|\r)/gm, ',').slice(0, -1);
-                            const output = await UserModel.submitCode(
-                                data,
-                                result,
-                                input.testCase[0].output.toString() === temp,
-                            );
-                            fn(output);
-                        }
-                    },
-                );
-                break;
-            case 'java':
-                await JavaCompileService.compileJavaWithInput(
-                    envData,
-                    data.code,
-                    input.testCase[0].input,
-                    async (result) => {
-                        if (result.error) {
-                            fn(result.error);
-                        } else {
-                            const temp = result.output.replace(/(\r\n|\n|\r)/gm, ',').slice(0, -1);
-                            const output = await UserModel.submitCode(
-                                data,
-                                result,
-                                input.testCase[0].output.toString() === temp,
-                            );
-                            fn(output);
-                        }
-                    },
-                );
-                break;
-            default:
-                break;
-        }
+        const listResult = input.testCase.map(async (item) => {
+            let c = null;
+            await axios
+                .post('http://localhost:3240/v1/compile/input', {
+                    chooseLanguage: data.language,
+                    code: data.code,
+                    input: item.input,
+                })
+                .then((data) => {
+                    c = data.data.data.output;
+                })
+                .finally(() => {});
+            const temp = c.replace(/(\r\n|\n|\r)/gm, ',').slice(0, -1);
+            if (temp === item.output.toString()) {
+                return { success: true };
+            } else {
+                return { success: false };
+            }
+        });
+        let c = Promise.all(listResult).then((value) => {
+            return value;
+        });
+        c.then(async (dataResult) => {
+            const result = await UserModel.submitCode(data, dataResult);
+            fn(result);
+        });
     } catch (error) {}
 };
 export const UserService = {
