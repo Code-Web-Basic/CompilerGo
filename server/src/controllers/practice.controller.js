@@ -1,4 +1,4 @@
-import { PracticeService } from '../services/practiec.service';
+import { PracticeService } from '../services/practice.service';
 import { HttpStatusCode } from '../utilities/constants';
 
 const create = async (req, res) => {

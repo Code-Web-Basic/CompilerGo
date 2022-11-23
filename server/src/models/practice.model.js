@@ -14,6 +14,7 @@ const practiceCollectionSchema = Joi.object({
     sampleOutput: Joi.array().default([]),
     testCase: Joi.array().default([]),
     title: Joi.string().required(),
+    difficult: Joi.string(),
 });
 const validateSchema = async (data) => {
     return await practiceCollectionSchema.validateAsync(data, { abortEarly: false });
@@ -45,7 +46,7 @@ const update = async (id, data) => {
         const result = await getDB()
             .collection(practiceCollectionName)
             .findOneAndUpdate({ _id: ObjectId(id) }, { $set: data });
-        const getUpdated = await findOneById(result.insertedId.toString());
+        const getUpdated = await findOneById(id);
         return getUpdated;
     } catch (error) {
         throw new Error(error);
@@ -66,7 +67,12 @@ const getListPractice = async (userId) => {
                     isCompleted = true;
                 }
             });
-            return { task: item.task, isCompleted: isCompleted, practiceId: item._id.toString() };
+            return {
+                title: item.title,
+                difficult: item.difficult,
+                isCompleted: isCompleted,
+                practiceId: item._id.toString(),
+            };
         });
         // console.log(list);
         return result;
