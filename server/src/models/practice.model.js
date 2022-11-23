@@ -60,7 +60,7 @@ const getListPractice = async (userId) => {
             .findOne({ _id: ObjectId(userId) });
         const result = list.map((item) => {
             let isCompleted = false;
-            user.practice.forEach((element) => {
+            user.practice?.forEach((element) => {
                 // console.log(element.practiceId, item._id.toString());
                 if (element.practiceId === item._id.toString()) {
                     isCompleted = true;

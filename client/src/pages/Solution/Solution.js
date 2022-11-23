@@ -1,16 +1,19 @@
 import classNames from 'classnames/bind';
 import styles from './Solution.module.scss';
+import axios from 'axios';
 //
 import { useState, useRef, useEffect } from 'react';
 //component
 import ConsoleCompiler from '~/layout/components/ConsoleCompiler';
 import ControlCompiler from '~/layout/components/ControlCompiler';
 import EditorCompiler from '~/layout/components/EditorCompiler';
+import { useParams } from 'react-router-dom';
 const cx = classNames.bind(styles);
 
 function Solution() {
     const [heightEditor, setHeightEditor] = useState('');
     const [heightConsole, setHeightConsole] = useState('');
+    const [practices, setPractice] = useState([]);
     const EditorContainer = useRef(null);
     useEffect(() => {
         setHeightEditor(EditorContainer.current.offsetHeight - 28 - 5);
@@ -39,12 +42,27 @@ function Solution() {
         window.removeEventListener('mousemove', HandleResizing, false);
         window.removeEventListener('mouseup', RemoveHandleResizing, false);
     };
+    const { id } = useParams();
+    useEffect(() => {
+        axios
+            .get(`http://localhost:3240/v1/practice/findOneById/${id}`)
+            .then(function (response) {
+                //console.log(response.data);
+                setPractice(response.data.data);
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    });
     return (
         <div className={cx('wrapper')}>
             <div className={cx('topic')}>
-                <h1>91. Decode Ways</h1>
-                <p>Medium</p>
-                <p>A message containing letters from A-Z can be encoded into numbers using the following mapping:</p>
+                {
+                    <div>
+                        <p>{practices.task}</p>
+                        <p>{practices.inputFormat}</p>
+                    </div>
+                }
             </div>
             <div className={cx('solution')}>
                 <ControlCompiler />
