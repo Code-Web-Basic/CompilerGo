@@ -9,7 +9,7 @@ const create = async (data) => {
     }
 };
 
-const update = async (data) => {
+const update = async (id, data) => {
     try {
         const result = await PracticeModel.update(id, data);
         return result;

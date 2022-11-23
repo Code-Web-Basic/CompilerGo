@@ -85,14 +85,20 @@ const getAllUser = async () => {
 };
 const submitCode = async (data, result, status) => {
     try {
+        const user = await findOneById(data.userId);
         if (status === true) {
-            await getDB()
-                .collection(userCollectionName)
-                .findOneAndUpdate(
-                    { _id: ObjectId(data.userId) },
-                    { $push: { practice: { practiceId: data.practiceId, language: data.language } } },
-                );
-            return result;
+            if (user.practice.filter((e) => e.practiceId === data.practiceId).length > 0) {
+                return { output: 'Dã hoàn thành task này' };
+            } else {
+                await getDB()
+                    .collection(userCollectionName)
+                    .findOneAndUpdate(
+                        { _id: ObjectId(data.userId) },
+                        { $push: { practice: { practiceId: data.practiceId, language: data.language } } },
+                    );
+                return result;
+            }
+            // console.log(user);
         } else {
             return { error: 'Wrong' };
         }
