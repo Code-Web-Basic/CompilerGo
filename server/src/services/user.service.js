@@ -73,7 +73,6 @@ const submitCode = async (data, fn) => {
     try {
         var envData = { OS: 'windows' };
         const input = await PracticeModel.findOneById(data.practiceId);
-        console.log(input.testCase);
         switch (data.language) {
             case 'python':
                 pythonCompileService.compilePythonWithInput(
@@ -81,14 +80,17 @@ const submitCode = async (data, fn) => {
                     data.code,
                     input.testCase[0].input,
                     async (result) => {
-                        const temp = result.output.replace(/(\r\n|\n|\r)/gm, ',').slice(0, -1);
-
-                        const output = await UserModel.submitCode(
-                            data,
-                            result,
-                            input.testCase[0].output.toString() === temp,
-                        );
-                        fn(output);
+                        if (result.error) {
+                            fn(result.error);
+                        } else {
+                            const temp = result.output.replace(/(\r\n|\n|\r)/gm, ',').slice(0, -1);
+                            const output = await UserModel.submitCode(
+                                data,
+                                result,
+                                input.testCase[0].output.toString() === temp,
+                            );
+                            fn(output);
+                        }
                     },
                 );
                 break;
@@ -98,14 +100,17 @@ const submitCode = async (data, fn) => {
                     data.code,
                     input.testCase[0].input,
                     async (result) => {
-                        const temp = result.output.replace(/(\r\n|\n|\r)/gm, ',').slice(0, -1);
-
-                        const output = await UserModel.submitCode(
-                            data,
-                            result,
-                            input.testCase[0].output.toString() === temp,
-                        );
-                        fn(output);
+                        if (result.error) {
+                            fn(result.error);
+                        } else {
+                            const temp = result.output.replace(/(\r\n|\n|\r)/gm, ',').slice(0, -1);
+                            const output = await UserModel.submitCode(
+                                data,
+                                result,
+                                input.testCase[0].output.toString() === temp,
+                            );
+                            fn(output);
+                        }
                     },
                 );
                 break;
@@ -115,14 +120,17 @@ const submitCode = async (data, fn) => {
                     data.code,
                     input.testCase[0].input,
                     async (result) => {
-                        const temp = result.output.replace(/(\r\n|\n|\r)/gm, ',').slice(0, -1);
-
-                        const output = await UserModel.submitCode(
-                            data,
-                            result,
-                            input.testCase[0].output.toString() === temp,
-                        );
-                        fn(output);
+                        if (result.error) {
+                            fn(result.error);
+                        } else {
+                            const temp = result.output.replace(/(\r\n|\n|\r)/gm, ',').slice(0, -1);
+                            const output = await UserModel.submitCode(
+                                data,
+                                result,
+                                input.testCase[0].output.toString() === temp,
+                            );
+                            fn(output);
+                        }
                     },
                 );
                 break;
@@ -132,14 +140,17 @@ const submitCode = async (data, fn) => {
                     data.code,
                     input.testCase[0].input,
                     async (result) => {
-                        const temp = result.output.replace(/(\r\n|\n|\r)/gm, ',').slice(0, -1);
-
-                        const output = await UserModel.submitCode(
-                            data,
-                            result,
-                            input.testCase[0].output.toString() === temp,
-                        );
-                        fn(output);
+                        if (result.error) {
+                            fn(result.error);
+                        } else {
+                            const temp = result.output.replace(/(\r\n|\n|\r)/gm, ',').slice(0, -1);
+                            const output = await UserModel.submitCode(
+                                data,
+                                result,
+                                input.testCase[0].output.toString() === temp,
+                            );
+                            fn(output);
+                        }
                     },
                 );
                 break;
