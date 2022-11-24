@@ -5,7 +5,7 @@ var cuid = require('cuid');
 const compileJava = function (envData, code, fn) {
     //creating source file
     var dirname = cuid.slug();
-    const path = process.cwd() + '\\temp\\' + dirname;
+    const path = process.cwd() + '/temp/' + dirname;
     console.log(path);
     fs.mkdir(path, '0777', function (err) {
         if (err && exports.stats) console.log(err.toString().red);
