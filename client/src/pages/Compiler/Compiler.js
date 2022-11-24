@@ -13,6 +13,8 @@ const cx = classNames.bind(styles);
 function Compiler() {
     const [heightEditor, setHeightEditor] = useState('');
     const [heightConsole, setHeightConsole] = useState('');
+    const [result, setResult] = useState('');
+    const [err, setErr] = useState('');
     const EditorContainer = useRef(null);
     useEffect(() => {
         setHeightEditor(EditorContainer.current.offsetHeight - 28 - 5);
@@ -46,11 +48,11 @@ function Compiler() {
             <ControlCompiler />
             <div className={cx('container')} ref={EditorContainer}>
                 <div className={cx('editor')} id="editor-js" style={{ height: `${heightEditor}px` }}>
-                    <EditorCompiler />
+                    <EditorCompiler result={result} setResult={setResult} err={err} setErr={setErr} />
                 </div>
                 <div className={cx('resizing-compiler')} id="resizing-compiler-js" onMouseDown={InitResize}></div>
                 <div className={cx('console')} id="console-js" style={{ height: `${heightConsole}px` }}>
-                    <ConsoleCompiler />
+                    <ConsoleCompiler result={result} err={err} />
                 </div>
             </div>
         </div>

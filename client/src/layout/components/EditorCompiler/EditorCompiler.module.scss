@@ -39,16 +39,34 @@
     margin-right: 10px;
     .btn-control {
         margin-right: 10px;
-
         display: flex;
         align-items: center;
         justify-content: center;
-
         padding: 3px;
         .title {
             display: flex;
             align-items: center;
         }
+    }
+    .btn-control:hover {
+        color: red;
+        background-color: #ccc;
+    }
+}
+.option-lang {
+    display: flex;
+    margin: 10px 10px;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    label {
+        padding: 10px;
+        width: 180px;
+        font-size: 18px;
+    }
+    select {
+        width: 60px;
+        font-size: 18px;
     }
 }
 .item-fife {
@@ -99,4 +117,12 @@
 }
 .editor-content {
     height: calc(100% - 50px);
+    display: flex;
+}
+.input-compiler {
+    width: 500px;
+    h1 {
+        text-align: center;
+        margin: 10px;
+    }
 }
