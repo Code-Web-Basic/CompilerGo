@@ -7,7 +7,7 @@ exports.stats = false;
 const compileCS = function (envData, code, fn) {
     //creating source file
     var filename = cuid.slug();
-    const path = './temp/';
+    const path = process.cwd() + '/temp/';
 
     //create temp0
     fs.writeFile(path + filename + '.cs', code, function (err) {
@@ -17,7 +17,7 @@ const compileCS = function (envData, code, fn) {
         }
         if (envData.OS === 'windows') {
             //compile cs code
-            const command = 'cd temp & csc ' + filename + '.cs';
+            const command = 'cd ' + path + ' && csc ' + filename + '.cs';
             exec(command, function (error, stdout, stderr) {
                 if (error) {
                     if (exports.stats) {
@@ -26,7 +26,8 @@ const compileCS = function (envData, code, fn) {
                     var out = { error: stderr };
                     fn(out);
                 } else {
-                    var tempCommand = 'cd temp & ' + filename;
+                    // var tempCommand = 'cd temp & ' + filename;
+                    var tempCommand = 'mono ./temp/' + filename + '.exe';
                     exec(tempCommand, function (error, stdout, stderr) {
                         if (error) {
                             if (error.toString().indexOf('Error: stdout maxBuffer exceeded.') != -1) {
@@ -36,15 +37,14 @@ const compileCS = function (envData, code, fn) {
                                 fn(out);
                             } else {
                                 if (exports.stats) {
-                                    console.log('INFO: '.green + filename + '.cs contained an error while executing');
+                                    console.log('INFO: '.green + path + '/c.cs contained an error while executing');
                                 }
-
                                 var out = { error: stderr };
                                 fn(out);
                             }
                         } else {
                             if (exports.stats) {
-                                console.log('INFO: '.green + filename + '.cs successfully compiled and executed !');
+                                console.log('INFO: '.green + path + '/c.cs successfully compiled and executed !');
                             }
                             var out = { output: stdout };
                             fn(out);
@@ -58,7 +58,7 @@ const compileCS = function (envData, code, fn) {
 
 const compileCSWithInput = function (envData, code, input, fn) {
     var filename = cuid.slug();
-    const path = './temp/';
+    const path = process.cwd() + '/temp/';
 
     //create temp0
     fs.writeFile(path + filename + '.cs', code, function (err) {
@@ -69,7 +69,8 @@ const compileCSWithInput = function (envData, code, input, fn) {
 
         if (envData.OS === 'windows') {
             //compile c code
-            const command = 'cd temp & csc ' + filename + '.cs';
+            const command = 'cd ' + path + ' && csc ' + filename + '.cs';
+
             exec(command, function (error, stdout, stderr) {
                 if (error) {
                     if (exports.stats) {
@@ -79,7 +80,7 @@ const compileCSWithInput = function (envData, code, input, fn) {
                     fn(out);
                 } else {
                     if (input) {
-                        var inputFile = filename + 'input.txt';
+                        var inputFile = '/input.txt';
 
                         fs.writeFile(path + inputFile, input, function (err) {
                             if (exports.stats) {
@@ -87,9 +88,9 @@ const compileCSWithInput = function (envData, code, input, fn) {
                                 else console.log('INFO: '.green + inputFile + ' (inputFile) created');
                             }
                         });
-                        var tempCommand = 'cd temp & ' + filename;
+                        var tempCommand = 'mono ./temp/' + filename + '.exe < ' + './temp/input.txt';
 
-                        exec(tempCommand + '<' + inputFile, function (error, stdout, stderr) {
+                        exec(tempCommand, function (error, stdout, stderr) {
                             if (error) {
                                 if (error.toString().indexOf('Error: stdout maxBuffer exceeded.') != -1) {
                                     var out = {
