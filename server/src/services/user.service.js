@@ -81,10 +81,14 @@ const submitCode = async (data, fn) => {
                     input: item.input,
                 })
                 .then((data) => {
-                    c = data.data.data.output;
+                    if (data.data.error) {
+                        c = data.data.data.error;
+                    } else {
+                        c = data.data.data.output;
+                    }
                 })
                 .finally(() => {});
-            const temp = c.replace(/(\r\n|\n|\r)/gm, ',').slice(0, -1);
+            const temp = c?.replace(/(\r\n|\n|\r)/gm, ',').slice(0, -1);
             if (temp === item.output.toString()) {
                 return { success: true };
             } else {

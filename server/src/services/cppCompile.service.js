@@ -158,26 +158,6 @@ const compileCPPWithInput = function (envData, code, input, fn) {
                                         }
                                     }
                                 });
-                                if (true) {
-                                    // kill the programme after envData.options.timeout ms
-                                    setTimeout(function () {
-                                        exec(
-                                            'taskkill /im ./temp/' + filename + '.out /f > nul',
-                                            function (error, stdout, stderr) {
-                                                if (progNotFinished) {
-                                                    progNotFinished = false; // programme finished
-                                                    if (exports.stats) {
-                                                        console.log(
-                                                            'INFO: '.green + filename + '.exe was killed after ',
-                                                        );
-                                                    }
-                                                    var out = { timeout: true };
-                                                    fn(out);
-                                                }
-                                            },
-                                        );
-                                    }, 500);
-                                }
                             } //input not provided
                             else {
                                 if (exports.stats) {
