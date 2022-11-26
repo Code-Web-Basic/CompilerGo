@@ -24,7 +24,7 @@ function Practice() {
             .catch(function (error) {
                 console.log(error);
             });
-    }, []);
+    }, [user]);
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
@@ -48,36 +48,38 @@ function Practice() {
                             </TabList>
                         </Box>
                         <TabPanel value="1">
-                            <div>
-                                <Button className={cx('btn-all')}>tất cả</Button>
-                            </div>
-                            <table className={cx('list-ex')}>
-                                <tr>
-                                    <th>Status</th>
-                                    <th className={cx('title')}>Title</th>
-                                    <th>Solution</th>
-                                    <th>Acceptable</th>
-                                    <th>Difficulty</th>
-                                </tr>
-                                {title.map((ti) => {
-                                    return (
-                                        <tr key={ti.practiceId}>
-                                            <td>{ti.isCompleted ? 'yes' : 'no'}</td>
-                                            <td>
-                                                <Link
-                                                    className={cx('btn-ex')}
-                                                    to={`/practice/solution/${ti.practiceId}`}
-                                                >
-                                                    {ti.title}
-                                                </Link>
-                                            </td>
-                                            <td>{ti.isCompleted ? 'yes' : 'no'}</td>
-                                            <td>50%</td>
-                                            <td>{ti.difficult}</td>
-                                        </tr>
-                                    );
-                                })}
-                            </table>
+                            <Box>
+                                <div>
+                                    <Button className={cx('btn-all')}>tất cả</Button>
+                                </div>
+                                <table className={cx('list-ex')}>
+                                    <tr>
+                                        <th>Status</th>
+                                        <th className={cx('title')}>Title</th>
+                                        <th>Solution</th>
+                                        <th>Acceptable</th>
+                                        <th>Difficulty</th>
+                                    </tr>
+                                    {title.map((ti) => {
+                                        return (
+                                            <tr key={ti.practiceId}>
+                                                <td>{ti.isCompleted ? 'yes' : 'no'}</td>
+                                                <td>
+                                                    <Link
+                                                        className={cx('btn-ex')}
+                                                        to={`/practice/solution/${ti.practiceId}`}
+                                                    >
+                                                        {ti.title}
+                                                    </Link>
+                                                </td>
+                                                <td>{ti.isCompleted ? 'yes' : 'no'}</td>
+                                                <td>50%</td>
+                                                <td>{ti.difficult}</td>
+                                            </tr>
+                                        );
+                                    })}
+                                </table>
+                            </Box>
                         </TabPanel>
                         <TabPanel value="2">Item Two</TabPanel>
                         <TabPanel value="3">Item Three</TabPanel>

@@ -5,7 +5,7 @@
 .control-fife {
     background-color: var(--background-light-drank);
 
-    height: 30px;
+    height: 40px;
 
     display: flex;
 }
@@ -37,30 +37,30 @@
     display: flex;
     align-items: center;
     margin-right: 10px;
+    padding: 10px 10px;
     .btn-control {
-        margin-right: 10px;
         display: flex;
         align-items: center;
         justify-content: center;
-        padding: 3px;
+        margin-left: 20px;
+        padding: 5px 10px;
         .title {
             display: flex;
             align-items: center;
         }
     }
+
     .btn-control:hover {
-        color: red;
-        background-color: #ccc;
+        color: var(--word-black-hover);
+        background-color: var(--background-hover);
     }
 }
 .option-lang {
     display: flex;
-    margin: 10px 10px;
     text-align: center;
     justify-content: center;
     align-items: center;
     label {
-        padding: 10px;
         width: 180px;
         font-size: 18px;
     }
@@ -116,11 +116,39 @@
     box-shadow: rgb(99 99 99 / 20%) 0px 8px 12px -7px;
 }
 .editor-content {
-    height: calc(100% - 50px);
+    height: 100%;
     display: flex;
 }
 .input-compiler {
-    width: 500px;
+    .field {
+        padding: 10px;
+        margin-top: 20px;
+        width: 300px;
+    }
+    textarea {
+        padding: 0.75em;
+        border-radius: 0.5em;
+        border: none;
+        background-color: var(--base-01);
+        width: 100%;
+        height: 100px;
+        flex-grow: 1;
+        position: relative;
+        caret-color: currentcolor;
+        outline-offset: -0.0625rem;
+        outline-style: solid;
+        outline-width: 0.0625rem;
+        outline-color: transparent;
+        transition: outline 0.1s ease;
+        resize: none;
+        &::placeholder {
+            color: #fffefe;
+            opacity: 0.7; /* Firefox */
+        }
+    }
+    textarea:hover {
+        outline-color: var(--border-color);
+    }
     h1 {
         text-align: center;
         margin: 10px;

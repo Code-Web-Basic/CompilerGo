@@ -43,6 +43,13 @@ function Compiler() {
         window.removeEventListener('mousemove', HandleResizing, false);
         window.removeEventListener('mouseup', RemoveHandleResizing, false);
     };
+
+    useEffect(() => {
+        if (err.trim() !== '' || result.trim() !== '') {
+            setHeightEditor(EditorContainer.current.offsetHeight - 300 - 5);
+            setHeightConsole(300);
+        }
+    }, [err, result]);
     return (
         <div className={cx('compiler')}>
             <ControlCompiler />
