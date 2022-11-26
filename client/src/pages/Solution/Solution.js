@@ -19,8 +19,9 @@ function Solution() {
     const [heightConsole, setHeightConsole] = useState('');
     const [practices, setPractice] = useState([]);
     const [chooselanguage, setChooselanguage] = useState('cpp');
+    const [result, setResult] = useState([]);
+    const [error, setError] = useState('');
     const [code, setCode] = useState('');
-    const [inputComp, setInputComp] = useState('');
     const EditorContainer = useRef(null);
     let user = useSelector((state) => state.auth.login?.currentUser);
     useEffect(() => {
@@ -81,22 +82,22 @@ function Solution() {
     }
     const handleSubmit = () => {
         axios
-            .post('localhost:3240/v1/users/submitCode', {
+            .post('http://localhost:3240/v1/users/submitCode', {
                 language: chooselanguage,
                 code: code,
                 userId: user.user._id,
                 practiceId: id,
             })
             .then(function (response) {
-                console.log(response.data);
-                //setResult(response.data.data.output);
-                //setErr(response.data.data.error);
+                console.log(response);
+                setResult(response.data.data);
+                setError(response.data.error);
             })
             .catch(function (error) {
-                console.log(error);
-                //setErr(error);
+                setError(error);
             });
     };
+    console.log(result + ' ' + error);
     return (
         <div className={cx('wrapper')}>
             <div className={cx('topic')}>
@@ -177,15 +178,6 @@ function Solution() {
                                 language={chooselanguage} //cpp, java, python,cs
                                 onChange={handleEditorChange}
                             />
-                            <div className={cx('input-compiler')}>
-                                <h1>Enter input</h1>
-                                <textarea
-                                    type="text"
-                                    style={{ height: '80px', width: '350px', margin: '10px' }}
-                                    placeholder="Enter input"
-                                    onChange={(e) => setInputComp(e.target.value)}
-                                />
-                            </div>
                         </div>
                     </div>
                     <div className={cx('resizing-compiler')} id="resizing-compiler-js" onMouseDown={InitResize}></div>

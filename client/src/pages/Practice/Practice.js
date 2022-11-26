@@ -16,21 +16,23 @@ function Practice() {
     const [title, setTitle] = useState([]);
     let user = useSelector((state) => state.auth.login?.currentUser);
     useEffect(() => {
-        axios
-            .get(`http://localhost:3240/v1/practice/getList/${user.user._id}`)
-            .then(function (response) {
-                setTitle(response.data.data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        if (user.user) {
+            axios
+                .get(`http://localhost:3240/v1/practice/getList/${user.user._id}`)
+                .then(function (response) {
+                    setTitle(response.data.data);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
     }, []);
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
     return (
         <>
-            {!user ? (
+            {!user.user ? (
                 <div style={{ fontSize: '30px' }}>
                     <Alert severity="warning">Login Now</Alert>
                 </div>
