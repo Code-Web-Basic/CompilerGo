@@ -15,6 +15,7 @@ const userCollectionSchema = Joi.object({
     authGoogleId: Joi.string().default(null),
     authGithubId: Joi.string().default(null),
     authType: Joi.string().valid('local', 'google', 'github').default('local'),
+    practice: Joi.array().default([]),
 });
 const validateSchema = async (data) => {
     return await userCollectionSchema.validateAsync(data, { abortEarly: false });
@@ -82,4 +83,33 @@ const getAllUser = async () => {
     const result = await getDB().collection(userCollectionName).find({}).toArray();
     return result;
 };
-export const UserModel = { signUp, findOneById, validateSchema, login, getAllUser };
+const submitCode = async (data, result) => {
+    try {
+        const user = await findOneById(data.userId);
+        let isCompleted = true;
+        result.forEach((element) => {
+            if (element.success === false) {
+                isCompleted = false;
+            }
+        });
+        if (isCompleted === true) {
+            if (
+                user.practice?.filter((e) => e.practiceId === data.practiceId && e.language === data.language).length ==
+                    0 ||
+                !user.practice
+            ) {
+                await getDB()
+                    .collection(userCollectionName)
+                    .findOneAndUpdate(
+                        { _id: ObjectId(data.userId) },
+                        { $push: { practice: { practiceId: data.practiceId, language: data.language } } },
+                    );
+            }
+            // console.log(user);
+        }
+        return result;
+    } catch (error) {
+        throw new Error(error);
+    }
+};
+export const UserModel = { signUp, findOneById, validateSchema, login, getAllUser, submitCode };

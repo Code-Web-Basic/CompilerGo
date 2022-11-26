@@ -14,7 +14,7 @@ const compilePython = function (envData, code, fn) {
             else console.log('INFO: '.green + filename + '.py created');
         }
         if (!err) {
-            var command = 'python ' + path + filename + '.py';
+            var command = 'python3 ' + path + filename + '.py';
             exec(command, function (error, stdout, stderr) {
                 if (error) {
                     if (error.toString().indexOf('Error: stdout maxBuffer exceeded.') != -1) {
@@ -57,7 +57,7 @@ const compilePythonWithInput = function (envData, code, input, fn) {
                     else console.log('INFO: '.green + filename + 'input.txt created');
                 }
                 if (!err) {
-                    var command = 'python ' + path + filename + '.py < ' + path + filename + 'input.txt ';
+                    var command = 'python3 ' + path + filename + '.py < ' + path + filename + 'input.txt ';
                     exec(command, function (error, stdout, stderr) {
                         if (error) {
                             if (error.toString().indexOf('Error: stdout maxBuffer exceeded.') != -1) {

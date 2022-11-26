@@ -5,6 +5,6 @@ const router = {
     login: '/login',
     signup: '/signup',
     resetpass: '/resetpass',
-    solution: '/practice/solution'
+    solution: '/practice/solution/:id',
 };
 export default router;

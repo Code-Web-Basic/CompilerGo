@@ -1,24 +1,6 @@
-.Control-container {
-    height: 100%;
-    width: 100%;
+.output {
+    font-size: 15px;
 }
-
-.header {
-    height: 30px;
-    display: flex;
-    align-items: center;
-    padding: 5px 10px;
-}
-.content {
-    height: calc(100% - 30px);
-}
-.btn-control {
-    font-size: 1.2rem;
-    font-weight: 500;
-}
-.btn-control {
-    &.active {
-        color: var(--primary);
-        border-bottom: 1px solid var(--primary);
-    }
+.problem {
+    font-size: 15px;
 }

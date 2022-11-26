@@ -10,18 +10,29 @@ import { VscAccount } from 'react-icons/vsc';
 import { ConfigRouter } from '~/config';
 import images from '~/asset/images';
 import Button from '~/components/Button/Button';
-import { logOutUser } from '~/redux/apiRequest';
+import { loginGoogleUser, logOutUser } from '~/redux/apiRequest';
 import axios from 'axios';
 import jwt_decode from 'jwt-decode';
 import { loginSuccess } from '~/redux/authSlice';
 import { createAxios } from '~/createInstance';
+import { useEffect } from 'react';
 const cx = classNames.bind(styles);
 
 function Header() {
-    const user = useSelector((state) => state.auth.login?.currentUser);
+    let user = useSelector((state) => state.auth.login?.currentUser);
     // const user = null;
     // console.log(user);
-    const id = user?.user._id;
+    useEffect(() => {
+        async function fetchData() {
+            await loginGoogleUser(dispatch);
+            if (user.success === false) {
+                console.log('ho');
+                user = null;
+            }
+        }
+        fetchData();
+    }, [user?.success]);
+    const id = user?.user?._id;
     const accessToken = user?.accessToken;
     // console.log(id, accessToken);
     const dispatch = useDispatch();
@@ -47,11 +58,11 @@ function Header() {
                 <Button className={cx('control_item')} text to={ConfigRouter.practice}>
                     Practice
                 </Button>
-                {user ? (
+                {user?.success === true ? (
                     <div
                         style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginLeft: '20px' }}
                     >
-                        <span className={cx('name-user')}>{user && `${user.user.email}`}</span>
+                        <span className={cx('name-user')}>{user && `${user?.user?.email}`}</span>
                         <Button
                             className={cx('control_account')}
                             primary

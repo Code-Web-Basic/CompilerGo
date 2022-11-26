@@ -16,8 +16,7 @@ const compileCPP = function (envData, code, fn) {
                 console.log('INFO: '.green + filename + '.cpp created');
                 if (envData.OS === 'windows') {
                     //compile c code
-                    const command = 'g++ ' + path + filename + '.cpp -o ' + path + filename + '.exe';
-
+                    const command = 'g++ ' + path + filename + '.cpp  -o ' + path + filename;
                     exec(command, function (error, stdout, stderr) {
                         if (error) {
                             if (exports.stats) {
@@ -27,8 +26,11 @@ const compileCPP = function (envData, code, fn) {
                             fn(out);
                         } else {
                             var progNotFinished = true;
-                            var tempCommand = 'cd temp & ' + filename;
+                            var tempCommand = ' ./temp/' + filename;
                             exec(tempCommand, function (error, stdout, stderr) {
+                                console.log(error, 'error');
+                                console.log(stdout, 'stdout');
+                                console.log(stderr, 'stderr');
                                 if (error) {
                                     if (error.toString().indexOf('Error: stdout maxBuffer exceeded.') != -1) {
                                         var out = {
@@ -62,18 +64,11 @@ const compileCPP = function (envData, code, fn) {
                                 // kill the programme after envData.options.timeout ms
                                 setTimeout(function () {
                                     exec(
-                                        'taskkill /im ' + filename + '.exe /f > nul',
+                                        'taskkill /im ./temp/' + filename + '.out /f > nul',
                                         function (error, stdout, stderr) {
                                             if (progNotFinished) {
                                                 progNotFinished = false; // programme finished
                                                 if (exports.stats) {
-                                                    console.log(
-                                                        'INFO: '.green +
-                                                            filename +
-                                                            '.exe was killed after ' +
-                                                            envData.options.timeout +
-                                                            'ms',
-                                                    );
                                                 }
                                                 var out = { timeout: true };
                                                 fn(out);
@@ -99,10 +94,20 @@ const compileCPPWithInput = function (envData, code, input, fn) {
             else {
                 console.log('INFO: '.green + filename + '.cpp created');
                 if (envData.OS === 'windows') {
-                    //compile c code
-                    // const command =
-                    //     'cd ' + path + ' && g++ ' + filename + '.cpp -o ' + filename + ' && ' + path + filename;
-                    const command = 'g++ ' + path + filename + '.cpp -o ' + path + filename + '.exe';
+                    const command =
+                        'g++ ' +
+                        path +
+                        filename +
+                        '.cpp  -o ' +
+                        path +
+                        filename +
+                        ' & echo ' +
+                        input +
+                        ' > ' +
+                        path +
+                        filename +
+                        '.txt';
+
                     console.log(command);
                     exec(command, function (error, stdout, stderr) {
                         console.log(command);
@@ -116,19 +121,11 @@ const compileCPPWithInput = function (envData, code, input, fn) {
                             fn(out);
                         } else {
                             if (input) {
-                                var inputFile = filename + 'input.txt';
                                 console.log('create input file');
-                                fs.writeFile(path + inputFile, input, function (err) {
-                                    console.log(command, 'end');
-                                    if (exports.stats) {
-                                        if (err) console.log('ERROR: '.red + err);
-                                        else console.log('INFO: '.green + inputFile + ' (inputFile) created');
-                                    }
-                                });
                                 var progNotFinished = true;
-                                var tempCommand = 'cd temp & ' + filename;
-
-                                exec(tempCommand + '<' + inputFile, function (error, stdout, stderr) {
+                                var tempCommand = ' ./temp/' + filename;
+                                var tempInput = './temp/' + filename + '.txt';
+                                exec(tempCommand + ' < ' + tempInput, function (error, stdout, stderr) {
                                     if (error) {
                                         if (error.toString().indexOf('Error: stdout maxBuffer exceeded.') != -1) {
                                             var out = {
@@ -161,30 +158,6 @@ const compileCPPWithInput = function (envData, code, input, fn) {
                                         }
                                     }
                                 });
-                                if (true) {
-                                    // kill the programme after envData.options.timeout ms
-                                    setTimeout(function () {
-                                        exec(
-                                            'taskkill /im ' + filename + '.exe /f > nul',
-                                            function (error, stdout, stderr) {
-                                                if (progNotFinished) {
-                                                    progNotFinished = false; // programme finished
-                                                    if (exports.stats) {
-                                                        console.log(
-                                                            'INFO: '.green +
-                                                                filename +
-                                                                '.exe was killed after ' +
-                                                                envData.options.timeout +
-                                                                'ms',
-                                                        );
-                                                    }
-                                                    var out = { timeout: true };
-                                                    fn(out);
-                                                }
-                                            },
-                                        );
-                                    }, 500);
-                                }
                             } //input not provided
                             else {
                                 if (exports.stats) {

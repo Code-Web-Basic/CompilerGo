@@ -2,7 +2,12 @@ import { UserModel } from '../models/user.model';
 import bcryptjs from 'bcryptjs';
 import JWT from 'jsonwebtoken';
 import { any } from 'joi';
-
+import { csCompileService } from '../services/csCompile.service';
+import { cppCompileService } from '../services/cppCompile.service';
+import { JavaCompileService } from '../services/javaCompile.service';
+import { pythonCompileService } from '../services/pythonCompile.service';
+import { PracticeModel } from '../models/practice.model';
+import axios from 'axios';
 const encodedAccessToken = (userId) => {
     return JWT.sign(
         {
@@ -64,4 +69,47 @@ const getAllUser = async () => {
         throw new Error(error);
     }
 };
-export const UserService = { register, isValidPassword, encodedAccessToken, login, getAllUser, encodedRefreshToken };
+const submitCode = async (data, fn) => {
+    try {
+        const input = await PracticeModel.findOneById(data.practiceId);
+        const listResult = input.testCase.map(async (item) => {
+            let c = null;
+            await axios
+                .post('http://localhost:3240/v1/compile/input', {
+                    chooseLanguage: data.language,
+                    code: data.code,
+                    input: item.input,
+                })
+                .then((data) => {
+                    if (data.data.error) {
+                        c = data.data.data.error;
+                    } else {
+                        c = data.data.data.output;
+                    }
+                })
+                .finally(() => {});
+            const temp = c?.replace(/(\r\n|\n|\r)/gm, ',').slice(0, -1);
+            if (temp === item.output.toString()) {
+                return { success: true };
+            } else {
+                return { success: false };
+            }
+        });
+        let c = Promise.all(listResult).then((value) => {
+            return value;
+        });
+        c.then(async (dataResult) => {
+            const result = await UserModel.submitCode(data, dataResult);
+            fn(result);
+        });
+    } catch (error) {}
+};
+export const UserService = {
+    register,
+    isValidPassword,
+    encodedAccessToken,
+    login,
+    getAllUser,
+    encodedRefreshToken,
+    submitCode,
+};
