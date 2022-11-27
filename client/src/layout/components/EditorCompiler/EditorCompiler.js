@@ -42,8 +42,9 @@ function EditorCompiler({ result, setResult, err, setErr }) {
                 chooseLanguage: chooseLanguage,
                 code: code,
             });
-            setResult(res.data?.output);
-            setErr(res.data?.error);
+            console.log(res);
+            setResult(res.data.output);
+            setErr(res.data.error);
             // axios
             //     .post('http://localhost:3240/v1/compile', {
             //         chooseLanguage: chooseLanguage,
@@ -63,8 +64,8 @@ function EditorCompiler({ result, setResult, err, setErr }) {
                 code: code,
                 input: inputComp,
             });
-            setResult(res.data?.output);
-            setErr(res.data?.error);
+            setResult(res.data.output);
+            setErr(res.data.error);
             // axios
             //     .post('http://localhost:3240/v1/compile/input', {
             //         chooseLanguage: chooseLanguage,

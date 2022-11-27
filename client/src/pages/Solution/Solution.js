@@ -130,8 +130,8 @@ function Solution() {
                 userId: user.user._id,
                 practiceId: id,
             });
-            setResult(res?.data);
-            setError(res?.error);
+            setResult(res.data);
+            setError(res.error);
         } catch (error) {
             setError(error);
         }
