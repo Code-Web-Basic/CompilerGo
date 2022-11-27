@@ -4,7 +4,7 @@ import passport from 'passport';
 import { ApiV1 } from './routes/v1';
 import { connectDB } from './config/mongodb';
 import { env } from './config/environment';
-
+const path = require('path');
 import cors from 'cors';
 import cookieSession from 'cookie-session';
 connectDB()
@@ -28,6 +28,7 @@ const bootServer = () => {
             maxAge: 24 * 60 * 60 * 1000, // 24 hours
         }),
     );
+    app.use(express.static(path.join(__dirname, '..', 'public')));
     app.use(passport.initialize());
     app.use(passport.session());
     app.use(cors({ origin: 'http://localhost:3000', methods: 'GET,POST,PUT,DELETE', credentials: true }));
