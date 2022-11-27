@@ -2,25 +2,63 @@ import classNames from 'classnames/bind';
 import styles from './Solution.module.scss';
 import axios from 'axios';
 //
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 //component
-import ConsoleCompiler from '~/layout/components/ConsoleCompiler';
 import ControlCompiler from '~/layout/components/ControlCompiler';
 import EditorCompiler from '~/layout/components/EditorCompiler';
 import { useParams } from 'react-router-dom';
 import MonacoEditor from '@monaco-editor/react';
-import Button from '~/components/Button/Button';
 import { BsX, BsPlayFill } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
+//icon
+import { BsXCircleFill, BsExclamationOctagonFill } from 'react-icons/bs';
+//component
+import Button from '~/components/Button/Button';
+//
+import PropTypes from 'prop-types';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 const cx = classNames.bind(styles);
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box sx={{ p: 3 }}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
+}
 
+TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
 function Solution() {
     const [heightEditor, setHeightEditor] = useState('');
     const [heightConsole, setHeightConsole] = useState('');
     const [practices, setPractice] = useState([]);
     const [chooselanguage, setChooselanguage] = useState('cpp');
     const [result, setResult] = useState([]);
-    const [error, setError] = useState('');
+    const [err, setError] = useState('');
     const [code, setCode] = useState('');
     const EditorContainer = useRef(null);
     let user = useSelector((state) => state.auth.login?.currentUser);
@@ -97,7 +135,10 @@ function Solution() {
                 setError(error);
             });
     };
-    console.log(result + ' ' + error);
+    const [value, setValue] = React.useState(0);
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
+    };
     return (
         <div className={cx('wrapper')}>
             <div className={cx('topic')}>
@@ -182,7 +223,47 @@ function Solution() {
                     </div>
                     <div className={cx('resizing-compiler')} id="resizing-compiler-js" onMouseDown={InitResize}></div>
                     <div className={cx('console')} id="console-js" style={{ height: `${heightConsole}px` }}>
-                        <ConsoleCompiler />
+                        <div className={cx('container')}>
+                            <div className={cx('sub')}>
+                                <div className={cx('Control-container')}>
+                                    <Box sx={{ width: '100%' }}>
+                                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                            <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                                                <Tab
+                                                    label="TestCase 1"
+                                                    {...a11yProps(0)}
+                                                    sx={{ fontSize: '15px', fontWeight: '600' }}
+                                                />
+                                                <Tab
+                                                    label="TestCase 2"
+                                                    {...a11yProps(1)}
+                                                    sx={{ fontSize: '15px', fontWeight: '600' }}
+                                                />
+                                            </Tabs>
+                                        </Box>
+                                        <TabPanel value={value} index={0}>
+                                            <div className={cx('testcase')}>
+                                                {result.length !== 0
+                                                    ? result[0].success === true
+                                                        ? 'pass'
+                                                        : 'no pass'
+                                                    : ''}
+                                            </div>
+                                        </TabPanel>
+                                        <TabPanel value={value} index={1}>
+                                            <div className={cx('testcase')}>
+                                                {result.length !== 0
+                                                    ? result[1].success === true
+                                                        ? 'pass'
+                                                        : 'no pass'
+                                                    : ''}
+                                            </div>
+                                        </TabPanel>
+                                    </Box>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={cx('control-bottom')}>.</div>
                     </div>
                 </div>
             </div>
