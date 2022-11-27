@@ -2,8 +2,9 @@ import axios from 'axios';
 import queryString from 'query-string';
 
 import PropTypes from 'prop-types';
+// console.log(process.env.REACT_APP_BASE_URL);
 const httpRequest = axios.default.create({
-    baseURL: 'http://localhost:3240/v1/',
+    baseURL: process.env.REACT_APP_BASE_URL,
     // withCredentials: true,
     withCredentials: true,
     headers: {

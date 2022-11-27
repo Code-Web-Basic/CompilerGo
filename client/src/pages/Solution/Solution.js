@@ -1,13 +1,11 @@
 import classNames from 'classnames/bind';
 import styles from './Solution.module.scss';
-import axios from 'axios';
 //
-import { useState, useRef, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 //component
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-import SolutionTestCase from '~/layout/components/SolutionTestCase/SolutionTestCase';
-
+import * as practiceService from '~/services/PracticeService';
 const cx = classNames.bind(styles);
 
 function Solution() {
@@ -18,15 +16,20 @@ function Solution() {
 
     const { id } = useParams();
     useEffect(() => {
-        axios
-            .get(`http://localhost:3240/v1/practice/findOneById/${id}`)
-            .then(function (response) {
-                //console.log(response.data);
-                setPractice(response.data.data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        const ApiRequest = async () => {
+            const res = await practiceService.getPracticeId(id);
+            setPractice(res.data);
+        };
+        ApiRequest();
+        // axios
+        //     .get(`http://localhost:3240/v1/practice/findOneById/${id}`)
+        //     .then(function (response) {
+        //         //console.log(response.data);
+        //         setPractice(response.data.data);
+        //     })
+        //     .catch(function (error) {
+        //         console.log(error);
+        //     });
     }, [id]);
     const handlechanelanguage = (e) => {
         if (e.target.value === 'C++') {
@@ -46,22 +49,32 @@ function Solution() {
         setCode(value);
     }
     const handleSubmit = () => {
-        axios
-            .post('localhost:3240/v1/users/submitCode', {
+        const ApiRequest = async () => {
+            const res = await practiceService.submitCodeUser({
                 language: chooseLanguage,
                 code: code,
                 userId: user.user?._id,
                 practiceId: id,
-            })
-            .then(function (response) {
-                console.log(response.data);
-                //setResult(response.data.data.output);
-                //setErr(response.data.data.error);
-            })
-            .catch(function (error) {
-                console.log(error);
-                //setErr(error);
             });
+            console.log(res.data);
+        };
+        ApiRequest();
+        // axios
+        //     .post('localhost:3240/v1/users/submitCode', {
+        //         language: chooseLanguage,
+        //         code: code,
+        //         userId: user.user?._id,
+        //         practiceId: id,
+        //     })
+        //     .then(function (response) {
+        //         console.log(response.data);
+        //         //setResult(response.data.data.output);
+        //         //setErr(response.data.data.error);
+        //     })
+        //     .catch(function (error) {
+        //         console.log(error);
+        //         //setErr(error);
+        //     });
     };
     return (
         <div className={cx('wrapper')}>
@@ -101,9 +114,7 @@ function Solution() {
                     </div>
                 }
             </div>
-            <div className={cx('solution')}>
-                <SolutionTestCase />
-            </div>
+            <div className={cx('solution')}>{/* <SolutionTestCase /> */}</div>
         </div>
     );
 }

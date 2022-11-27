@@ -7,6 +7,8 @@ import { BsX, BsPlayFill } from 'react-icons/bs';
 import { useState } from 'react';
 import axios from 'axios';
 import { Typography } from '@mui/material';
+import * as compilerService from '~/services/CompilerService';
+
 const cx = classNames.bind(styles);
 
 function EditorCompiler({ result, setResult, err, setErr }) {
@@ -35,37 +37,50 @@ function EditorCompiler({ result, setResult, err, setErr }) {
             setFifeType('py');
         }
     };
-    const handleRunCode = () => {
+    const handleRunCode = async () => {
         if (inputComp === '') {
-            axios
-                .post('http://localhost:3240/v1/compile', {
-                    chooseLanguage: chooseLanguage,
-                    code: code,
-                })
-                .then(function (response) {
-                    //console.log(response.data.data.output);
-                    setResult(response.data.data.output);
-                    setErr(response.data.data.error);
-                })
-                .catch(function (error) {
-                    setErr(error);
-                });
+            const res = await compilerService.compilerRun({
+                chooseLanguage: chooseLanguage,
+                code: code,
+            });
+            setResult(res.data?.output);
+            setErr(res.data?.error);
+            // axios
+            //     .post('http://localhost:3240/v1/compile', {
+            //         chooseLanguage: chooseLanguage,
+            //         code: code,
+            //     })
+            //     .then(function (response) {
+            //         //console.log(response.data.data.output);
+            //         setResult(response.data.data.output);
+            //         setErr(response.data.data.error);
+            //     })
+            //     .catch(function (error) {
+            //         setErr(error);
+            //     });
         } else {
-            axios
-                .post('http://localhost:3240/v1/compile/input', {
-                    chooseLanguage: chooseLanguage,
-                    code: code,
-                    input: inputComp,
-                })
-                .then(function (response) {
-                    //console.log(response.data.data.output);
-                    setResult(response.data.data.output);
-                    setErr(response.data.data.error);
-                })
-                .catch(function (error) {
-                    //console.log('error');
-                    setErr(error);
-                });
+            const res = await compilerService.compilerRunInput({
+                chooseLanguage: chooseLanguage,
+                code: code,
+                input: inputComp,
+            });
+            setResult(res.data?.output);
+            setErr(res.data?.error);
+            // axios
+            //     .post('http://localhost:3240/v1/compile/input', {
+            //         chooseLanguage: chooseLanguage,
+            //         code: code,
+            //         input: inputComp,
+            //     })
+            //     .then(function (response) {
+            //         //console.log(response.data.data.output);
+            //         setResult(response.data.data.output);
+            //         setErr(response.data.data.error);
+            //     })
+            //     .catch(function (error) {
+            //         //console.log('error');
+            //         setErr(error);
+            //     });
         }
     };
 

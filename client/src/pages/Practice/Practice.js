@@ -1,14 +1,15 @@
 import classNames from 'classnames/bind';
 import { useEffect, useState } from 'react';
-import axios from 'axios';
 
 import styles from './Practice.module.scss';
 import Button from '~/components/Button';
 import { useSelector } from 'react-redux';
 //component style
-import { Box, Tab, Tabs, Alert } from '@mui/material';
+import { Box, Tab, Alert } from '@mui/material';
 import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Link } from 'react-router-dom';
+
+import * as PracticeService from '~/services/PracticeService';
 const cx = classNames.bind(styles);
 
 function Practice() {
@@ -16,21 +17,28 @@ function Practice() {
     const [title, setTitle] = useState([]);
     let user = useSelector((state) => state.auth.login?.currentUser);
     useEffect(() => {
-        axios
-            .get(`http://localhost:3240/v1/practice/getList/${user.user._id}`)
-            .then(function (response) {
-                setTitle(response.data.data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
+        const ApiRequest = async () => {
+            if (user.user) {
+                const res = await PracticeService.getPracticeUser(user.user._id);
+                setTitle(res.data);
+                // axios
+                //     .get(`http://localhost:3240/v1/practice/getList/${user.user._id}`)
+                //     .then(function (response) {
+                //         setTitle(response.data.data);
+                //     })
+                //     .catch(function (error) {
+                //         console.log(error);
+                //     });
+            }
+        };
+        ApiRequest();
     }, [user]);
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
     return (
         <>
-            {!user ? (
+            {!user.user ? (
                 <div style={{ fontSize: '30px' }}>
                     <Alert severity="warning">Login Now</Alert>
                 </div>
