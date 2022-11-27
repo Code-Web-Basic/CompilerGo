@@ -5,7 +5,7 @@ var cuid = require('cuid');
 const compileJava = function (envData, code, fn) {
     //creating source file
     var dirname = cuid.slug();
-    const path = process.cwd() + '\\temp\\' + dirname;
+    const path = process.cwd() + '/temp/' + dirname;
     console.log(path);
     fs.mkdir(path, '0777', function (err) {
         if (err && exports.stats) console.log(err.toString().red);
@@ -15,17 +15,20 @@ const compileJava = function (envData, code, fn) {
                 else {
                     if (exports.stats) console.log('INFO: '.green + path + '/Main.java created');
 
-                    if (envData.OS === 'windows') var command = 'cd ' + path + ' && ' + ' javac Main.java && java Main';
+                    // if (envData.OS === 'windows') var command = 'cd ' + path + ' && ' + ' javac Main.java && java Main';
+                    if (envData.OS === 'windows') var command = 'cd ' + path + ' && ' + ' javac Main.java';
                     console.log(command);
                     exec(command, function (error, stdout, stderr) {
                         if (error) {
                             if (exports.stats)
                                 console.log('INFO: '.green + path + '/Main.java contained an error while compiling');
-                            var out = { error: stderr };
+                            var out = { error: stderr, mess: stdout };
                             fn(out);
                         } else {
                             console.log('INFO: '.green + 'compiled a java file');
-                            var command = 'cd ' + path + ' & java Main';
+                            var command = 'java ./temp/' + dirname + '/Main.java';
+                            console.log(command, 'eyowhatup');
+                            // './' + path + '
                             exec(command, function (error, stdout, stderr) {
                                 if (error) {
                                     if (error.toString().indexOf('Error: stdout maxBuffer exceeded.') != -1) {
@@ -74,18 +77,20 @@ const compileJavaWithInput = function (envData, code, input, fn) {
                     fs.writeFile(path + '/input.txt', input, function (err) {
                         if (err && exports.stats) console.log('ERROR: '.red + err);
                         else {
-                            if (envData.OS === 'windows') var command = 'cd ' + path + ' & ' + ' javac Main.java';
+                            if (envData.OS === 'windows') var command = 'cd ' + path + ' && ' + ' javac Main.java';
                             exec(command, function (error, stdout, stderr) {
                                 if (error) {
                                     if (exports.stats)
                                         console.log(
                                             'INFO: '.green + path + '/Main.java contained an error while compiling',
                                         );
-                                    var out = { error: stderr };
+                                    var out = { error: stderr, mes: 'yo' };
                                     fn(out);
                                 } else {
                                     console.log('INFO: '.green + 'compiled a java file');
-                                    var command = 'cd ' + path + ' & java Main < input.txt';
+                                    var command =
+                                        'java ./temp/' + dirname + '/Main.java < ./temp/' + dirname + '/input.txt';
+                                    console.log(command, 'yoaimo');
                                     exec(command, function (error, stdout, stderr) {
                                         if (error) {
                                             if (exports.stats) {
@@ -101,7 +106,7 @@ const compileJavaWithInput = function (envData, code, input, fn) {
                                                 };
                                                 fn(out);
                                             } else {
-                                                var out = { error: stderr };
+                                                var out = { error: stderr, mes: 'hehe' };
                                                 fn(out);
                                             }
                                         } else {

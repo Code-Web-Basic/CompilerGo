@@ -17,7 +17,7 @@ const publicRoutes = [
     { path: ConfigRouter.login, component: Login, layout: null },
     { path: ConfigRouter.signup, component: Signup, layout: null },
     { path: ConfigRouter.resetpass, component: Resetpass, layout: null },
-    { path: ConfigRouter.solution, component: Solution },
+    { path: ConfigRouter.solution, component: Solution, layout: null },
 ];
 
 const privateRoutes = [];

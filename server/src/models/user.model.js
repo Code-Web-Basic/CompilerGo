@@ -83,25 +83,31 @@ const getAllUser = async () => {
     const result = await getDB().collection(userCollectionName).find({}).toArray();
     return result;
 };
-const submitCode = async (data, result, status) => {
+const submitCode = async (data, result) => {
     try {
         const user = await findOneById(data.userId);
-        if (status === true) {
-            if (user.practice.filter((e) => e.practiceId === data.practiceId).length > 0) {
-                return { output: 'Dã hoàn thành task này' };
-            } else {
+        let isCompleted = true;
+        result.forEach((element) => {
+            if (element.success === false) {
+                isCompleted = false;
+            }
+        });
+        if (isCompleted === true) {
+            if (
+                user.practice?.filter((e) => e.practiceId === data.practiceId && e.language === data.language).length ==
+                    0 ||
+                !user.practice
+            ) {
                 await getDB()
                     .collection(userCollectionName)
                     .findOneAndUpdate(
                         { _id: ObjectId(data.userId) },
                         { $push: { practice: { practiceId: data.practiceId, language: data.language } } },
                     );
-                return result;
             }
             // console.log(user);
-        } else {
-            return { error: 'Wrong' };
         }
+        return result;
     } catch (error) {
         throw new Error(error);
     }
