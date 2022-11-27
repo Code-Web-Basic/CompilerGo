@@ -1,5 +1,27 @@
 {
-  "dependencies": {
-    "antd": "^5.0.0"
-  }
+    "name": "compilergo",
+    "version": "1.0.0",
+    "description": "Tên đề tài: \"Xây dựng trang web viết code online cho Java, C#, Python, C++\"\r ----------------------------\r Project use ReactJS + NodeJS + MongoDB + Redux\r Project Name : CompilerGo\r Thành Viên: \r +Nguyễn Đình Hiếu 20142498\r +Vũ Thanh Sang 20110555\r +Nguyễn Văn Tú 20110591\r ----------------------------\r API \r User\r Sign Up: Post http://localhost:3240/v1/users/signUp (truyền vào email, password (firstName,lastName không bắt buộc ))\r Sign In: Post http://localhost:3240/v1/users/signIn (truyền vào email , password)\r Google authentication: Get http://localhost:3240/v1/users/auth/google/\r Github authentication: Get http://localhost:3240/v1/users/auth/github/\r Data trả về khi authentication(google,github) : get http://localhost:3240/v1/users/signIn/success",
+    "main": "index.js",
+    "scripts": {
+        "install-server": "npm install --prefix server",
+        "install-client": "npm install --prefix client",
+        "install": "npm run install-server && npm run install-client",
+        "server": "npm run dev --prefix server",
+        "client": "npm start --prefix client ",
+        "watch": "npm run server & npm run client",
+        "deploy": "npm run build --prefix client && npm run dev --prefix server",
+        "test": "npm run test --prefix server && npm run test --prefix client"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/Code-App-HCMUTE/CompilerGo.git"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/Code-App-HCMUTE/CompilerGo/issues"
+    },
+    "homepage": "https://github.com/Code-App-HCMUTE/CompilerGo#readme"
 }
