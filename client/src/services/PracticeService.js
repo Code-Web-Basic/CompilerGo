@@ -41,8 +41,8 @@ export const submitCodeUser = async (language, code, userId, practiceId) => {
 };
 
 submitCodeUser.Prototypes = {
-    id: PropTypes.string,
-    page: PropTypes.number,
     language: PropTypes.string,
-    include_adult: PropTypes.bool,
+    code: PropTypes.string,
+    userId: PropTypes.string,
+    practiceId: PropTypes.string,
 };

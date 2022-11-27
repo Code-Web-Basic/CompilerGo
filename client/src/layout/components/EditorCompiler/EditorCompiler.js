@@ -5,7 +5,6 @@ import MonacoEditor from '@monaco-editor/react';
 import Button from '~/components/Button/Button';
 import { BsX, BsPlayFill } from 'react-icons/bs';
 import { useState } from 'react';
-import axios from 'axios';
 import { Typography } from '@mui/material';
 import * as compilerService from '~/services/CompilerService';
 

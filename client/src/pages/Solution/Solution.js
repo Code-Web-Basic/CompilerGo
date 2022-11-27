@@ -1,5 +1,4 @@
 import styles from './Solution.module.scss';
-import axios from 'axios';
 import classNames from 'classnames/bind';
 //
 import React, { useState, useRef, useEffect } from 'react';
@@ -13,6 +12,7 @@ import { useSelector } from 'react-redux';
 
 //component
 import Button from '~/components/Button/Button';
+import * as practiceService from '~/services/PracticeService';
 //
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
@@ -55,7 +55,7 @@ function Solution() {
     const [heightEditor, setHeightEditor] = useState('');
     const [heightConsole, setHeightConsole] = useState('');
     const [practices, setPractice] = useState([]);
-    const [chooselanguage, setChooselanguage] = useState('cpp');
+    const [chooseLanguage, setChooseLanguage] = useState('cpp');
     const [result, setResult] = useState([]);
     const [err, setError] = useState('');
     const [code, setCode] = useState('');
@@ -88,49 +88,68 @@ function Solution() {
     };
     const { id } = useParams();
     useEffect(() => {
-        axios
-            .get(`http://localhost:3240/v1/practice/findOneById/${id}`)
-            .then(function (response) {
-                //console.log(response.data);
-                setPractice(response.data.data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }, []);
+        const ApiRequest = async () => {
+            const res = await practiceService.getPracticeId(id);
+            setPractice(res.data);
+        };
+        ApiRequest();
+        console.log(practices);
+
+        // axios
+        //     .get(`http://localhost:3240/v1/practice/findOneById/${id}`)
+        //     .then(function (response) {
+        //         //console.log(response.data);
+        //         setPractice(response.data.data);
+        //     })
+        //     .catch(function (error) {
+        //         console.log(error);
+        //     });
+    }, [id]);
     const handlechanelanguage = (e) => {
         if (e.target.value === 'C++') {
-            setChooselanguage('cpp');
+            setChooseLanguage('cpp');
         }
         if (e.target.value === 'C#') {
-            setChooselanguage('cs');
+            setChooseLanguage('cs');
         }
         if (e.target.value === 'Java') {
-            setChooselanguage('java');
+            setChooseLanguage('java');
         }
         if (e.target.value === 'Python') {
-            setChooselanguage('python');
+            setChooseLanguage('python');
         }
     };
     function handleEditorChange(value) {
         setCode(value);
     }
-    const handleSubmit = () => {
-        axios
-            .post('http://localhost:3240/v1/users/submitCode', {
-                language: chooselanguage,
+    const handleSubmit = async () => {
+        try {
+            const res = await practiceService.submitCodeUser({
+                language: chooseLanguage,
                 code: code,
                 userId: user.user._id,
                 practiceId: id,
-            })
-            .then(function (response) {
-                console.log(response);
-                setResult(response.data.data);
-                setError(response.data.error);
-            })
-            .catch(function (error) {
-                setError(error);
             });
+            setResult(res?.data);
+            setError(res?.error);
+        } catch (error) {
+            setError(error);
+        }
+        // axios
+        //     .post('http://localhost:3240/v1/users/submitCode', {
+        //         language: chooseLanguage,
+        //         code: code,
+        //         userId: user.user._id,
+        //         practiceId: id,
+        //     })
+        //     .then(function (response) {
+        //         console.log(response);
+        //         setResult(response.data.data);
+        //         setError(response.data.error);
+        //     })
+        //     .catch(function (error) {
+        //         setError(error);
+        //     });
     };
     const [value, setValue] = React.useState(0);
     const handleChange = (event, newValue) => {
@@ -207,7 +226,7 @@ function Solution() {
                                 height="100%"
                                 width="100%"
                                 theme="vs-light"
-                                language={chooselanguage} //cpp, java, python,cs
+                                language={chooseLanguage} //cpp, java, python,cs
                                 onChange={handleEditorChange}
                             />
                         </div>

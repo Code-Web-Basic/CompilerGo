@@ -1,5 +1,4 @@
 import { ConfigRouter } from '~/config';
-import axios from 'axios';
 import * as httpRequest from '~/utils/httpRequest';
 import {
     loginStart,
@@ -53,7 +52,7 @@ export const logOutUser = async (id, dispatch, navigate, accessToken, axiosJWT) 
     dispatch(logOutStart());
     try {
         console.log(accessToken);
-        await axiosJWT.post('http://localhost:3240/v1/users/logout', id, {
+        await axiosJWT.post(`${process.env.REACT_APP_BASE_URL}/v1/users/logout`, id, {
             headers: {
                 token: `Bearer ${accessToken}`,
             },

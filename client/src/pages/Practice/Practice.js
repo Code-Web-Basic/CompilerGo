@@ -10,7 +10,6 @@ import { TabContext, TabList, TabPanel } from '@mui/lab';
 import { Link } from 'react-router-dom';
 
 import * as PracticeService from '~/services/PracticeService';
-import axios from 'axios';
 const cx = classNames.bind(styles);
 
 function Practice() {
