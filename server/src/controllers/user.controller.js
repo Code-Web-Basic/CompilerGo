@@ -89,7 +89,7 @@ const googleCallBack = [
     }),
     (req, res) => {
         userInfo = req.user;
-        res.redirect('http://localhost:3240');
+        res.redirect(`http://${process.env.APP_HOST}:3240`);
     },
 ];
 const githubCallBack = [
@@ -98,7 +98,7 @@ const githubCallBack = [
     }),
     (req, res) => {
         userInfo = req.user;
-        res.redirect('http://localhost:3240');
+        res.redirect(`http://${process.env.APP_HOST}:3240`);
     },
 ];
 const logout = (req, res, next) => {

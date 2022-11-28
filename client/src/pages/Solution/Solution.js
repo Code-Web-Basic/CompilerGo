@@ -125,7 +125,7 @@ function Solution() {
     }
     const handleSubmit = async () => {
         axios
-            .post('http://localhost:3240/v1/users/submitCode', {
+            .post(`${process.env.REACT_APP_BASE_URL}/users/submitCode`, {
                 language: chooseLanguage,
                 code: code,
                 userId: user.user._id,

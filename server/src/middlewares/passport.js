@@ -44,7 +44,7 @@ passport.use(
         {
             clientID: env.GOOGLE_CLIENT_ID,
             clientSecret: env.GOOGLE_CLIENT_SECRET,
-            callbackURL: 'http://localhost:3240/v1/users/auth/google/callback',
+            callbackURL: `http://${process.env.APP_HOST}:3240/v1/users/auth/google/callback`,
         },
         async (req, accessToken, refreshToken, profile, done) => {
             try {
@@ -75,7 +75,7 @@ passport.use(
         {
             clientID: env.GITHUB_CLIENT_ID,
             clientSecret: env.GITHUB_CLIENT_SECRET,
-            callbackURL: 'http://localhost:3240/v1/users/auth/github/callback',
+            callbackURL: `http://${process.env.APP_HOST}:3240/v1/users/auth/github/callback`,
             passReqToCallback: true,
             proxy: true,
             scope: ['user:email'], //This is all it takes to get emails
