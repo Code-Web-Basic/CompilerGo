@@ -50,7 +50,7 @@ function Login() {
 
     const handleLoginWithGoogle = async (e) => {
         e.preventDefault();
-        window.open('http://localhost:3240/v1/users/auth/google/', '_self');
+        window.open(`${process.env.REACT_APP_BASE_URL}/users/auth/google/`, '_self');
         loginGoogleUser(dispatch);
     };
     const handleLoginWithFacebook = () => {};

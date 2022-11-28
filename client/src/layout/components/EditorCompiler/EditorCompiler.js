@@ -4,7 +4,7 @@ import styles from './EditorCompiler.module.scss';
 import MonacoEditor from '@monaco-editor/react';
 import Button from '~/components/Button/Button';
 import { BsX, BsPlayFill } from 'react-icons/bs';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Typography } from '@mui/material';
 import * as compilerService from '~/services/CompilerService';
 import axios from 'axios';
@@ -12,10 +12,20 @@ import axios from 'axios';
 const cx = classNames.bind(styles);
 
 function EditorCompiler({ result, setResult, err, setErr }) {
+    const cpp =
+        '#include <iostream>\n\nusing namespace std;\n\nint main() {\n    cout<<"hello world";\n    return 0;\n}';
+    const cs =
+        'using System;\r\n\r\nnamespace Main {\r\n    class Program {\r\n        static void Main(string[] args) {\r\n            Console.WriteLine("Hello World!");\r\n        }\r\n    }\r\n}';
+    const java =
+        'public class Main {\r\n    public static void main(String[] args) {\r\n        System.out.println("Hello World!");\r\n    }\r\n}';
+    const py = 'print("hello world!");';
     const [chooseLanguage, setChooseLanguage] = useState('cpp');
-    const [code, setCode] = useState('');
+    const [code, setCode] = useState(cpp);
     const [inputComp, setInputComp] = useState('');
     const [fifeType, setFifeType] = useState('cpp');
+    const [value, setvalue] = useState(
+        '#include <iostream>\n\nusing namespace std;\n\nint main() {\n    cout<<"hello world";\n    return 0;\n}',
+    );
     function handleEditorChange(value) {
         setCode(value);
     }
@@ -23,24 +33,32 @@ function EditorCompiler({ result, setResult, err, setErr }) {
         if (e.target.value === 'C++') {
             setChooseLanguage('cpp');
             setFifeType('cpp');
+            setvalue(cpp);
+            setCode(cpp);
         }
         if (e.target.value === 'C#') {
             setChooseLanguage('cs');
             setFifeType('cs');
+            setvalue(cs);
+            setCode(cs);
         }
         if (e.target.value === 'Java') {
             setChooseLanguage('java');
             setFifeType('java');
+            setvalue(java);
+            setCode(java);
         }
         if (e.target.value === 'Python') {
             setChooseLanguage('python');
             setFifeType('py');
+            setvalue(py);
+            setCode(py);
         }
     };
     const handleRunCode = async () => {
         if (inputComp === '') {
             console.log('test');
-
+            console.log('value: ' + value);
             axios
                 .post(`${process.env.REACT_APP_BASE_URL}/compile`, {
                     chooseLanguage: chooseLanguage,
@@ -123,6 +141,7 @@ function EditorCompiler({ result, setResult, err, setErr }) {
                     width="100%"
                     theme="vs-light"
                     language={chooseLanguage} //cpp, java, python,cs
+                    value={value}
                     onChange={handleEditorChange}
                 />
                 <div className={cx('input-compiler')}>
