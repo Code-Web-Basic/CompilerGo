@@ -53,13 +53,24 @@ function a11yProps(index) {
     };
 }
 function Solution() {
+    const cpp =
+        '#include <iostream>\n\nusing namespace std;\n\nint main() {\n    cout<<"hello world";\n    return 0;\n}';
+    const cs =
+        'using System;\r\n\r\nnamespace Main {\r\n    class Program {\r\n        static void Main(string[] args) {\r\n            Console.WriteLine("Hello World!");\r\n        }\r\n    }\r\n}';
+    const java =
+        'public class Main {\r\n    public static void main(String[] args) {\r\n        System.out.println("Hello World!");\r\n    }\r\n}';
+    const py = 'print("hello world!");';
+    const [code, setCode] = useState(cpp);
+    const [valuecompi, setvaluecompi] = useState(
+        '#include <iostream>\n\nusing namespace std;\n\nint main() {\n    cout<<"hello world";\n    return 0;\n}',
+    );
+    const [fifeType, setFifeType] = useState('cpp');
     const [heightEditor, setHeightEditor] = useState('');
     const [heightConsole, setHeightConsole] = useState('');
     const [practices, setPractice] = useState([]);
     const [chooseLanguage, setChooseLanguage] = useState('cpp');
     const [result, setResult] = useState([]);
     const [err, setError] = useState('');
-    const [code, setCode] = useState('');
     const EditorContainer = useRef(null);
     let user = useSelector((state) => state.auth.login?.currentUser);
     useEffect(() => {
@@ -109,15 +120,27 @@ function Solution() {
     const handlechanelanguage = (e) => {
         if (e.target.value === 'C++') {
             setChooseLanguage('cpp');
+            setFifeType('cpp');
+            setvaluecompi(cpp);
+            setCode(cpp);
         }
         if (e.target.value === 'C#') {
             setChooseLanguage('cs');
+            setFifeType('cs');
+            setvaluecompi(cs);
+            setCode(cs);
         }
         if (e.target.value === 'Java') {
             setChooseLanguage('java');
+            setFifeType('java');
+            setvaluecompi(java);
+            setCode(java);
         }
         if (e.target.value === 'Python') {
             setChooseLanguage('python');
+            setFifeType('py');
+            setvaluecompi(py);
+            setCode(py);
         }
     };
     function handleEditorChange(value) {
@@ -125,7 +148,7 @@ function Solution() {
     }
     const handleSubmit = async () => {
         axios
-            .post('http://localhost:3240/v1/users/submitCode', {
+            .post(`${process.env.REACT_APP_BASE_URL}/users/submitCode`, {
                 language: chooseLanguage,
                 code: code,
                 userId: user.user._id,
@@ -200,7 +223,7 @@ function Solution() {
                         <div className={cx('control-fife')}>
                             <div className={cx('fife-container')}>
                                 <div className={cx('item-fife', 'active')}>
-                                    <div className={cx('item-content')}>Code.txt</div>
+                                    <div className={cx('item-content')}>Code.{fifeType}</div>
                                     <div className={cx('item-icon')}>
                                         <BsX />
                                     </div>
@@ -228,6 +251,7 @@ function Solution() {
                                 width="100%"
                                 theme="vs-light"
                                 language={chooseLanguage} //cpp, java, python,cs
+                                value={valuecompi}
                                 onChange={handleEditorChange}
                             />
                         </div>
