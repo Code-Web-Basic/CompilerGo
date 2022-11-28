@@ -28,7 +28,7 @@ getPracticeId.Prototypes = {
 
 export const submitCodeUser = async (language, code, userId, practiceId) => {
     try {
-        const response = await httpRequest.post(`/v1/users/submitCode`, {
+        const response = await httpRequest.post(`/users/submitCode`, {
             language,
             code,
             userId,
@@ -40,9 +40,9 @@ export const submitCodeUser = async (language, code, userId, practiceId) => {
     }
 };
 
-submitCodeUser.Prototypes = {
-    language: PropTypes.string,
-    code: PropTypes.string,
-    userId: PropTypes.string,
-    practiceId: PropTypes.string,
-};
+// submitCodeUser.Prototypes = {
+//     language: PropTypes.string,
+//     code: PropTypes.string,
+//     userId: PropTypes.string,
+//     practiceId: PropTypes.string,
+// };

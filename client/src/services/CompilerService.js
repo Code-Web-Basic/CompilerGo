@@ -6,6 +6,7 @@ export const compilerRun = async (chooseLanguage, code) => {
             chooseLanguage: chooseLanguage,
             code: code,
         });
+        console.log(response);
         return response;
     } catch (error) {
         console.log(error);

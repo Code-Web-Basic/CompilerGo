@@ -45,7 +45,7 @@ function Compiler() {
     };
 
     useEffect(() => {
-        if (err.trim() !== '' || result.trim() !== '') {
+        if (err !== '' || result !== '') {
             setHeightEditor(EditorContainer.current.offsetHeight - 300 - 5);
             setHeightConsole(300);
         }
