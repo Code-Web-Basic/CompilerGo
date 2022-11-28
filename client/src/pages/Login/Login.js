@@ -22,7 +22,6 @@ function Login() {
     const [password, setPassword] = useState(null);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const loginCheck = useSelect((state) => state.auth.login);
     const handleLogin = (e) => {
         e.preventDefault();
         const newUser = {
