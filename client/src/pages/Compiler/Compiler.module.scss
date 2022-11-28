@@ -20,7 +20,6 @@
     background-color: transparent;
 
     cursor: n-resize;
-    user-select: none;
     &:hover {
         background-color: var(--primary);
         transform: scale(1.1);

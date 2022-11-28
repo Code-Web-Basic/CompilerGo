@@ -75,7 +75,7 @@ const submitCode = async (data, fn) => {
         const listResult = input.testCase.map(async (item) => {
             let c = null;
             await axios
-                .post('http://localhost:3240/v1/compile/input', {
+                .post(`http://${process.env.APP_HOST}:3240/v1/compile/input`, {
                     chooseLanguage: data.language,
                     code: data.code,
                     input: item.input,

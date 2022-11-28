@@ -11,8 +11,6 @@ import { ConfigRouter } from '~/config';
 import images from '~/asset/images';
 import Button from '~/components/Button/Button';
 import { loginGoogleUser, logOutUser } from '~/redux/apiRequest';
-import axios from 'axios';
-import jwt_decode from 'jwt-decode';
 import { loginSuccess } from '~/redux/authSlice';
 import { createAxios } from '~/createInstance';
 import { useEffect } from 'react';

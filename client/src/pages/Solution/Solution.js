@@ -1,26 +1,66 @@
-import classNames from 'classnames/bind';
 import styles from './Solution.module.scss';
-import axios from 'axios';
+import classNames from 'classnames/bind';
 //
-import { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 //component
-import ConsoleCompiler from '~/layout/components/ConsoleCompiler';
-import ControlCompiler from '~/layout/components/ControlCompiler';
-import EditorCompiler from '~/layout/components/EditorCompiler';
+
 import { useParams } from 'react-router-dom';
 import MonacoEditor from '@monaco-editor/react';
-import Button from '~/components/Button/Button';
 import { BsX, BsPlayFill } from 'react-icons/bs';
 import { useSelector } from 'react-redux';
-const cx = classNames.bind(styles);
+//icon
 
+//component
+import Button from '~/components/Button/Button';
+import * as practiceService from '~/services/PracticeService';
+//
+import PropTypes from 'prop-types';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
+import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
+import axios from 'axios';
+const cx = classNames.bind(styles);
+function TabPanel(props) {
+    const { children, value, index, ...other } = props;
+    return (
+        <div
+            role="tabpanel"
+            hidden={value !== index}
+            id={`simple-tabpanel-${index}`}
+            aria-labelledby={`simple-tab-${index}`}
+            {...other}
+        >
+            {value === index && (
+                <Box sx={{ p: 3 }}>
+                    <Typography>{children}</Typography>
+                </Box>
+            )}
+        </div>
+    );
+}
+
+TabPanel.propTypes = {
+    children: PropTypes.node,
+    index: PropTypes.number.isRequired,
+    value: PropTypes.number.isRequired,
+};
+
+function a11yProps(index) {
+    return {
+        id: `simple-tab-${index}`,
+        'aria-controls': `simple-tabpanel-${index}`,
+    };
+}
 function Solution() {
     const [heightEditor, setHeightEditor] = useState('');
     const [heightConsole, setHeightConsole] = useState('');
     const [practices, setPractice] = useState([]);
-    const [chooselanguage, setChooselanguage] = useState('cpp');
+
+    const [chooseLanguage, setChooseLanguage] = useState('cpp');
     const [result, setResult] = useState([]);
-    const [error, setError] = useState('');
+    const [err, setError] = useState('');
+
     const [code, setCode] = useState('');
     const EditorContainer = useRef(null);
     let user = useSelector((state) => state.auth.login?.currentUser);
@@ -35,12 +75,10 @@ function Solution() {
     const HandleResizing = (e) => {
         setHeightEditor(e.clientY - EditorContainer.current.offsetTop);
         setHeightConsole(EditorContainer.current.offsetHeight + EditorContainer.current.offsetTop - e.clientY);
-
         if (EditorContainer.current.offsetHeight + EditorContainer.current.offsetTop - e.clientY < 28) {
             setHeightEditor(EditorContainer.current.offsetHeight - 28 - 5);
             setHeightConsole(28);
         }
-
         if (e.clientY < EditorContainer.current.offsetTop - 5) {
             RemoveHandleResizing();
             setHeightEditor(0);
@@ -53,37 +91,45 @@ function Solution() {
     };
     const { id } = useParams();
     useEffect(() => {
-        axios
-            .get(`http://localhost:3240/v1/practice/findOneById/${id}`)
-            .then(function (response) {
-                //console.log(response.data);
-                setPractice(response.data.data);
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-    }, []);
+        const ApiRequest = async () => {
+            const res = await practiceService.getPracticeId(id);
+            setPractice(res.data);
+        };
+        ApiRequest();
+        console.log(result);
+
+        // axios
+        //     .get(`http://localhost:3240/v1/practice/findOneById/${id}`)
+        //     .then(function (response) {
+        //         //console.log(response.data);
+        //         setPractice(response.data.data);
+        //     })
+        //     .catch(function (error) {
+        //         console.log(error);
+        //     });
+    }, [id]);
     const handlechanelanguage = (e) => {
         if (e.target.value === 'C++') {
-            setChooselanguage('cpp');
+            setChooseLanguage('cpp');
         }
         if (e.target.value === 'C#') {
-            setChooselanguage('cs');
+            setChooseLanguage('cs');
         }
         if (e.target.value === 'Java') {
-            setChooselanguage('java');
+            setChooseLanguage('java');
         }
         if (e.target.value === 'Python') {
-            setChooselanguage('python');
+            setChooseLanguage('python');
         }
     };
     function handleEditorChange(value) {
         setCode(value);
     }
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         axios
-            .post('http://localhost:3240/v1/users/submitCode', {
-                language: chooselanguage,
+            .post(`${process.env.REACT_APP_BASE_URL}/users/submitCode`, {
+                language: chooseLanguage,
+
                 code: code,
                 userId: user.user._id,
                 practiceId: id,
@@ -96,6 +142,22 @@ function Solution() {
             .catch(function (error) {
                 setError(error);
             });
+        // try {
+        //     const res = await practiceService.submitCodeUser({
+        //         language: chooseLanguage,
+        //         code: code,
+        //         userId: user.user._id,
+        //         practiceId: id,
+        //     });
+        //     setResult(res.data);
+        //     setError(res.error);
+        // } catch (error) {
+        //     setError(error);
+        // }
+    };
+    const [value, setValue] = React.useState(0);
+    const handleChange = (event, newValue) => {
+        setValue(newValue);
     };
     console.log(result + ' ' + error);
     return (
@@ -110,9 +172,7 @@ function Solution() {
                         <div style={{ margin: '10px' }}>
                             Output:{' '}
                             {practices.example?.sample.map((out) => {
-                                {
-                                    return <p>{out}</p>;
-                                }
+                                return <p>{out}</p>;
                             })}
                         </div>
                         <h3 style={{ margin: '10px' }}>Input format:</h3>
@@ -125,18 +185,14 @@ function Solution() {
                         <div style={{ margin: '10px' }}>
                             Input:{' '}
                             {practices.sampleInput?.map((out) => {
-                                {
-                                    return <p>{out}</p>;
-                                }
+                                return <p>{out}</p>;
                             })}
                         </div>
                         <h3 style={{ margin: '10px' }}>Sample Output: </h3>
                         <div style={{ margin: '10px' }}>
                             Output:{' '}
                             {practices.sampleOutput?.map((out) => {
-                                {
-                                    return <p>{out}</p>;
-                                }
+                                return <p>{out}</p>;
                             })}
                         </div>
                     </div>
@@ -175,19 +231,49 @@ function Solution() {
                                 height="100%"
                                 width="100%"
                                 theme="vs-light"
-                                language={chooselanguage} //cpp, java, python,cs
+                                language={chooseLanguage} //cpp, java, python,cs
                                 onChange={handleEditorChange}
                             />
                         </div>
                     </div>
                     <div className={cx('resizing-compiler')} id="resizing-compiler-js" onMouseDown={InitResize}></div>
                     <div className={cx('console')} id="console-js" style={{ height: `${heightConsole}px` }}>
-                        <ConsoleCompiler />
+                        <div className={cx('container')}>
+                            <div className={cx('sub')}>
+                                <div className={cx('Control-container')}>
+                                    <Box sx={{ width: '100%' }}>
+                                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                                            <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
+                                                {practices?.testCase?.map((data, index) => (
+                                                    <Tab
+                                                        label={`TestCase ${index}`}
+                                                        {...a11yProps(index)}
+                                                        sx={{ fontSize: '15px', fontWeight: '600' }}
+                                                    />
+                                                ))}
+                                                {/* <Tab
+                                                    label="TestCase 2"
+                                                    {...a11yProps(1)}
+                                                    sx={{ fontSize: '15px', fontWeight: '600' }}
+                                                /> */}
+                                            </Tabs>
+                                        </Box>
+                                        {result?.map((data, index) => (
+                                            <TabPanel value={value} index={index}>
+                                                <div className={cx('testcase')}>
+                                                    {data.success === true ? 'pass' : 'no pass'}
+                                                </div>
+                                            </TabPanel>
+                                        ))}
+                                    </Box>
+                                </div>
+                            </div>
+                        </div>
+                        <div className={cx('control-bottom')}>.</div>
                     </div>
                 </div>
             </div>
         </div>
     );
 }
-
 export default Solution;

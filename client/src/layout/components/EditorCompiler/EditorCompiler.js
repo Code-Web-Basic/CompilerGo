@@ -5,49 +5,76 @@ import MonacoEditor from '@monaco-editor/react';
 import Button from '~/components/Button/Button';
 import { BsX, BsPlayFill } from 'react-icons/bs';
 import { useState } from 'react';
+import { Typography } from '@mui/material';
+import * as compilerService from '~/services/CompilerService';
 import axios from 'axios';
+
 const cx = classNames.bind(styles);
 
 function EditorCompiler({ result, setResult, err, setErr }) {
-    const [chooselanguage, setChooselanguage] = useState('cpp');
+    const [chooseLanguage, setChooseLanguage] = useState('cpp');
     const [code, setCode] = useState('');
     const [inputComp, setInputComp] = useState('');
+    const [fifeType, setFifeType] = useState('cpp');
     function handleEditorChange(value) {
         setCode(value);
     }
-    const handlechanelanguage = (e) => {
+    const handleChanelLanguage = (e) => {
         if (e.target.value === 'C++') {
-            setChooselanguage('cpp');
+            setChooseLanguage('cpp');
+            setFifeType('cpp');
         }
         if (e.target.value === 'C#') {
-            setChooselanguage('cs');
+            setChooseLanguage('cs');
+            setFifeType('cs');
         }
         if (e.target.value === 'Java') {
-            setChooselanguage('java');
+            setChooseLanguage('java');
+            setFifeType('java');
         }
         if (e.target.value === 'Python') {
-            setChooselanguage('python');
+            setChooseLanguage('python');
+            setFifeType('py');
         }
     };
-    const handleRunCode = () => {
+    const handleRunCode = async () => {
         if (inputComp === '') {
+            console.log('test');
+
             axios
-                .post('http://localhost:3240/v1/compile', {
-                    chooseLanguage: chooselanguage,
+                .post(`${process.env.REACT_APP_BASE_URL}/compile`, {
+                    chooseLanguage: chooseLanguage,
                     code: code,
                 })
                 .then(function (response) {
                     //console.log(response.data.data.output);
+                    console.log(response);
                     setResult(response.data.data.output);
                     setErr(response.data.data.error);
                 })
                 .catch(function (error) {
                     setErr(error);
                 });
+
+            // const res = await compilerService.compilerRun({
+            //     chooseLanguage: chooseLanguage,
+            //     code: code,
+            // });
+            // if (res) {
+            //     setResult(res?.data?.output);
+            //     setErr(res?.data?.error);
+            // }
         } else {
+            // const res = await compilerService.compilerRunInput({
+            //     chooseLanguage: chooseLanguage,
+            //     code: code,
+            //     input: inputComp,
+            // });
+            // setResult(res?.data?.output);
+            // setErr(res?.data?.error);
             axios
-                .post('http://localhost:3240/v1/compile/input', {
-                    chooseLanguage: chooselanguage,
+                .post(`${process.env.REACT_APP_BASE_URL}/compile/input`, {
+                    chooseLanguage: chooseLanguage,
                     code: code,
                     input: inputComp,
                 })
@@ -62,12 +89,13 @@ function EditorCompiler({ result, setResult, err, setErr }) {
                 });
         }
     };
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('control-fife')}>
                 <div className={cx('fife-container')}>
                     <div className={cx('item-fife', 'active')}>
-                        <div className={cx('item-content')}>Code.txt</div>
+                        <div className={cx('item-content')}>Code.{fifeType}</div>
                         <div className={cx('item-icon')}>
                             <BsX />
                         </div>
@@ -76,7 +104,7 @@ function EditorCompiler({ result, setResult, err, setErr }) {
                 <div className={cx('control')}>
                     <div className={cx('option-lang')}>
                         <label>Lựa chọn ngôn ngữ:</label>
-                        <select name="languages" id="languages" onChange={handlechanelanguage}>
+                        <select name="languages" id="languages" onChange={handleChanelLanguage}>
                             <option>C++</option>
                             <option>C#</option>
                             <option>Java</option>
@@ -88,23 +116,29 @@ function EditorCompiler({ result, setResult, err, setErr }) {
                     </Button>
                 </div>
             </div>
-            <div className={cx('address-fife')}></div>
+            {/* <div className={cx('address-fife')}></div> */}
             <div className={cx('editor-content')}>
                 <MonacoEditor
                     height="100%"
                     width="100%"
                     theme="vs-light"
-                    language={chooselanguage} //cpp, java, python,cs
+                    language={chooseLanguage} //cpp, java, python,cs
                     onChange={handleEditorChange}
                 />
                 <div className={cx('input-compiler')}>
-                    <h1>Enter input</h1>
-                    <textarea
-                        type="text"
-                        style={{ height: '80px', width: '350px', margin: '10px' }}
-                        placeholder="Enter input"
-                        onChange={(e) => setInputComp(e.target.value)}
-                    />
+                    <div className={cx('field')}>
+                        <Typography variant="h6" sx={{ fontSize: '20px', padding: '10px' }}>
+                            Enter input
+                        </Typography>
+                        <div id="note-input" className={cx('textbox')}>
+                            <textarea
+                                placeholder="Enter input"
+                                className={cx('component')}
+                                onChange={(e) => setInputComp(e.target.value)}
+                            ></textarea>
+                            <span className={cx('caret')}></span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

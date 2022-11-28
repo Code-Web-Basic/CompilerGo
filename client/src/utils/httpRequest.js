@@ -2,22 +2,30 @@ import axios from 'axios';
 import queryString from 'query-string';
 
 import PropTypes from 'prop-types';
-const httpRequest = axios.default.create({
-    baseURL: 'http://localhost:3240/v1/',
-    // withCredentials: true,
+import { useSelector } from 'react-redux';
+// console.log(process.env.REACT_APP_BASE_URL);
+const httpRequest = axios.create({
+    baseURL: process.env.REACT_APP_BASE_URL,
+    // timeout: 1000,
     withCredentials: true,
     headers: {
-        'Content-Type': 'application/json;charset=utf-8',
+        'Content-Type': 'application/json',
     },
-    paramsSerializer: (params) => queryString.stringify({ ...params }),
+    // paramsSerializer: (params) => queryString.stringify({ ...params }),
 });
-httpRequest.interceptors.request.use(async (config) => config);
+httpRequest.interceptors.request.use(async (config) => {
+    // const token = useSelector((state) => state.auth.login.currentUser.accessToken);
+    // config.headers.Authorization = token ? `Bearer ${token}` : '';
+    // config.cancelToken;
+    return config;
+});
 
 export const get = async (path, options = {}) => {
     const response = await httpRequest.get(path, options);
     return response.data;
 };
 export const post = async (path, options = {}) => {
+    console.log('text');
     const response = await httpRequest.post(path, options);
     return response.data;
 };

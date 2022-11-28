@@ -14,10 +14,10 @@ const publicRoutes = [
     { path: ConfigRouter.Home, component: Home },
     { path: ConfigRouter.compiler, component: Compiler, layout: null },
     { path: ConfigRouter.practice, component: Practice },
-    { path: ConfigRouter.login, component: Login,layout: null },
-    { path: ConfigRouter.signup, component: Signup ,layout: null},
-    { path: ConfigRouter.resetpass, component: Resetpass ,layout: null},
-    { path: ConfigRouter.solution, component: Solution ,layout: null}
+    { path: ConfigRouter.login, component: Login, layout: null },
+    { path: ConfigRouter.signup, component: Signup, layout: null },
+    { path: ConfigRouter.resetpass, component: Resetpass, layout: null },
+    { path: ConfigRouter.solution, component: Solution, layout: null },
 ];
 
 const privateRoutes = [];
