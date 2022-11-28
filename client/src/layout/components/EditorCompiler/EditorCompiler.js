@@ -7,6 +7,7 @@ import { BsX, BsPlayFill } from 'react-icons/bs';
 import { useState } from 'react';
 import { Typography } from '@mui/material';
 import * as compilerService from '~/services/CompilerService';
+import axios from 'axios';
 
 const cx = classNames.bind(styles);
 
@@ -38,49 +39,54 @@ function EditorCompiler({ result, setResult, err, setErr }) {
     };
     const handleRunCode = async () => {
         if (inputComp === '') {
-            const res = await compilerService.compilerRun({
-                chooseLanguage: chooseLanguage,
-                code: code,
-            });
-            console.log(res);
-            setResult(res.data.output);
-            setErr(res.data.error);
-            // axios
-            //     .post('http://localhost:3240/v1/compile', {
-            //         chooseLanguage: chooseLanguage,
-            //         code: code,
-            //     })
-            //     .then(function (response) {
-            //         //console.log(response.data.data.output);
-            //         setResult(response.data.data.output);
-            //         setErr(response.data.data.error);
-            //     })
-            //     .catch(function (error) {
-            //         setErr(error);
-            //     });
+            console.log('test');
+
+            axios
+                .post(`${process.env.REACT_APP_BASE_URL}/compile`, {
+                    chooseLanguage: chooseLanguage,
+                    code: code,
+                })
+                .then(function (response) {
+                    //console.log(response.data.data.output);
+                    console.log(response);
+                    setResult(response.data.data.output);
+                    setErr(response.data.data.error);
+                })
+                .catch(function (error) {
+                    setErr(error);
+                });
+
+            // const res = await compilerService.compilerRun({
+            //     chooseLanguage: chooseLanguage,
+            //     code: code,
+            // });
+            // if (res) {
+            //     setResult(res?.data?.output);
+            //     setErr(res?.data?.error);
+            // }
         } else {
-            const res = await compilerService.compilerRunInput({
-                chooseLanguage: chooseLanguage,
-                code: code,
-                input: inputComp,
-            });
-            setResult(res.data.output);
-            setErr(res.data.error);
-            // axios
-            //     .post('http://localhost:3240/v1/compile/input', {
-            //         chooseLanguage: chooseLanguage,
-            //         code: code,
-            //         input: inputComp,
-            //     })
-            //     .then(function (response) {
-            //         //console.log(response.data.data.output);
-            //         setResult(response.data.data.output);
-            //         setErr(response.data.data.error);
-            //     })
-            //     .catch(function (error) {
-            //         //console.log('error');
-            //         setErr(error);
-            //     });
+            // const res = await compilerService.compilerRunInput({
+            //     chooseLanguage: chooseLanguage,
+            //     code: code,
+            //     input: inputComp,
+            // });
+            // setResult(res?.data?.output);
+            // setErr(res?.data?.error);
+            axios
+                .post(`${process.env.REACT_APP_BASE_URL}/compile/input`, {
+                    chooseLanguage: chooseLanguage,
+                    code: code,
+                    input: inputComp,
+                })
+                .then(function (response) {
+                    //console.log(response.data.data.output);
+                    setResult(response.data.data.output);
+                    setErr(response.data.data.error);
+                })
+                .catch(function (error) {
+                    //console.log('error');
+                    setErr(error);
+                });
         }
     };
 

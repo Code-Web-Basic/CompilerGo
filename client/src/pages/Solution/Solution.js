@@ -19,6 +19,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
+import axios from 'axios';
 const cx = classNames.bind(styles);
 function TabPanel(props) {
     const { children, value, index, ...other } = props;
@@ -123,37 +124,33 @@ function Solution() {
         setCode(value);
     }
     const handleSubmit = async () => {
-        try {
-            practiceService
-                .submitCodeUser({
-                    language: chooseLanguage,
-                    code: code,
-                    userId: user.user._id,
-                    practiceId: id,
-                })
-                .then((data) => {
-                    console.log(data);
-                    setResult(data.data);
-                    setError(data.error);
-                });
-        } catch (error) {
-            setError(error);
-        }
-        // axios
-        //     .post('http://localhost:3240/v1/users/submitCode', {
+        axios
+            .post('http://localhost:3240/v1/users/submitCode', {
+                language: chooseLanguage,
+                code: code,
+                userId: user.user._id,
+                practiceId: id,
+            })
+            .then(function (response) {
+                console.log(response);
+                setResult(response.data.data);
+                setError(response.data.error);
+            })
+            .catch(function (error) {
+                setError(error);
+            });
+        // try {
+        //     const res = await practiceService.submitCodeUser({
         //         language: chooseLanguage,
         //         code: code,
         //         userId: user.user._id,
         //         practiceId: id,
-        //     })
-        //     .then(function (response) {
-        //         console.log(response);
-        //         setResult(response.data.data);
-        //         setError(response.data.error);
-        //     })
-        //     .catch(function (error) {
-        //         setError(error);
         //     });
+        //     setResult(res.data);
+        //     setError(res.error);
+        // } catch (error) {
+        //     setError(error);
+        // }
     };
     const [value, setValue] = React.useState(0);
     const handleChange = (event, newValue) => {

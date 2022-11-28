@@ -52,7 +52,7 @@ export const logOutUser = async (id, dispatch, navigate, accessToken, axiosJWT) 
     dispatch(logOutStart());
     try {
         console.log(accessToken);
-        await axiosJWT.post(`${process.env.REACT_APP_BASE_URL}/v1/users/logout`, id, {
+        await axiosJWT.post(`${process.env.REACT_APP_BASE_URL}/users/logout`, id, {
             headers: {
                 token: `Bearer ${accessToken}`,
             },
