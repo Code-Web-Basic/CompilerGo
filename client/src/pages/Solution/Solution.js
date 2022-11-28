@@ -56,9 +56,11 @@ function Solution() {
     const [heightEditor, setHeightEditor] = useState('');
     const [heightConsole, setHeightConsole] = useState('');
     const [practices, setPractice] = useState([]);
+
     const [chooseLanguage, setChooseLanguage] = useState('cpp');
     const [result, setResult] = useState([]);
     const [err, setError] = useState('');
+
     const [code, setCode] = useState('');
     const EditorContainer = useRef(null);
     let user = useSelector((state) => state.auth.login?.currentUser);
@@ -127,6 +129,7 @@ function Solution() {
         axios
             .post(`${process.env.REACT_APP_BASE_URL}/users/submitCode`, {
                 language: chooseLanguage,
+
                 code: code,
                 userId: user.user._id,
                 practiceId: id,
@@ -156,6 +159,7 @@ function Solution() {
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };
+    console.log(result + ' ' + error);
     return (
         <div className={cx('wrapper')}>
             <div className={cx('topic')}>
