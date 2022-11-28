@@ -3,7 +3,7 @@ import classNames from 'classnames/bind';
 import styles from './Login.module.scss';
 import { Link, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
 //icon
 import { FaUser, FaLock, FaFacebook, FaGoogle } from 'react-icons/fa';
@@ -12,8 +12,7 @@ import images from '~/asset/images';
 import { ConfigRouter } from '~/config';
 import Button from '~/components/Button';
 import { loginUser, loginGoogleUser } from '~/redux/apiRequest';
-import { useSelect } from '@mui/base';
-import { Alert } from '@mui/material';
+import { Alert, checkboxClasses, Snackbar } from '@mui/material';
 // import * as httpRequest from '~/utils/httpRequest';
 
 const cx = classNames.bind(styles);
@@ -22,7 +21,7 @@ function Login() {
     const [password, setPassword] = useState(null);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    const loginCheck = useSelect((state) => state.auth.login);
+    const loginCheck = useSelector((state) => state.auth.login);
     const handleLogin = (e) => {
         e.preventDefault();
         const newUser = {
@@ -32,8 +31,21 @@ function Login() {
         console.log(newUser);
 
         loginUser(newUser, dispatch, navigate);
-        // if (!loginCheck.error) {
-        // }
+
+        setOpen(true);
+    };
+    const [open, setOpen] = useState(false);
+
+    const handleClick = () => {
+        setOpen(true);
+    };
+
+    const handleClose = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+
+        setOpen(false);
     };
 
     const handleLoginWithGoogle = async (e) => {
@@ -107,9 +119,24 @@ function Login() {
                             Đăng ký
                         </Link>
                     </div>
+                    <Snackbar
+                        open={open}
+                        anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+                        autoHideDuration={6000}
+                        onClose={handleClose}
+                    >
+                        {!loginCheck.error ? (
+                            <Alert onClose={handleClose} severity="success" sx={{ width: '100%' }}>
+                                login a success message!
+                            </Alert>
+                        ) : (
+                            <Alert onClose={handleClose} severity="warning" sx={{ width: '100%' }}>
+                                User name or password not exits!
+                            </Alert>
+                        )}
+                    </Snackbar>
                 </div>
             </div>
-            {/* {!loginCheck.error && <Alert severity="success">This is a success message!</Alert>} */}
         </div>
     );
 }
