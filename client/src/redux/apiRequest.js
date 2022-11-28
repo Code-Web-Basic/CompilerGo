@@ -1,3 +1,4 @@
+import { FaIgloo } from 'react-icons/fa';
 import { ConfigRouter } from '~/config';
 import * as httpRequest from '~/utils/httpRequest';
 import {
@@ -15,7 +16,7 @@ export const loginUser = async (user, dispatch, navigate) => {
     dispatch(loginStart());
     try {
         const res = await httpRequest.post('users/login', user);
-        console.log(res.accessToken);
+        console.log(res);
         dispatch(loginSuccess(res));
         navigate(ConfigRouter.Home);
     } catch (error) {
@@ -42,7 +43,9 @@ export const loginGoogleUser = async (dispatch) => {
             return request;
         };
         fetchDataUser().then((data) => {
-            dispatch(loginSuccess(data));
+            if (data?.success !== false) {
+                dispatch(loginSuccess(data));
+            }
         });
     } catch {
         dispatch(registerFailed());
