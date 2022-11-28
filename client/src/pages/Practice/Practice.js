@@ -17,6 +17,7 @@ function Practice() {
     const [title, setTitle] = useState([]);
     let user = useSelector((state) => state.auth.login?.currentUser);
     useEffect(() => {
+
         const ApiRequest = async () => {
             if (user.user) {
                 const res = await PracticeService.getPracticeUser(user.user._id);
@@ -33,6 +34,7 @@ function Practice() {
         };
         ApiRequest();
     }, [user]);
+
     const handleChange = (event, newValue) => {
         setValue(newValue);
     };

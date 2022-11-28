@@ -94,7 +94,7 @@ function Solution() {
             setPractice(res.data);
         };
         ApiRequest();
-        console.log(result);
+        console.log(practices);
 
         // axios
         //     .get(`http://localhost:3240/v1/practice/findOneById/${id}`)
@@ -125,7 +125,7 @@ function Solution() {
     }
     const handleSubmit = async () => {
         axios
-            .post(`${process.env.REACT_APP_BASE_URL}/users/submitCode`, {
+            .post('http://localhost:3240/v1/users/submitCode', {
                 language: chooseLanguage,
                 code: code,
                 userId: user.user._id,
@@ -240,27 +240,36 @@ function Solution() {
                                     <Box sx={{ width: '100%' }}>
                                         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                                             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                                                {practices?.testCase?.map((data, index) => (
-                                                    <Tab
-                                                        label={`TestCase ${index}`}
-                                                        {...a11yProps(index)}
-                                                        sx={{ fontSize: '15px', fontWeight: '600' }}
-                                                    />
-                                                ))}
-                                                {/* <Tab
+                                                <Tab
+                                                    label="TestCase 1"
+                                                    {...a11yProps(0)}
+                                                    sx={{ fontSize: '15px', fontWeight: '600' }}
+                                                />
+                                                <Tab
                                                     label="TestCase 2"
                                                     {...a11yProps(1)}
                                                     sx={{ fontSize: '15px', fontWeight: '600' }}
-                                                /> */}
+                                                />
                                             </Tabs>
                                         </Box>
-                                        {result?.map((data, index) => (
-                                            <TabPanel value={value} index={index}>
-                                                <div className={cx('testcase')}>
-                                                    {data.success === true ? 'pass' : 'no pass'}
-                                                </div>
-                                            </TabPanel>
-                                        ))}
+                                        <TabPanel value={value} index={0}>
+                                            <div className={cx('testcase')}>
+                                                {result.length !== 0
+                                                    ? result[0].success === true
+                                                        ? 'pass'
+                                                        : 'no pass'
+                                                    : ''}
+                                            </div>
+                                        </TabPanel>
+                                        <TabPanel value={value} index={1}>
+                                            <div className={cx('testcase')}>
+                                                {result.length !== 0
+                                                    ? result[1].success === true
+                                                        ? 'pass'
+                                                        : 'no pass'
+                                                    : ''}
+                                            </div>
+                                        </TabPanel>
                                     </Box>
                                 </div>
                             </div>

@@ -12,6 +12,8 @@ import images from '~/asset/images';
 import { ConfigRouter } from '~/config';
 import Button from '~/components/Button';
 import { loginUser, loginGoogleUser } from '~/redux/apiRequest';
+import { useSelect } from '@mui/base';
+import { Alert } from '@mui/material';
 // import * as httpRequest from '~/utils/httpRequest';
 
 const cx = classNames.bind(styles);
@@ -20,14 +22,18 @@ function Login() {
     const [password, setPassword] = useState(null);
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
+    const loginCheck = useSelect((state) => state.auth.login);
     const handleLogin = (e) => {
         e.preventDefault();
         const newUser = {
             email: userName,
             password: password,
         };
+        console.log(newUser);
+
         loginUser(newUser, dispatch, navigate);
+        // if (!loginCheck.error) {
+        // }
     };
 
     const handleLoginWithGoogle = async (e) => {
@@ -36,6 +42,7 @@ function Login() {
         loginGoogleUser(dispatch);
     };
     const handleLoginWithFacebook = () => {};
+    useEffect(() => {}, []);
 
     return (
         <div className={cx('wrapper')}>
@@ -76,7 +83,7 @@ function Login() {
                             Quên mật khẩu?
                         </Link>
                     </div>
-                    <Button className={cx('btn-login')} to={ConfigRouter.Home} onClick={handleLogin}>
+                    <Button className={cx('btn-login')} onClick={handleLogin}>
                         Đăng nhập
                     </Button>
                     <div className={cx('social-login-label')}>
@@ -102,6 +109,7 @@ function Login() {
                     </div>
                 </div>
             </div>
+            {/* {!loginCheck.error && <Alert severity="success">This is a success message!</Alert>} */}
         </div>
     );
 }

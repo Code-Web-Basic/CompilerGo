@@ -22,11 +22,12 @@ function Header() {
     // console.log(user);
     useEffect(() => {
         async function fetchData() {
+            // if (user?.success) {
             await loginGoogleUser(dispatch);
             if (user.success === false) {
-                console.log('ho');
                 user = null;
             }
+            // }
         }
         fetchData();
     }, [user?.success]);
@@ -56,7 +57,7 @@ function Header() {
                 <Button className={cx('control_item')} text to={ConfigRouter.practice}>
                     Practice
                 </Button>
-                {user?.success === true ? (
+                {user?.user ? (
                     <div
                         style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', marginLeft: '20px' }}
                     >
