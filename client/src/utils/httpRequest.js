@@ -7,10 +7,7 @@ const httpRequest = axios.default.create({
     baseURL: process.env.REACT_APP_BASE_URL,
     // withCredentials: true,
     withCredentials: true,
-    headers: {
-        'Content-Type': 'application/json;charset=utf-8',
-    },
-    paramsSerializer: (params) => queryString.stringify({ ...params }),
+    
 });
 httpRequest.interceptors.request.use(async (config) => config);
 

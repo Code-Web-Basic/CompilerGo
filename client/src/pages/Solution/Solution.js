@@ -93,7 +93,7 @@ function Solution() {
             setPractice(res.data);
         };
         ApiRequest();
-        console.log(practices);
+        console.log(result);
 
         // axios
         //     .get(`http://localhost:3240/v1/practice/findOneById/${id}`)
@@ -124,14 +124,18 @@ function Solution() {
     }
     const handleSubmit = async () => {
         try {
-            const res = await practiceService.submitCodeUser({
-                language: chooseLanguage,
-                code: code,
-                userId: user.user._id,
-                practiceId: id,
-            });
-            setResult(res.data);
-            setError(res.error);
+            practiceService
+                .submitCodeUser({
+                    language: chooseLanguage,
+                    code: code,
+                    userId: user.user._id,
+                    practiceId: id,
+                })
+                .then((data) => {
+                    console.log(data);
+                    setResult(data.data);
+                    setError(data.error);
+                });
         } catch (error) {
             setError(error);
         }
@@ -239,36 +243,27 @@ function Solution() {
                                     <Box sx={{ width: '100%' }}>
                                         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                                             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                                                <Tab
-                                                    label="TestCase 1"
-                                                    {...a11yProps(0)}
-                                                    sx={{ fontSize: '15px', fontWeight: '600' }}
-                                                />
-                                                <Tab
+                                                {practices?.testCase?.map((data, index) => (
+                                                    <Tab
+                                                        label={`TestCase ${index}`}
+                                                        {...a11yProps(index)}
+                                                        sx={{ fontSize: '15px', fontWeight: '600' }}
+                                                    />
+                                                ))}
+                                                {/* <Tab
                                                     label="TestCase 2"
                                                     {...a11yProps(1)}
                                                     sx={{ fontSize: '15px', fontWeight: '600' }}
-                                                />
+                                                /> */}
                                             </Tabs>
                                         </Box>
-                                        <TabPanel value={value} index={0}>
-                                            <div className={cx('testcase')}>
-                                                {result.length !== 0
-                                                    ? result[0].success === true
-                                                        ? 'pass'
-                                                        : 'no pass'
-                                                    : ''}
-                                            </div>
-                                        </TabPanel>
-                                        <TabPanel value={value} index={1}>
-                                            <div className={cx('testcase')}>
-                                                {result.length !== 0
-                                                    ? result[1].success === true
-                                                        ? 'pass'
-                                                        : 'no pass'
-                                                    : ''}
-                                            </div>
-                                        </TabPanel>
+                                        {result?.map((data, index) => (
+                                            <TabPanel value={value} index={index}>
+                                                <div className={cx('testcase')}>
+                                                    {data.success === true ? 'pass' : 'no pass'}
+                                                </div>
+                                            </TabPanel>
+                                        ))}
                                     </Box>
                                 </div>
                             </div>

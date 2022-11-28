@@ -1,5 +1,6 @@
 import * as httpRequest from '~/utils/httpRequest';
 import PropTypes from 'prop-types';
+import axios from 'axios';
 export const getPracticeUser = async (userId) => {
     try {
         const response = await httpRequest.get(`/practice/getList/${userId}`);
@@ -26,9 +27,13 @@ getPracticeId.Prototypes = {
     id: PropTypes.string,
 };
 
+const instance = axios.create({
+    withCredentials: true,
+    baseURL: process.env.REACT_APP_BASE_URL,
+});
 export const submitCodeUser = async (language, code, userId, practiceId) => {
     try {
-        const response = await httpRequest.post(`/v1/users/submitCode`, {
+        const response = await instance.post(`/users/submitCode`, {
             language,
             code,
             userId,
