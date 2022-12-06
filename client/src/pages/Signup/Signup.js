@@ -11,7 +11,8 @@ import { registerUser } from '~/redux/apiRequest';
 import { useDispatch } from 'react-redux';
 const cx = classNames.bind(styles);
 function Signup() {
-    const [nameUser, setNameUser] = useState('');
+    const [firstNameUser, setFirstNameUser] = useState('');
+    const [lastNameUser, setLastNameUser] = useState('');
     const [EmailUser, setEmailUser] = useState('');
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
@@ -20,7 +21,8 @@ function Signup() {
     const handleRegister = (e) => {
         e.preventDefault();
         const newUser = {
-            firstName: nameUser,
+            firstName: firstNameUser,
+            lastName: lastNameUser,
             email: EmailUser,
             password: password,
         };
@@ -32,10 +34,18 @@ function Signup() {
                 <h1>Sign up</h1>
                 <form className={cx('form-signup')}>
                     <input
-                        placeholder="Tên Người Dùng"
-                        name="username"
+                        placeholder="First Name"
+                        name="FirstName"
                         onChange={(e) => {
-                            setNameUser(e.target.value);
+                            setFirstNameUser(e.target.value);
+                        }}
+                    />{' '}
+                    <br></br>
+                    <input
+                        placeholder="Last Name"
+                        name="LatsName"
+                        onChange={(e) => {
+                            setLastNameUser(e.target.value);
                         }}
                     />{' '}
                     <br></br>

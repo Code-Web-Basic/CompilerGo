@@ -32,7 +32,11 @@ const bootServer = () => {
     app.use(passport.initialize());
     app.use(passport.session());
     app.use(
-        cors({ origin: `http://${env.APP_HOST}:${env.APP_PORT}`, methods: 'GET,POST,PUT,DELETE', credentials: true }),
+        cors({
+            origin: `http://${env.APP_HOST}:${env.APP_CLIENT_PORT}`,
+            methods: 'GET,POST,PUT,DELETE',
+            credentials: true,
+        }),
     );
     // use api
     app.use('/v1', ApiV1);

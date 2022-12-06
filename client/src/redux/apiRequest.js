@@ -27,7 +27,7 @@ export const loginUser = async (user, dispatch, navigate) => {
 export const registerUser = async (user, dispatch, navigate) => {
     dispatch(registerStart());
     try {
-        await httpRequest.post('users/register', user);
+        await httpRequest.post('/users/register', user);
         dispatch(registerSuccess());
         navigate(ConfigRouter.login);
     } catch {
