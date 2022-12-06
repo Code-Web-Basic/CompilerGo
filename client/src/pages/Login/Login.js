@@ -14,9 +14,12 @@ import Button from '~/components/Button';
 import { loginUser, loginGoogleUser } from '~/redux/apiRequest';
 import { Alert, checkboxClasses, Snackbar } from '@mui/material';
 // import * as httpRequest from '~/utils/httpRequest';
+import { useSnackbar } from 'notistack';
 
 const cx = classNames.bind(styles);
 function Login() {
+    const { enqueueSnackbar } = useSnackbar();
+
     const [userName, setUserName] = useState(null);
     const [password, setPassword] = useState(null);
     const dispatch = useDispatch();
@@ -30,7 +33,7 @@ function Login() {
         };
         console.log(newUser);
 
-        loginUser(newUser, dispatch, navigate);
+        loginUser(newUser, dispatch, navigate, enqueueSnackbar);
 
         setOpen(true);
     };
@@ -119,7 +122,7 @@ function Login() {
                             Đăng ký
                         </Link>
                     </div>
-                    <Snackbar
+                    {/* <Snackbar
                         open={open}
                         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
                         autoHideDuration={6000}
@@ -134,7 +137,7 @@ function Login() {
                                 User name or password not exits!
                             </Alert>
                         )}
-                    </Snackbar>
+                    </Snackbar> */}
                 </div>
             </div>
         </div>

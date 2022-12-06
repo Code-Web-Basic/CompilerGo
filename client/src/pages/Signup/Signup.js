@@ -6,28 +6,34 @@ import { ConfigRouter } from '~/config';
 import { FaFacebook, FaGoogle } from 'react-icons/fa';
 //component
 import Button from '~/components/Button';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { registerUser } from '~/redux/apiRequest';
 import { useDispatch } from 'react-redux';
+
+import { useSnackbar } from 'notistack';
+
 const cx = classNames.bind(styles);
 function Signup() {
+    const { enqueueSnackbar } = useSnackbar();
     const [firstNameUser, setFirstNameUser] = useState('');
     const [lastNameUser, setLastNameUser] = useState('');
     const [EmailUser, setEmailUser] = useState('');
     const [password, setPassword] = useState('');
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
-    const handleRegister = (e) => {
+    // const checkRegister = useSelector((state) => state.auth.register);
+    const handleRegister = async (e) => {
         e.preventDefault();
         const newUser = {
-            firstName: firstNameUser,
-            lastName: lastNameUser,
             email: EmailUser,
             password: password,
+            firstName: firstNameUser,
+            lastName: lastNameUser,
         };
-        registerUser(newUser, dispatch, navigate);
+        await registerUser(newUser, dispatch, navigate, enqueueSnackbar);
     };
+    useEffect(() => {});
+
     return (
         <div className={cx('wrapper')}>
             <div className={cx('form')}>
