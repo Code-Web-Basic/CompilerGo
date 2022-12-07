@@ -24,7 +24,7 @@ const update = async (req, res) => {
 };
 const getList = async (req, res) => {
     try {
-        const result = await PracticeService.getListPractice(req.params);
+        const result = await PracticeService.getListPractice(req.params.id);
         res.status(HttpStatusCode.OK).json({ data: result });
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
@@ -34,7 +34,7 @@ const getList = async (req, res) => {
 };
 const findOneById = async (req, res) => {
     try {
-        const result = await PracticeService.findOneById(req.params);
+        const result = await PracticeService.findOneById(req.params.id);
         res.status(HttpStatusCode.OK).json({ data: result });
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({

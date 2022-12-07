@@ -21,15 +21,12 @@ const login = async (req, res, next) => {
             path: '/',
             sameSite: 'strict',
         });
-        console.log('accessToken :', accessToken);
-        console.log('refreshToken :', refreshToken);
         refreshTokenList.push(refreshToken);
         res.setHeader('token', 'Bearer ' + accessToken);
         res.status(HttpStatusCode.OK).json({ user: other, accessToken: accessToken });
     } catch (error) {
         res.status(HttpStatusCode.INTERNAL_SERVER).json({
             error: new Error(error).message,
-            ok: 'ok',
         });
     }
 };
@@ -71,7 +68,6 @@ const signInSuccess = async (req, res) => {
             sameSite: 'strict',
         });
         refreshTokenList.push(refreshToken);
-        console.log('vo day r');
         res.status(HttpStatusCode.OK).json({
             success: true,
             message: 'successfully',
