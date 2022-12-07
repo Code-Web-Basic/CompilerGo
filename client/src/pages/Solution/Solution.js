@@ -59,7 +59,7 @@ function Solution() {
 
     const [chooseLanguage, setChooseLanguage] = useState('cpp');
     const [result, setResult] = useState([]);
-    const [err, setError] = useState('');
+    const [error, setError] = useState('');
 
     const [code, setCode] = useState('');
     const EditorContainer = useRef(null);
