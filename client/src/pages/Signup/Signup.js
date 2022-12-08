@@ -22,6 +22,18 @@ function Signup() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     // const checkRegister = useSelector((state) => state.auth.register);
+    /*{
+  
+        "firstName": "Sanghiphop",
+        "lastName": "Vu",
+        "email": "zimbb240@gmail.com",
+        "password": "20022222",
+        "createdAt": 1663756014035,
+        "updatedAt": null,
+        "authGoogleId": null,
+        "authFacebookId": null,
+        "authType": "local"
+      }*/
     const handleRegister = async (e) => {
         e.preventDefault();
         const newUser = {
@@ -29,6 +41,11 @@ function Signup() {
             password: password,
             firstName: firstNameUser,
             lastName: lastNameUser,
+            createdAt: 1663756014035,
+            updatedAt: null,
+            authGoogleId: null,
+            authFacebookId: null,
+            authType: 'local',
         };
         await registerUser(newUser, dispatch, navigate, enqueueSnackbar);
     };
@@ -64,6 +81,7 @@ function Signup() {
                     />{' '}
                     <br></br>
                     <input
+                        type="password"
                         placeholder="Mật khẩu"
                         name="pass"
                         onChange={(e) => {
@@ -71,7 +89,7 @@ function Signup() {
                         }}
                     />{' '}
                     <br></br>
-                    <input placeholder="Xác nhận mật khẩu" name="re-pass" />
+                    <input type="password" placeholder="Xác nhận mật khẩu" name="re-pass" />
                     <p>
                         Bằng cách đăng ký, bạn đồng ý với Điều khoản, Chính sách quyền riêng tư và Chính sách cookie của
                         chúng tôi.
@@ -80,21 +98,6 @@ function Signup() {
                 <Button className={cx('btn-signup')} to={ConfigRouter.Home} onClick={handleRegister}>
                     Đăng ký
                 </Button>
-                <div className={cx('social-login-label')}>
-                    <div className={cx('label-or')}>
-                        <div className={cx('line-left')}></div>
-                        <span className={cx('label-text')}>Hoặc bạn có thể đăng ký với</span>
-                        <div className={cx('line-right')}></div>
-                    </div>
-                    <div className={cx('icon-login')}>
-                        <Button className={cx('face')} iconBackgroundHover>
-                            <FaFacebook />
-                        </Button>
-                        <Button className={cx('goog')} iconBackgroundHover>
-                            <FaGoogle />
-                        </Button>
-                    </div>
-                </div>
                 <div className={cx('con-signin')}>
                     <span>Nếu bạn đã có tài khoản?</span>
                     <Link to={ConfigRouter.login} className={cx('signin')}>

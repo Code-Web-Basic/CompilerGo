@@ -81,6 +81,7 @@ function Login() {
                         <div>
                             <FaLock />
                             <input
+                                type="password"
                                 placeholder="Mật khẩu"
                                 name="pass"
                                 onChange={(e) => {
@@ -94,28 +95,10 @@ function Login() {
                             <input type="checkbox" name="rem-login" />
                             <span> Nhớ mật khẩu</span>
                         </div>
-                        <Link to={ConfigRouter.resetpass} className={cx('forgetpass')}>
-                            Quên mật khẩu?
-                        </Link>
                     </div>
                     <Button className={cx('btn-login')} onClick={handleLogin}>
                         Đăng nhập
                     </Button>
-                    <div className={cx('social-login-label')}>
-                        <div className={cx('label-or')}>
-                            <div className={cx('line-left')}></div>
-                            <span className={cx('label-text')}>Đăng nhập với</span>
-                            <div className={cx('line-right')}></div>
-                        </div>
-                        <div className={cx('icon-login')}>
-                            <Button className={cx('face')} iconBackgroundHover onClick={handleLoginWithFacebook}>
-                                <FaFacebook />
-                            </Button>
-                            <Button className={cx('goog')} iconBackgroundHover onClick={handleLoginWithGoogle}>
-                                <FaGoogle />
-                            </Button>
-                        </div>
-                    </div>
                     <div className={cx('con-signup')}>
                         <span>Nếu chưa có tài khoản?</span>
                         <Link to={ConfigRouter.signup} className={cx('signup')}>
