@@ -21,14 +21,6 @@ function Practice() {
             if (user.user) {
                 const res = await PracticeService.getPracticeUser(user.user._id);
                 setTitle(res.data);
-                // axios
-                //     .get(`http://localhost:3240/v1/practice/getList/${user.user._id}`)
-                //     .then(function (response) {
-                //         setTitle(response.data.data);
-                //     })
-                //     .catch(function (error) {
-                //         console.log(error);
-                //     });
             }
         };
         ApiRequest();

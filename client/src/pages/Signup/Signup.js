@@ -22,18 +22,6 @@ function Signup() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     // const checkRegister = useSelector((state) => state.auth.register);
-    /*{
-  
-        "firstName": "Sanghiphop",
-        "lastName": "Vu",
-        "email": "zimbb240@gmail.com",
-        "password": "20022222",
-        "createdAt": 1663756014035,
-        "updatedAt": null,
-        "authGoogleId": null,
-        "authFacebookId": null,
-        "authType": "local"
-      }*/
     const handleRegister = async (e) => {
         e.preventDefault();
         const newUser = {

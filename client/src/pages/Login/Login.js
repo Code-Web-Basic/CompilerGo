@@ -13,7 +13,6 @@ import { ConfigRouter } from '~/config';
 import Button from '~/components/Button';
 import { loginUser, loginGoogleUser } from '~/redux/apiRequest';
 import { Alert, checkboxClasses, Snackbar } from '@mui/material';
-// import * as httpRequest from '~/utils/httpRequest';
 import { useSnackbar } from 'notistack';
 
 const cx = classNames.bind(styles);
