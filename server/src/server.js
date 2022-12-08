@@ -31,7 +31,13 @@ const bootServer = () => {
     app.use(express.static(path.join(__dirname, '..', 'public')));
     app.use(passport.initialize());
     app.use(passport.session());
-    app.use(cors({ origin: `http://${env.APP_HOST}:3000`, methods: 'GET,POST,PUT,DELETE', credentials: true }));
+    app.use(
+        cors({
+            origin: `http://${env.APP_HOST}:${process.env.APP_CLIENT_PORT}`,
+            methods: 'GET,POST,PUT,DELETE',
+            credentials: true,
+        }),
+    );
     // use api
     app.use('/v1', ApiV1);
     app.listen(env.APP_PORT, () => console.log(`Example app listening on port http://${env.APP_HOST}:${env.APP_PORT}`));

@@ -17,7 +17,6 @@ function Practice() {
     const [title, setTitle] = useState([]);
     let user = useSelector((state) => state.auth.login?.currentUser);
     useEffect(() => {
-
         const ApiRequest = async () => {
             if (user.user) {
                 const res = await PracticeService.getPracticeUser(user.user._id);
@@ -40,23 +39,13 @@ function Practice() {
     };
     return (
         <>
-            {!user.user ? (
+            {!user?.user ? (
                 <div style={{ fontSize: '30px' }}>
                     <Alert severity="warning">Login Now</Alert>
                 </div>
             ) : (
                 <div className={cx('practice')}>
                     <TabContext value={value}>
-                        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                            <TabList onChange={handleChange} aria-label="lab API tabs example">
-                                <Tab label="if-else" value="1" />
-                                <Tab label="Vòng lặp" value="2" />
-                                <Tab label="Mảng" value="3" />
-                                <Tab label="Sắp xếp" value="4" />
-                                <Tab label="Chuỗi" value="5" />
-                                <Tab label="struct" value="6" />
-                            </TabList>
-                        </Box>
                         <TabPanel value="1">
                             <Box>
                                 <div>
@@ -91,13 +80,7 @@ function Practice() {
                                 </table>
                             </Box>
                         </TabPanel>
-                        <TabPanel value="2">Item Two</TabPanel>
-                        <TabPanel value="3">Item Three</TabPanel>
-                        <TabPanel value="4">Item Four</TabPanel>
-                        <TabPanel value="5">Item Five</TabPanel>
-                        <TabPanel value="6">Item Six</TabPanel>
                     </TabContext>
-
                     <div></div>
                 </div>
             )}

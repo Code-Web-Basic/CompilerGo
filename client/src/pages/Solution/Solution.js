@@ -31,11 +31,7 @@ function TabPanel(props) {
             aria-labelledby={`simple-tab-${index}`}
             {...other}
         >
-            {value === index && (
-                <Box sx={{ p: 3 }}>
-                    <Typography>{children}</Typography>
-                </Box>
-            )}
+            {value === index && <Box sx={{ p: 3 }}>{children}</Box>}
         </div>
     );
 }
@@ -74,8 +70,8 @@ function Solution() {
     const EditorContainer = useRef(null);
     let user = useSelector((state) => state.auth.login?.currentUser);
     useEffect(() => {
-        setHeightEditor(EditorContainer.current.offsetHeight - 28 - 5);
-        setHeightConsole(28);
+        setHeightEditor(EditorContainer.current.offsetHeight - 50 - 5);
+        setHeightConsole(50);
     }, []);
     const InitResize = () => {
         window.addEventListener('mousemove', HandleResizing, false);
@@ -85,8 +81,8 @@ function Solution() {
         setHeightEditor(e.clientY - EditorContainer.current.offsetTop);
         setHeightConsole(EditorContainer.current.offsetHeight + EditorContainer.current.offsetTop - e.clientY);
         if (EditorContainer.current.offsetHeight + EditorContainer.current.offsetTop - e.clientY < 28) {
-            setHeightEditor(EditorContainer.current.offsetHeight - 28 - 5);
-            setHeightConsole(28);
+            setHeightEditor(EditorContainer.current.offsetHeight - 48 - 5);
+            setHeightConsole(48);
         }
         if (e.clientY < EditorContainer.current.offsetTop - 5) {
             RemoveHandleResizing();
@@ -190,8 +186,8 @@ function Solution() {
                         <p style={{ margin: '10px' }}>{practices.example?.content}</p>
                         <div style={{ margin: '10px' }}>
                             Output:{' '}
-                            {practices.example?.sample.map((out) => {
-                                return <p>{out}</p>;
+                            {practices.example?.sample.map((out, index) => {
+                                return <p key={index}>{out}</p>;
                             })}
                         </div>
                         <h3 style={{ margin: '10px' }}>Input format:</h3>
@@ -203,15 +199,15 @@ function Solution() {
                         <h3 style={{ margin: '10px' }}>Sample Input: </h3>
                         <div style={{ margin: '10px' }}>
                             Input:{' '}
-                            {practices.sampleInput?.map((out) => {
-                                return <p>{out}</p>;
+                            {practices.sampleInput?.map((out, index) => {
+                                return <p key={index}>{out}</p>;
                             })}
                         </div>
                         <h3 style={{ margin: '10px' }}>Sample Output: </h3>
                         <div style={{ margin: '10px' }}>
                             Output:{' '}
-                            {practices.sampleOutput?.map((out) => {
-                                return <p>{out}</p>;
+                            {practices.sampleOutput?.map((out, index) => {
+                                return <p key={index}>{out}</p>;
                             })}
                         </div>
                     </div>
@@ -264,28 +260,31 @@ function Solution() {
                                     <Box sx={{ width: '100%' }}>
                                         <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
                                             <Tabs value={value} onChange={handleChange} aria-label="basic tabs example">
-                                                <Tab
-                                                    label="TestCase 1"
-                                                    {...a11yProps(0)}
-                                                    sx={{ fontSize: '15px', fontWeight: '600' }}
-                                                />
-                                                <Tab
+                                                {practices?.testCase?.map((item, index) => (
+                                                    <Tab
+                                                        key={index}
+                                                        label={`TestCase ${index}`}
+                                                        {...a11yProps(index)}
+                                                        sx={{ fontSize: '15px', fontWeight: '600' }}
+                                                    />
+                                                ))}
+
+                                                {/* <Tab
                                                     label="TestCase 2"
                                                     {...a11yProps(1)}
                                                     sx={{ fontSize: '15px', fontWeight: '600' }}
-                                                />
+                                                /> */}
                                             </Tabs>
                                         </Box>
-                                        <TabPanel value={value} index={0}>
-                                            <div className={cx('testcase')}>
-                                                {result.length !== 0
-                                                    ? result[0].success === true
-                                                        ? 'pass'
-                                                        : 'no pass'
-                                                    : ''}
-                                            </div>
-                                        </TabPanel>
-                                        <TabPanel value={value} index={1}>
+                                        {result?.map((item, index) => (
+                                            <TabPanel value={value} index={index} key={index}>
+                                                <div className={cx('testcase')}>
+                                                    {item.success === true ? 'pass' : 'no pass'}
+                                                </div>
+                                            </TabPanel>
+                                        ))}
+
+                                        {/* <TabPanel value={value} index={1}>
                                             <div className={cx('testcase')}>
                                                 {result.length !== 0
                                                     ? result[1].success === true
@@ -293,7 +292,7 @@ function Solution() {
                                                         : 'no pass'
                                                     : ''}
                                             </div>
-                                        </TabPanel>
+                                        </TabPanel> */}
                                     </Box>
                                 </div>
                             </div>

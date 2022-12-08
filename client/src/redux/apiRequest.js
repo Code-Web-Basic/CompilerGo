@@ -12,26 +12,30 @@ import {
     registerSuccess,
 } from './authSlice';
 
-export const loginUser = async (user, dispatch, navigate) => {
+export const loginUser = async (user, dispatch, navigate, enqueueSnackbar) => {
     dispatch(loginStart());
     try {
         const res = await httpRequest.post('users/login', user);
         console.log(res);
         dispatch(loginSuccess(res));
         navigate(ConfigRouter.Home);
+        enqueueSnackbar('đăng nhập thành công', 'success');
     } catch (error) {
         dispatch(logOutFailed());
+        enqueueSnackbar('tài khoản hoặc mật khẩu sai ');
     }
 };
 
-export const registerUser = async (user, dispatch, navigate) => {
+export const registerUser = async (user, dispatch, navigate, enqueueSnackbar) => {
     dispatch(registerStart());
     try {
-        await httpRequest.post('users/register', user);
+        await httpRequest.post('/users/register', user);
         dispatch(registerSuccess());
         navigate(ConfigRouter.login);
-    } catch {
+        enqueueSnackbar('tạo tài khoản thành công', 'success');
+    } catch (e) {
         dispatch(registerFailed());
+        enqueueSnackbar(`email đã tồn tại`, 'error');
     }
 };
 export const loginGoogleUser = async (dispatch) => {
